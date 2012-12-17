@@ -33,3 +33,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# DB and DS Connections
+db-*.inc.php
+ds-*.inc.php

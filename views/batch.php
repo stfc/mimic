@@ -1,13 +1,13 @@
 <?php
 
 # MySQL Data sources
-require("components/db-open.inc.php");
+require("../components/db-open.inc.php");
 
 # Postgres Data Sources
-require("components/db-magdb-open.inc.php");
+require("../components/db-magdb-open.inc.php");
 
 # Nagios library
-require("components/main-nagios.inc.php");
+require("../components/main-nagios.inc.php");
 
 //Do we want to show warnings?
 $showWarnings = true;

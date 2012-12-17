@@ -1,7 +1,7 @@
 <?php
 
 # Nagios Livestatus
-require("components/ds-nagioslivestatus.inc.php");
+require("ds-nagioslivestatus.inc.php");
 
 $nagios_data = nagiosLiveStatus::get_hosts();
 $nagios_columns = $nagios_data[0];

@@ -34,7 +34,7 @@ else
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" media="screen" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
-    <script type="text/javascript" src="monitor.js"></script>
+    <script type="text/javascript" src="components/monitor.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   </head>
