@@ -8,7 +8,7 @@
       var msg_loading = '<div class="message"><img src="images/loading.png" alt="loading" /></div>';
       $("#farm").html(msg_loading);
       function update() {
-        $.get("view-"+view+".php", function(d) {
+        $.get("views/"+view+".php", function(d) {
           $("#farm").html(d);
           locateNode($("#inLocate").val());
         });
