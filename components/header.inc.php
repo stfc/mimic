@@ -31,11 +31,12 @@ else
     <title>Tier1 Mimic</title>
     <!-- Tenuous acronym of the moment: <?php echo $title; ?> -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="layout.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" media="screen" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
     <script type="text/javascript" src="monitor.js"></script>
-    <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   </head>
   <body>
 <?php
