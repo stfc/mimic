@@ -1,13 +1,13 @@
 <?php
 
 # MySQL Data sources
-require("../components/db-open.inc.php");
+require("components/db-open.inc.php");
 
 # Postgres Data Sources
-require("../components/db-magdb-open.inc.php");
+require("components/db-magdb-open.inc.php");
 
 # Nagios library
-require("../components/main-nagios.inc.php");
+require("components/main-nagios.inc.php");
 
 //Do we want to show warnings?
 $showWarnings = true;
@@ -23,10 +23,7 @@ $allnodes = pg_query(
   "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\", \"rackId\", \"systemRackPos\" "
  ."from \"vBuildTemplate\" "
  ."where \"systemHostname\" not like '%.internal'"
- ."and \"categoryName\" like 'wn%'"
- ."and \"lifestageName\" = 'Production'"
- ."and \"systemId\" > 2000"
- ."order by \"categoryName\", \"systemHostname\";"
+ ."order by \"categoryName\" desc, \"systemHostname\";"
  );
 
 if ($allnodes and pg_num_rows($allnodes)){
@@ -75,16 +72,18 @@ if ($allnodes and pg_num_rows($allnodes)){
         }
 
 
-        $nodeInfo = "$node ($nodeStatus - Torque)";
+        $nodeInfo = "<h4>$node</h4> ($nodeStatus - Torque)";
 
         // Add note flag
         if ($nodeNote) {
             $nodeStatus .= ' note';
         }
 
-        $ntup = nagios_state($short, $node, $nodeInfo, $nodeStatus);
-        $nodeStatus = $ntup[0];
-        $nodeInfo = $ntup[1];
+        $ntup = nagios_state($short, $node, $nodeStatus);
+        if ($ntup[1]) {
+            $nodeStatus = $ntup[0];
+            $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
+        }
         unset($ntup);
 
         // And show it
@@ -95,3 +94,11 @@ if ($allnodes and pg_num_rows($allnodes)){
 }
 
 ?>
+<script type="text/javascript">
+    $('#key-view ul').html('');
+    $("#key-view ul").append('<li><span class="node free" title="Free (In the batch system, not running any jobs)">&nbsp;</span>Free</li>');
+    $("#key-view ul").append('<li><span class="node inuse" title="In Use (In the batch system, running jobs but not full)">&nbsp;</span>In Use</li>');
+    $("#key-view ul").append('<li><span class="node full" title="Full (In the batch system, running jobs and full)">&nbsp;</span>Full</li>');
+    $("#key-view ul").append('<li><span class="node offline" title="Offline (In the batch system, not open to new jobs)">&nbsp;</span>Offline</li>');
+    $("#key-view ul").append('<li><span class="node batchdown" title="Down In the batch system (Cannot be reached by scheduler)">&nbsp;</span>Client Down</li>');
+</script>
