@@ -17,6 +17,20 @@ DIV.sub {
   padding: 2px;
   border-top: solid rgb(136, 138, 133) 1px;
 }
+div.box {
+  border: dotted rgb(211, 215, 207) 1px;
+  padding: 1em;
+}
+div#loading {
+  position: fixed;
+  background: white;
+  border: solid rgb(136, 138, 133) 1px;
+  padding: 1em;
+  left: 45%;
+  top: 48%;
+  width: 10%;
+  text-align: center;
+}
 textarea {
   width: 98%;
 }
@@ -33,15 +47,14 @@ ul.state-jobs li {
 }
 
 
-ul.yumit-packages {
-  list-style: square inside url("images/icons/mimetypes/package-x-generic.png");
-  margin-bottom: 8px;
-  padding-left: 8px;
+span.package:before {
+  content: url("/images/icons/mimetypes/package-x-generic.png");
+  margin-right: 8px;
 }
 
-ul.yumit-packages li.kernel {
-  color: #008;
-  list-style: square inside url("images/icons/categories/applications-system.png");
+span.kernel:before {
+  content: url("/images/icons/categories/applications-system.png");
+  margin-right: 8px;
 }
 
 dl {
@@ -49,7 +62,7 @@ dl {
 }
 
 dt {
-  width: 12em;
+  width: 16em;
   font-weight:    bold;
   text-align: right;
   margin: 0;
@@ -63,6 +76,15 @@ dd {
   margin-left: 1em;
   float: left;
   clear: right;
+}
+
+dd.large {
+  margin-left: 17em;
+  margin-top: -1em;
+  margin-right: 1em;
+  padding: 0.2em;
+  border: solid rgb(211, 215, 207) 1px;
+  font-family: monospace;
 }
 
 /**
@@ -102,6 +124,9 @@ SPAN.time {
   text-decoration: line-through;
   color: #777;
 }
+.text-muted {
+  color: #999;
+}
 h1, h2, p {
   margin: 2px;
 }
@@ -115,19 +140,19 @@ p {
   font-size: 8pt;
 }
 p.info:before {
-  content: url("images/icons/status/dialog-information.png");
+  content: url("/images/icons/status/dialog-information.png");
   margin-right: 8px;
 }
 p.warning:before {
-  content: url("images/icons/status/dialog-warning.png");
+  content: url("/images/icons/status/dialog-warning.png");
   margin-right: 8px;
 }
 p.error:before {
-  content: url("images/icons/status/dialog-error.png");
+  content: url("/images/icons/status/dialog-error.png");
   margin-right: 8px;
 }
 p.loading:before, span.loading:before {
-  content: url("images/icons/actions/view-refresh.png");
+  content: url("/images/icons/actions/view-refresh.png");
   margin-right: 8px;
 }
 p.info, p.warning, p.error, p.loading {
@@ -136,15 +161,21 @@ p.info, p.warning, p.error, p.loading {
 em {
   color: rgb(32, 74, 135);
 }
-a.button {
-  border:1px solid rgb(46, 52, 54);
-  border-radius: 4px;
-  background-color: rgb(85, 87, 83);
-  color: rgb(238, 238, 236);
+a, .ui-widget-content a {
   cursor: pointer;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.33);
-
+  color: rgb(52, 101, 164);
+}
+a:hover {
+  text-decoration: underline;
+  color: rgb(114, 159, 207);
+}
+a.button {
+  color: rgb(46, 52, 54);
+  background-color: rgb(186, 189, 182);
   text-decoration: none;
+  border: solid rgb(136, 138, 133) 1px;
+  border-top: solid rgb(211, 215, 207) 1px;
+  border-left: solid rgb(211, 215, 207) 1px;
   padding: 1px 2px 1px 2px;
   margin: 0;
 }
@@ -214,14 +245,19 @@ table, td, th {
   border-collapse: collapse;
   margin: 0;
   text-align: left;
-  border-top: thin solid rgb(225, 227, 222);
-  border-bottom: thin solid rgb(225, 227, 222);
+  border: thin solid rgb(225, 227, 222);
 }
 table.simple td {
   border: thin solid rgb(85, 87, 83);
   padding: 4px;
 }
-table.simple th {
+table.timeline td {
+  margin: 0;
+  padding: 0 0.2em 0 0;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+table th {
   background-color: rgb(85, 87, 83);
   color: #fff;
   padding: 2px;
@@ -285,12 +321,19 @@ span.rollup:hover {
   cursor: pointer;
 }
 
+div#node-magdb-history > table > tbody > tr > th, td {
+  font-size: 7pt;
+  /*border: thin solid rgb(225, 227, 222);*/
+}
+
 tr.node-RT-resolved > td, td.unchanged {
   color: rgb(136, 138, 133);
 }
-
-div#node-magdb-history > table > tbody > tr > th, td {
-  font-size: 7pt;
-  border: thin solid rgb(225, 227, 222);
+ins {
+  color: rgb(12, 54, 115);
+  text-decoration: none;
+  background-color: rgb(164, 209, 247);
 }
-
+del {
+  color: rgb(204, 0, 0);
+}
