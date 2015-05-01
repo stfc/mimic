@@ -1,14 +1,7 @@
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
-
+//Important includes
+require("header.php");
+$config = parse_ini_file("config/config.ini", true);
 
 function do_node($node) {
     $short = explode('.', $node);
@@ -63,12 +56,13 @@ function do_systems($systems) {
 
 
 function do_domains($domains) {
+    global $config;
     echo "<div class=\"cluster\" style=\"width: auto\" id=\"cl_domains\">\n";
     echo "  <p class=\"cluster\">Domains</p>\n";
     foreach ($domains as $domain) {
         echo "  <div class=\"diskpool\" id=\"dp_$domain\">\n";
         echo "    <p class=\"diskpool\">$domain</p>\n";
-        $systems = file_get_contents("http://aquilon.gridpp.rl.ac.uk:6901/find/host?domain=$domain");
+        $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?domain=$domain");
         do_systems($systems);
         echo "  </div>\n";
     }
@@ -77,6 +71,7 @@ function do_domains($domains) {
 
 
 function do_sandboxes($boxen) {
+    global $config;
     $sandboxes = Array();
     $sandboxname = '';
     $realnames = Array();
@@ -114,7 +109,7 @@ function do_sandboxes($boxen) {
         foreach ($boxes as $box) {
             echo "  <div class=\"diskpool\" id=\"dp_$box\">\n";
             echo "    <p class=\"diskpool\" title=\"$user/$box\">$box</p>\n";
-            $systems = file_get_contents("http://aquilon.gridpp.rl.ac.uk:6901/find/host?sandbox=$user/$box");
+            $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?sandbox=$user/$box");
             do_systems($systems);
             echo "  </div>\n";
         }
@@ -123,11 +118,11 @@ function do_sandboxes($boxen) {
 }
 
 
-$boxen = file_get_contents('http://aquilon.gridpp.rl.ac.uk:6901/sandbox/command/show_all');
+$boxen = file_get_contents($config['AQUILON']['URL'] . "sandbox/command/show_all");
 $boxen = explode("\n", $boxen);
 
 $domains = Array();
-$domain_info = file_get_contents('http://aquilon.gridpp.rl.ac.uk:6901/domain?all');
+$domain_info = file_get_contents($config['AQUILON']['URL'] . "domain?all");
 $domain_info = explode("\n", $domain_info);
 foreach ($domain_info as $line) {
     $l = explode(' ', trim($line));
@@ -136,7 +131,7 @@ foreach ($domain_info as $line) {
     }
 }
 
-echo "<div style=\"clear: both; outline: 2px solid #676767; outline-offset: 1px;\">\n";
+echo "<div>\n";
 do_domains($domains);
 echo "</div>\n";
 
@@ -145,9 +140,3 @@ do_sandboxes($boxen);
 echo "</div>\n";
 
 ?>
-<script type="text/javascript">
-    $('div.cluster').each(function(i, e) {
-        h = e.clientHeight;
-        e.style.height = Math.ceil(h/64)*64 + 'px';
-    });
-</script>

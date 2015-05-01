@@ -1,19 +1,6 @@
-<style type="text/css">
-  @import url("css/style-castor.css");
-</style>
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios Livestatus
-require("components/ds-nagioslivestatus.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
+//Important includes
+require("header.php");;
 
 //Go find all our nodes
 $instance = '';
@@ -37,7 +24,7 @@ if ($allnodes and pg_num_rows($allnodes)) {
     $instance = $r[2];
     $currStat = $r[2];
 
-	$preprod = ($r[4] == "Preprod");
+  $preprod = ($r[4] == "Preprod");
     
     //In this diskpool
     if ($r[3] != $hardwareGroup) {
@@ -94,9 +81,9 @@ if ($allnodes and pg_num_rows($allnodes)) {
     // Apply castor status
     $nodeStatus .= " castor" . $currStat;
 
-	if ($preprod) {
+  if ($preprod) {
       $nodeStatus .= " castorPreprod";
-	}
+  }
   
     # And show it
     echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
