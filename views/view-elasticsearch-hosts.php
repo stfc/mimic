@@ -1,4 +1,7 @@
 <?php
+$path = '/var/www/html/';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path); // Fixes PHP's silly path handling with includes
+$config = parse_ini_file("config/config.ini", true);
 
 $SHARD_STATES = Array(
     'STARTED' => 'free',
@@ -17,16 +20,16 @@ function bool2str($v) {
   return($v);
 }
 
-$nodes = file_get_contents('http://lcg0960.gridpp.rl.ac.uk:9200/_cluster/state/nodes');
+$nodes = file_get_contents($config['ES']['URL'] . "_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
-$nodes['unassigned'] = Array('name' => 'unassigned');
+// $nodes['unassigned'] = Array('name' => 'unassigned');
 
-$health = file_get_contents('http://lcg0960.gridpp.rl.ac.uk:9200/_cluster/health/?level=cluster');
+$health = file_get_contents($config['ES']['URL'] . "_cluster/health/?level=cluster");
 $health = json_decode($health, true);
 $health = $health;
 
-$cluster = file_get_contents('http://lcg0960.gridpp.rl.ac.uk:9200/_cluster/state/routing_table');
+$cluster = file_get_contents($config['ES']['URL'] . "_cluster/state/routing_table");
 $cluster = json_decode($cluster, true);
 
 $indices = $cluster['routing_table']['indices'];

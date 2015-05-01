@@ -1,21 +1,15 @@
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
+//Important includes
+require("header.php");
+$config = parse_ini_file("config/config.ini", true);
 
 $archetype = 'ral-tier1';
 
 // Generate list of VMs that are in a resting state (i.e. correct personality and in prod)
-$vms_all = file_get_contents('http://aquilon.gridpp.rl.ac.uk:6901/find/host?dns_domain=nubes.stfc.ac.uk');
+$vms_all = file_get_contents($config['AQUILON']['URL'] . "find/host?dns_domain=nubes.stfc.ac.uk");
 $vms_all = explode("\n", $vms_all);
 
-$vms_good = file_get_contents('http://aquilon.gridpp.rl.ac.uk:6901/find/host?dns_domain=nubes.stfc.ac.uk&personality=nubesvms&domain=prod');
+$vms_good = file_get_contents($config['AQUILON']['URL'] . "find/host?dns_domain=nubes.stfc.ac.uk&personality=nubesvms&domain=prod");
 $vms_good = explode("\n", $vms_good);
 
 $vms_bad = array_diff($vms_all, $vms_good);

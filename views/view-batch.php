@@ -1,19 +1,6 @@
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
-
-//Do we want to show warnings?
-$showWarnings = true;
-
-//Do we want to show tags?
-$showTags = false;
+//Important includes
+require("header.php");
 
 //Go find all our nodes
 $instance = '';
@@ -29,11 +16,11 @@ $allnodes = pg_query(
 );
 
 if ($allnodes and pg_num_rows($allnodes)){
+    
     while ($r = pg_fetch_row($allnodes)) {
         /**
          * Start of main loop...
          */
-
         //We're looking at this node
         $node  = $r[0];
         $short = explode(".", $node);
@@ -55,7 +42,6 @@ if ($allnodes and pg_num_rows($allnodes)){
         $nodeInfo = "<h4>$node</h4>";
         $nodeStatus = "unknown";
         $nodeNote = "";
-
 
         // Batch & Notes
         $mynode = mysql_query("select state, note, source from state LEFT JOIN notes on (notes.name=state.name) where state.name='$node';");
@@ -83,7 +69,6 @@ if ($allnodes and pg_num_rows($allnodes)){
         if ($nodeNote) {
             $nodeStatus .= ' note';
         }
-
         $ntup = nagios_state($short, $node, $nodeStatus);
         if ($ntup) {
             $nodeStatus = $ntup[0];
@@ -93,9 +78,12 @@ if ($allnodes and pg_num_rows($allnodes)){
 
         // And show it
         echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"$nodeInfo\"></span>\n";
+        
     }
+    
     echo "        </div>\n";
     echo "      </div>\n";
+
 }
 
 ?>
