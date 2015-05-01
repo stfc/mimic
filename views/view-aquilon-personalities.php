@@ -1,14 +1,7 @@
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
-
+//Important includes
+require("header.php");
+$config = parse_ini_file("config/config.ini", true);
 
 function do_node($node) {
     $short = explode('.', $node);
@@ -44,9 +37,9 @@ function do_node($node) {
       //We want to be case insensitive!
       $s = strtolower($nodeNote);
       $nodeStatus .= ' note';
-    }
+  }
 
-    echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+  echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
 }
 
 function do_systems($systems) {
@@ -63,13 +56,14 @@ function do_systems($systems) {
 
 
 function do_personalities($archetypes) {
+    global $config;
     foreach ($archetypes as $archetype => $personalities) 
     {
         echo "  <div style='float: none; clear: both; position: relative; top: 60px;'><p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);'>$archetype</p>\n";
         foreach ($personalities as $personality) {
             echo "  <div style=\"top: 0;\" class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
             echo "      <p class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</p>\n";
-            $systems = file_get_contents("http://aquilon.gridpp.rl.ac.uk:6901/find/host?personality=$personality&archetype=$archetype");
+            $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
             do_systems($systems);
             echo "  </div>\n";
         }
@@ -79,7 +73,7 @@ function do_personalities($archetypes) {
 
 
 $personalities = Array();
-$personality_info = file_get_contents('http://aquilon.gridpp.rl.ac.uk:6901/personality?all');
+$personality_info = file_get_contents($config['AQUILON']['URL'] . "personality?all");
 $personality_info = explode("\n", $personality_info);
 foreach ($personality_info as $line) {
     $l = explode(' ', trim($line));
@@ -93,9 +87,3 @@ foreach ($personality_info as $line) {
 do_personalities($personalities);
 
 ?>
-<script type="text/javascript">
-    $('div.cluster').each(function(i, e) {
-        h = e.clientHeight;
-        e.style.height = Math.ceil(h/64)*64 + 'px';
-    });
-</script>

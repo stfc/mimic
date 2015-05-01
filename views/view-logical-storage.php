@@ -1,27 +1,6 @@
-<style type="text/css">
-  @import url("css/style-castor.css");
-</style>
 <?php
-
-# MySQL Data sources
-require("components/db-open.inc.php");
-
-# Postgres Data Sources
-require("components/db-magdb-open.inc.php");
-
-# Nagios Livestatus
-require("components/ds-nagioslivestatus.inc.php");
-
-# Nagios library
-require("components/main-nagios.inc.php");
-
-require('components/functions.inc.php');
-
-//Do we want to show warnings?
-$showWarnings = true;
-
-//Do we want to show tags?
-$showTags = false;
+//Important includes
+require("header.php");
 
 //Go find all our nodes
 $instance = '';
