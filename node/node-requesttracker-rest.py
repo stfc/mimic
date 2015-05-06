@@ -4,7 +4,17 @@ from cookielib import LWPCookieJar
 from urllib import urlencode, quote
 from urllib2 import urlopen, build_opener, HTTPCookieProcessor, install_opener, Request
 from sys import argv, exit, exc_info
-import simplejson as json
+import json
+import ConfigParser
+
+# Calling ini file
+config = ConfigParser.ConfigParser()
+config.read("../config/config.ini")
+
+# connection details
+uri = config.get("HELPDESK", "URL")
+access_user = config.get("HELPDESK", "USER")
+access_password = config.get("HELPDESK", "PASS")
 
 if len(argv) == 2 or len(argv) == 3:
   subject = argv[1]
@@ -14,11 +24,6 @@ if len(argv) == 2 or len(argv) == 3:
   if len(argv) == 3:
     if argv[2] == "history":
       history = True;
-
-  # connection details
-  uri = 'https://helpdesk.example.com/'
-  access_user = ''
-  access_password = ''
 
   # trying login on rt server, need a cookie jar to to store connection bits
   cj = LWPCookieJar()
@@ -53,6 +58,7 @@ if len(argv) == 2 or len(argv) == 3:
         details = [ [w.replace("'","").replace('"','').strip() for w in l[:-1].split(':', 1)] for l in details if ":" in l]
         details = dict(details)
         tickets[id] = (tickets[id], details["Queue"], details["Created"], details["Status"])
+
       print(json.dumps(tickets))
     except:
       print('{}')

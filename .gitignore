@@ -37,3 +37,6 @@ nosetests.xml
 # DB and DS Connections
 db-*.inc.php
 ds-*.inc.php
+
+# Just to make sure
+config

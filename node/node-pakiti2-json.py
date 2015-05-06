@@ -1,10 +1,15 @@
 #!/usr/bin/python
 import httplib
 from sys import argv, exit
+import ConfigParser
 
-WEBHOST  = 'pakiti.example.com'
-KEYFILE = '/etc/grid-security/hostkey.pem'
-CERTFILE = '/etc/grid-security/hostcert.pem'
+# Calling ini file
+config = ConfigParser.ConfigParser()
+config.read("../config/config.ini")
+
+WEBHOST  = config.get("PAKITI", "URL")
+KEYFILE = config.get("PAKITI", "KEYFILE")
+CERTFILE = config.get("PAKITI", "CERTFILE")
 
 if len(argv) == 2:
   host = argv[1]

@@ -11,7 +11,7 @@ class pBatchSystem
   function detail($node, $short, $jobId = null, $jobCount = null)
   {
     // Look for state sources, and display them
-    $got = mysql_query("select source, state, info, unix_timestamp() - unix_timestamp(time) as 'update' from state where name = '$node'"); #, unix_timestamp() - unix_timestamp(time) 
+    $got = mysql_query("select source, state, info, unix_timestamp() - unix_timestamp(time) as 'update' from state where name = '$node'"); #, unix_timestamp() - unix_timestamp(time)
     if ($got != null and mysql_num_rows($got)) {
       while ($r = mysql_fetch_row($got)) {
         $source = $r[0];
@@ -25,50 +25,46 @@ class pBatchSystem
         $source_type = $source_a[0]; #TODO: Bound checking in case the source field is non-standard
         $scheduler   = $source_a[1];
 
-        echo "      <dl>\n";
+        echo "      <dl class=\"dl-horizontal\">\n";
         echo "        <dt>Source</dt><dd>".htmlspecialchars($source)."</dd>\n";
         echo "        <dt>State</dt><dd>".$state."</dd>\n";
 
-        if ($source_type == 'PBS' and $info) {
+        if (($source_type == 'PBS' or $source_type == 'HTCondor') and $info) {
           list($jtit, $jobs, $ctit, $slots, $ptit, $prop) = explode(" ",$info);
 
           echo "      <dt>Job Slots</dt><dd>$slots</dd>\n";
           echo "        <dt>Jobs</dt>\n";
-          echo "        <dd>\n";
+          echo "        <dd>";
 
           $job_number = 0;
 
           if ($jobs != '[none]'){
-            $jobs = explode (',', $jobs);
-            $job_number = sizeof($jobs);
-            echo "          <ul class=\"state-jobs\">\n";
+            if ($source_type == 'HTCondor') {
+              echo "$jobs";
+              $job_number = (int)$jobs;
+            } else {
+              $jobs = explode (',', $jobs);
+              $job_number = sizeof($jobs);
 
-            $sjobs = ''; //< String list of jobs for this node
+              echo "\n          <ul class=\"state-jobs\">\n";
 
-            foreach ($jobs as $job) {
-              $lc = '';
+              $sjobs = ''; //< String list of jobs for this node
 
-              $sjobs .= $job . '_'; //< Add job to "all" list
+              foreach ($jobs as $job) {
+                $lc = '';
 
-              if (isset($jobId)) {
-                if ($job == $jobId) {
-                  $lc = ' class = "active"';
-                }
+                $sjobs .= $job . '_'; //< Add job to "all" list
+
+                echo "            <li><a class=\"job\" onclick=\"jobInfo('scheduler=$scheduler&amp;n=$node&amp;jobid=$job&amp;level=full');\">$job</a></li>\n";
               }
-              echo "            <li><a class=\"job\" href=\"batch-job-info.php?scheduler=$scheduler&amp;n=$node&amp;jobid=$job&amp;level=full\"$lc>$job</a></li>\n";
+
+              $sjobs = substr($sjobs, 0, -1); //< Trim trailing _
+
+              echo "            <li><a onclick=\"jobInfo('scheduler=$scheduler&amp;n=$node&amp;jobid=$sjobs&amp;level=summary');\">Summary of All Jobs</a></li>\n";
+              echo "          </ul>\n         ";
             }
-
-            $sjobs = substr($sjobs, 0, -1); //< Trim trailing _
-
-            //Are we looking at multiple (ie. ALL jobs) on a node?
-            $lc = '';
-            if ($jobCount > 1) {
-              $lc = ' class = "active"';
-            }
-
-            echo "            <li><a href=\"batch-job-info.php?scheduler=$scheduler&amp;n=$node&amp;jobid=$sjobs&amp;level=summary\"$lc>Summary of All Jobs</a></li>\n";
-            echo "           </ul>\n";
           }
+          echo "</dd>\n";
           $dead = "";
           if ($state == "offline" or $state == "down") {
             $dead = "dead";
@@ -79,7 +75,6 @@ class pBatchSystem
           for($i = 0; $i < ($slots - $job_number); $i++) {
             $state_visual = $state_visual . '<div class="cpu '.$dead.'free"></div>';
           }
-          echo "         </dd>\n";
           echo "         <dt>Visual State</dt><dd>$state_visual</dd>\n";
 
           echo    "      <dt>Properties</dt><dd>".$prop."</dd>\n";

@@ -1,7 +1,7 @@
 <?php
 
 #Config
-$PAKITI_SERVER = "pakiti.example.com";
+$PAKITI_SERVER = $CONFIG['PAKITI']['URL'];
 
 class pPakiti2
 {
@@ -13,7 +13,7 @@ class pPakiti2
 
   function detail($NODE, $SHORT)
   {
-    $result  = exec("/usr/bin/python components/node-pakiti2-json.py $NODE");
+    $result  = exec("/usr/bin/python node/node-pakiti2-json.py $NODE");
     $result  = str_replace("'", '"', $result);
     $result = json_decode($result, True);
 
