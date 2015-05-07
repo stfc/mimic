@@ -36,6 +36,8 @@ $graph_text .= "edge [dir=none];\n";
 if ($system) {
   $interfaces = pg_fetch_all(pg_query_params('select name, "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = $1 order by name desc', Array($system)));
   $records = pg_fetch_all(pg_query_params('select "macAddress", "ipAddress", "fqdn", "alias" from "vNetwork3" where "systemId" = $1', Array($system)));
+  $bonds = pg_fetch_all(pg_query_params('select "bondName", "macAddress", "lastUpdateDate" from "networkInterfaceBonds" where "systemId" = $1', Array($system)));
+  $bond_details = pg_fetch_all(pg_query_params('select "bondName", "bondMode" from "networkInterfaceBondDetails" where "systemId" = $1', Array($system)));
   // Last Seen
   $ls = pg_fetch_all(pg_query('select "ipAddress", EXTRACT(EPOCH FROM now() - "lastSeen") as "lastSeen", date_trunc(\'day\', "lastSeen") = date_trunc(\'day\', now()) as "today" from "ipSurvey"'));
   $lastseen = Array();
@@ -47,6 +49,24 @@ if ($system) {
 
   if ($interfaces or $records) {
     $count_ip = 0;
+    if ($bonds) {
+      foreach($bonds as $b) {
+        $graph_text .= 'subgraph "cluster_'.$b["bondName"].'" {'."\n";
+        $graph_text .= '    "'.$b["macAddress"].'"'."\n";
+        $graph_text .= '    style="filled"'."\n";
+        $graph_text .= '    color="#75507b"'."\n";
+        $graph_text .= '    fillcolor="#ad7fa8"'."\n";
+        $graph_text .= '    label="'.$b["bondName"].'"'."\n";
+        $graph_text .= '}'."\n";
+      }
+    }
+    if ($bond_details) {
+      foreach($bond_details as $b) {
+        $graph_text .= 'subgraph "cluster_'.$b["bondName"].'" {'."\n";
+        $graph_text .= '    label="'.$b["bondName"].'\n'.$b["bondMode"]."\n";
+        $graph_text .= '}'."\n";
+      }
+    }
     foreach ($interfaces as $i) {
       $style = "";
       if ($i["isBootInterface"] == "t") {
