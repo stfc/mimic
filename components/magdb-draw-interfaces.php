@@ -1,8 +1,10 @@
 <?php
 
-require_once("db-magdb-open.inc.php");
-require_once("ouilookup.inc.php");
-require_once("functions.inc.php");
+$path = '/var/www/html/';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+require_once("inc/db-magdb-open.inc.php");
+require_once("inc/ouilookup.inc.php");
+require_once("inc/functions.inc.php");
 
 $system = "793";
 
