@@ -19,7 +19,7 @@ $DNS_CACHE_FILE = "../cache/dns-aliases.json";
 $dns = array();
 
 if (file_exists($DNS_CACHE_FILE)) {
-  $dns = file_get_content($DNS_CACHE_FILE);
+  $dns = file_get_contents($DNS_CACHE_FILE);
   $dns = str_replace("'", '"', $dns);
   $dns = json_decode($dns, True);
 }
