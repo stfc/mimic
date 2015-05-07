@@ -1,6 +1,6 @@
 <?php
 
-require("db-magdb-open.inc.php");
+require("../inc/db-magdb-open.inc.php");
 
 $host = "";
 
