@@ -74,41 +74,21 @@ if ($system) {
           }
         }
       }
-// 2012-02-08  Removed Aliases Code as DB always out of data compared to DNS ~ JRHA
-/*      if ($r["alias"]) {
-        $graph_text .= '"'.$r["fqdn"].'" -> "'.$r["alias"].'";'."\n";
-        if (isset($dns[$r["alias"]])) {
-          $a = $dns[$r["alias"]];
-          $graph_text .= '"'.$a[0].'" -> "'.$r["fqdn"].'";'."\n";
-        }
-      }*/
     }
   } else {
     $graph_text .= "\"No Interfaces Found\";\n";
   }
-
-/*  if ($aliases) {
-    foreach ($aliases as $r) {
-      $graph_text .= "\"".$r["src"]."\" -> \"".$r["tgt"]."\";\n";
-    }
-  }*/
 } else {
   $graph_text .= "\"No System Specified\";\n";
 }
 
 $graph_text .= "}\n";
 
-//print($graph_text);
-//die();
-
 $descriptorspec = array(
    0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
    1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
    2 => array("file", "/dev/null", "a") // stderr is a file to write to
 );
-
-//echo $graph_text;
-//die();
 
 $cmd = ' /usr/bin/dot -Tsvg';
 
