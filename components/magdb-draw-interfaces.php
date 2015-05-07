@@ -61,7 +61,12 @@ if ($system) {
       $seen = "Never Seen";
       $count_ip += 1;
       if (isset($lastseen[$r["ipAddress"]])) {
-        $seen = 'Last Seen '.prettytime($lastseen[$r["ipAddress"]]);
+        $seen = $lastseen[$r["ipAddress"]];
+        if ($seen <= 86400) {
+          $seen = "Last Seen Today";
+        } else {
+          $seen = 'Last Seen '.prettytime($seen);
+        }
       }
       $graph_text .= '"'.$r["ipAddress"].'" [label="'.$r["ipAddress"].'\n '.$seen.'" URL="http://'.$r["ipAddress"].'" target="_parent"];'."\n";
       if ($r["fqdn"]) {
