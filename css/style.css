@@ -1,35 +1,131 @@
-* { box-sizing: content-box; }
-body           {background:#444 url('/images/mimic-logo.png') no-repeat scroll -12px 2px; margin:0; padding:0; font:8pt 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';}
+* {
+  Box-sizing: content-box;
+}
 
-div#menu {position:fixed; right:0; top:0; padding: 4px 8px 8px 8px; height: 48px; z-index: 9999;}
+body {
+  background: #555;
+  margin: 0;
+  padding: 0;
+  font: 8pt 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
+}
 
-div#key        {position: fixed; right: 8px; top: 32px; width: 16em; background-color: rgb(85, 87, 83); color: rgb(238, 238, 236); border:1px solid rgb(46, 52, 54); z-index: 9999; display: none; opacity: 0.9; border-radius: 8px; padding-top:8px;}
-ul.key         {padding: 4px; margin-left: 8px;}
-ul.key>li      {list-style-type:none; padding:0; clear: both; margin: 4px;}
-ul.key>li>span {float: left; margin-right: 4px;}
+#menu {
+  position: fixed;
+  width: 98%;
+  padding: 12px 1%;
+  text-align: right;
+  background: #444 url('../images/mimic-logo.png') no-repeat;
+  background-size: 176px;
+  box-shadow: 0 0 6px #000;
+  z-index: 9999;
+}
 
-div.nincom     {position:absolute; margin:0; top:6px; left:400px; width:340px; height:12px; padding:8px; background-color:#EEE;border:1px solid #F00; color:#F00; text-align:center; white-space:nowrap; font-weight:bold;}
+#key {
+  position: fixed;
+  right: 8px;
+  top: 32px;
+  width: 16em;
+  background-color: rgb(85, 87, 83);
+  color: rgb(238, 238, 236);
+  border: 1px solid rgb(46, 52, 54);
+  z-index: 9999;
+  display: none;
+  opacity: 0.9;
+  border-radius: 8px;
+  padding-top: 8px;
+}
 
-div.label, div.label-bold {position:absolute; font-size: 7pt; width: 180px; height: 12px; text-align: center; color:#EEE;}
-div.label-bold  {font-weight: bold;}
+ul.key {
+  padding: 4px;
+  margin-left: 8px;
+}
 
-div#yumitchoice {position: absolute; bottom: 108px; left: 16px;}
+ul.key>li {
+  list-style-type: none;
+  padding: 0;
+  clear: both;
+  margin: 4px;
+}
 
-/* Define layers */
-div.layer {border: 1px solid #333; border-right-style: none; border-bottom-style: none; margin-top: 10px; height: 128px;}
-  p.layer {color: #333; font-size: 6pt; padding: 0 4px 0 2px; margin: 0.2em; margin-top: -12px; }
+ul.key>li>span {
+  float: left;
+  margin-right: 4px;
+}
+
+div.label, div.label-bold {
+  position: absolute;
+  font-size: 7pt;
+  width: 180px;
+  height: 12px;
+  text-align: center;
+  color: #EEE;
+}
+
+div.label-bold {
+  font-weight: bold;
+}
 
 /* Define instances and clusters */
-div.instance, div.cluster, div.room {position: relative; margin: 0px 0px 4px 4px; padding: 0px 0px 1px 0px; top: 56px; width: 16%; float: left; outline: 1px dotted rgb(85, 87, 83); min-width: 160px; min-height: 48px}
-p.instance, p.cluster {color: #fff; font-size: 9pt; font-weight: bold; padding: 0 4px 0 2px; margin: 0;}
-div.room {float: none; width: auto; overflow: auto;}
-p.instance, p.cluster, p.room {color: #fff; font-size: 9pt; font-weight: bold; padding: 0 4px 0 2px; margin: 0;}
+div.instance, div.cluster, div.room {
+  position: relative;
+  margin: 0px 0px 4px 4px;
+  padding: 0px 0px 1px 0px;
+  top: 56px;
+  width: 16%;
+  float: left;
+  outline: 1px dotted #666;
+  min-width: 160px;
+  min-height: 48px;
+}
+
+p.instance, p.cluster {
+  color: #fff;
+  font-size: 9pt;
+  font-weight: bold;
+  padding: 0 4px 0 2px;
+  margin: 0;
+}
+
+div.room {
+  float: none;
+  width: auto;
+  overflow: auto;
+}
+
+p.instance, p.cluster, p.room {
+  color: #fff;
+  font-size: 9pt;
+  font-weight: bold;
+  padding: 0 4px 0 2px;
+  margin: 0;
+}
 
 /* Define diskpools */
-div.diskpool {padding: 0; overflow: auto;}
-div.rack {padding: 0; width: 19px; float: left; overflow: auto;}
-p.diskpool, p.rack {color: #fff; font-size: 8pt; padding: 0 2px 0 2px; margin: 0;}
-p.rack {padding: 0; font-size: 6pt; width: 16px; text-align: center;}
+div.diskpool {
+  padding: 0;
+  overflow: auto;
+}
+
+div.rack {
+  padding: 0;
+  width: 19px;
+  float: left;
+  overflow: auto;
+}
+
+p.diskpool, p.rack {
+  color: #fff;
+  font-size: 8pt;
+  padding: 0 2px 0 2px;
+  margin: 0;
+}
+
+p.rack {
+  padding: 0;
+  font-size: 6pt;
+  width: 16px;
+  text-align: center;
+}
 
 div.diskpool > span.node, div.cluster > span.node {
   float: left;
@@ -37,60 +133,241 @@ div.diskpool > span.node, div.cluster > span.node {
 }
 
 /* Define nodes */
-span.node            {color:#000; width:16px; height:11px; border:1px solid #000; padding: 0; display: block; cursor: pointer; text-align: center; font-size: 7px; background-position: center center;}
-span.node:hover      {outline:2px solid #FFF; z-index:10000;}
-div.rack > span.node {position: relative; margin-top: -1px;}
+span.node {
+  color: #000;
+  width: 16px;
+  height: 11px;
+  border: 1px solid #000;
+  padding: 0;
+  display: block;
+  cursor: pointer;
+  text-align: center;
+  font-size: 7px;
+  background-position: center center;
+}
+
+span.node:hover {
+  outline: 2px solid #FFF;
+  z-index: 10000;
+}
+
+div.rack > span.node {
+  position: relative;
+  margin-top: -1px;
+}
 
 
 /* Elasticsearch statuses */
-div.red    {outline: 1px solid #D00;}
-div.yellow {outline: 1px solid #FC0;}
+div.red {
+  outline: 1px solid #D00;
+}
 
-span.red    {background-color:#D00;}
-span.yellow {background-color:#FC0;}
-span.green  {background-color:#0D0;}
+div.yellow {
+  outline: 1px solid #FC0;
+}
 
-span.replica {opacity: 0.33;}
+span.red {
+  background-color: #D00;
+}
+
+span.yellow {
+  background-color: #FC0;
+}
+
+span.green {
+  background-color: #0D0;
+}
+
+span.replica {
+  opacity: 0.33;
+}
 
 /* Nodes get one of these classes */
-span.free       {background-color:#0D0;}
-span.inuse      {background-color:#6DD;}
-span.full       {background-color:#09D;}
-span.batchdown  {background-color:#500;}
-span.offline    {background-color:#FC0;}
-span.unknown    {background-color:#999;}
+span.free {
+  background-color: #0D0;
+}
+
+span.inuse {
+  background-color: #6DD;
+}
+
+span.full {
+  background-color: #09D;
+}
+
+span.batchdown {
+  background-color: #500;
+}
+
+span.offline {
+  background-color: #FC0;
+}
+
+span.unknown {
+  background-color: #999;
+}
 
 /* And optionally, one of these classes as well */
-span.warning, span.critical {background-image:url("/images/multi_plain.gif") }
-span.note                   {background-image:url("/images/multi_note.gif");}
+span.warning, span.critical {
+  background-image: url("../images/icons/multi_plain.gif");
+}
 
-span.note                   {background-position: center   0px;}
-span.warning                {background-position: center -11px;}
-span.critical               {background-position: center -22px;}
+span.note {
+  background-image: url("../images/icons/multi_note.gif");
+}
 
-span.tab, span.btn {margin: 0; padding:4px; border:1px solid rgb(46, 52, 54); border-radius: 4px; background-color: rgb(85, 87, 83); color: rgb(238, 238, 236); cursor: pointer; box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);}
-span.tab:hover, span.btn:hover {background: rgb(136, 138, 133);}
-span.tab.active, span.btn.active {background: rgb(211, 215, 207); color: rgb(46, 52, 54);}
-span.btn {font-size: 8pt; font-weight: bold;}
+span.note {
+  background-position: center   0px;
+}
 
-jobslot         {background-color:#999; height:11px; float:left; outline:1px solid #444;}
-jobslot.inuse   {background-color:#09D;}
-jobslot.free    {background-color:#0D0;}
+span.warning {
+  background-position: center -11px;
+}
 
-span.downtime   {background-image:url("/images/downtime.png"); background-position: center center;}
-span.down       {background-image:url("/images/dead.png");        background-position: center center;}
-span.testing    {background-color:#999; background-image:url("/images/testing.png");     background-position: center center;}
-span.maintenance{background-color:#999; background-image:url("/images/maintenance.gif"); background-position: center center;}
-span.pps        {background-color:#999; background-image:url("/images/pps.png");         background-position: center center;}
+span.critical {
+  background-position: center -22px;
+}
 
-span.cloud-bad  {background-color:#f57900;}
+span.tab, span.btn {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid rgb(46, 52, 54);
+  border-radius: 4px;
+  background-color: rgb(85, 87, 83);
+  color: rgb(238, 238, 236);
+  cursor: pointer;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+}
 
-span.twinLeft   {border-right-style: dotted; width: 12px; margin-left:  0px;}
-span.twinRight  {border-left-style: dotted;  width: 12px; margin-left: -7px;}
+span.tab:hover, span.btn:hover {
+  background: rgb(136, 138, 133);
+}
 
-span.node.float {float: left; margin: 1px;}
+span.tab.active, span.btn.active {
+  background: rgb(211, 215, 207);
+  color: rgb(46, 52, 54);
+}
 
-div.message { position: absolute; width: 100%; text-align: center; height: 228px; top: 45%; margin-top: -124px;}
-.message img {padding: 50px; background-color: #777; border-radius: 50%;} 
+span.btn {
+  font-size: 8pt;
+  font-weight: bold;
+}
 
-div.tooltip-inner { text-align: left; max-width: 300px; }
+jobslot {
+  background-color: #999;
+  height: 11px;
+  float: left;
+  outline: 1px solid #444;
+}
+
+jobslot.inuse {
+  background-color: #09D;
+}
+
+jobslot.free {
+  background-color: #0D0;
+}
+
+span.downtime {
+  background-image: url("../images/icons/downtime.png");
+  background-position: center center;
+}
+
+span.down {
+  background-image: url("../images/icons/dead.png");
+  background-position: center center;
+}
+
+span.testing {
+  background-color: #999;
+  background-image: url("../images/icons/testing.png");
+  background-position: center center;
+}
+
+span.maintenance {
+  background-color: #999;
+  background-image: url("../images/icons/maintenance.gif");
+  background-position: center center;
+}
+
+span.pps {
+  background-color: #999;
+  background-image: url("../images/icons/pps.png");
+  background-position: center center;
+}
+
+span.cloud-bad {
+  background-color: #f57900;
+}
+
+span.twinLeft {
+  border-right-style: dotted;
+  width: 12px;
+  margin-left: 0px;
+}
+
+span.twinRight {
+  border-left-style: dotted;
+  width: 12px;
+  margin-left: -7px;
+}
+
+span.node.float {
+  float: left;
+  margin: 1px;
+}
+
+div.message {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height: 228px;
+  top: 45%;
+  margin-top: -124px;
+}
+
+.message img {
+  padding: 50px;
+  background-color: #777;
+  border-radius: 50%;
+}
+
+.tooltip-inner {
+  text-align: left;
+  max-width: 300px;
+}
+
+.width-col6 {
+  width: 16% !important;
+  min-height: 150px !important;
+  /*background: #fff;*/;
+}
+
+.width-col3 {
+  width: 33% !important;
+  min-height: 150px !important;
+  /*background: #fff;*/;
+}
+
+.width-col1 {
+  width: 99% !important;
+  /*background: #fff;*/;
+}
+
+.width-small {
+  min-height: 75px !important;
+  /*background-color: red;*/;
+}
+
+
+
+
+
+span.castorProduction    {background-color: rgb(115, 210, 22);}
+span.castorReady         {background-color: rgb(201, 234, 22);}
+span.castorHolding       {background-color: rgb(46, 52, 54);}
+span.castorDeployment    {background-color: rgb(237, 212, 0);}
+span.castorReadOnly      {background-color: rgb(114, 159, 207);}
+span.castorDraining      {background-color: rgb(32, 74, 135);}
+span.castorIntervention  {background-color: rgb(193, 125, 17);}
+span.castorDecomissioned {background-color: rgb(0, 0, 0);}
