@@ -8,10 +8,10 @@ $diskpool = '';
 $num = 0;
 $allnodes = pg_query(
   "select \"machineName\" as \"short\", \"fqdn\", \"castorInstance\", \"diskPool\", \"dxtx\", \"currentStatus\" "
- ."from \"vCastorFQDN\" "
- ."where \"normalStatus\" not in ('Retired', 'Decomissioned') "
- ."order by \"castorInstance\", \"diskPool\", \"machineName\";"
-);
+  ."from \"vCastorFQDN\" "
+  ."where \"normalStatus\" not in ('Retired', 'Decomissioned') "
+  ."order by \"castorInstance\", \"diskPool\", \"machineName\";"
+  );
 if ($allnodes and pg_num_rows($allnodes)) {
   while ($r = pg_fetch_assoc($allnodes)) {
     /**
@@ -22,7 +22,7 @@ if ($allnodes and pg_num_rows($allnodes)) {
     $node  = $r['fqdn'];
     $short = $r['short'];
     $currStat = $r['currentStatus'];
-    
+
     //In this diskpool
     if ($r['diskPool'] != $diskpool) {
       if ($diskpool != '') {
@@ -60,13 +60,13 @@ if ($allnodes and pg_num_rows($allnodes)) {
     $nodeStatus = "unknown";
     $nodeNote   = "";
     $nodeInfo   = "$node";
-  
+
     $nodeNote = $nodecsf[0];
 
     $ntup = nagios_state($short, $node, $nodeStatus);
     if ($ntup) {
-        $nodeStatus = $ntup[0];
-        $nodeInfo .= '<br>'.$ntup[1];
+      $nodeStatus = $ntup[0];
+      $nodeInfo .= '<br>'.$ntup[1];
     }
     unset($ntup);
 
@@ -74,7 +74,7 @@ if ($allnodes and pg_num_rows($allnodes)) {
     if ($nodeNote != "") {
       //Tack note onto end of info string
       $nodeInfo .= ' - '.$nodeNote;
-      
+
       //We want to be case insensitive!
       $s = strtolower($nodeNote);
       $nodeStatus .= ' note';
@@ -82,7 +82,7 @@ if ($allnodes and pg_num_rows($allnodes)) {
 
     // Apply castor status
     $nodeStatus .= " castor" . $currStat;
-  
+
     # And show it
     echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
   }

@@ -8,10 +8,10 @@ $cluster = '';
 $num = 0;
 $allnodes = pg_query(
   "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\", \"rackId\", \"systemRackPos\" "
- ."from \"vBuildTemplate\" "
- ."where \"systemHostname\" not like '%.internal'"
- ."order by \"categoryName\" desc, \"systemHostname\";"
- );
+  ."from \"vBuildTemplate\" "
+  ."where \"systemHostname\" not like '%.internal'"
+  ."order by \"categoryName\" desc, \"systemHostname\";"
+  );
 
 if ($allnodes and pg_num_rows($allnodes)){
     while ($r = pg_fetch_row($allnodes)) {
@@ -27,7 +27,7 @@ if ($allnodes and pg_num_rows($allnodes)){
         //In this cluster
         if ($r[2] != $cluster) {
             if ($cluster != '') {
-            echo "        </div>\n";
+                echo "        </div>\n";
             }
             $cluster = $r[2];
             $s_cluster = str_replace("/", "", $cluster);

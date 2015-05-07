@@ -1,7 +1,6 @@
 <?php
 //Important includes
 require("header.php");
-$config = parse_ini_file("config/config.ini", true);
 
 function do_node($node) {
     $short = explode('.', $node);
@@ -37,9 +36,9 @@ function do_node($node) {
       //We want to be case insensitive!
       $s = strtolower($nodeNote);
       $nodeStatus .= ' note';
-    }
+  }
 
-    echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+  echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
 }
 
 function do_systems($systems) {
@@ -56,13 +55,13 @@ function do_systems($systems) {
 
 
 function do_domains($domains) {
-    global $config;
+    global $CONFIG;
     echo "<div class=\"cluster\" style=\"width: auto\" id=\"cl_domains\">\n";
     echo "  <p class=\"cluster\">Domains</p>\n";
     foreach ($domains as $domain) {
         echo "  <div class=\"diskpool\" id=\"dp_$domain\">\n";
         echo "    <p class=\"diskpool\">$domain</p>\n";
-        $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?domain=$domain");
+        $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?domain=$domain");
         do_systems($systems);
         echo "  </div>\n";
     }
@@ -71,7 +70,7 @@ function do_domains($domains) {
 
 
 function do_sandboxes($boxen) {
-    global $config;
+    global $CONFIG;
     $sandboxes = Array();
     $sandboxname = '';
     $realnames = Array();
@@ -109,7 +108,7 @@ function do_sandboxes($boxen) {
         foreach ($boxes as $box) {
             echo "  <div class=\"diskpool\" id=\"dp_$box\">\n";
             echo "    <p class=\"diskpool\" title=\"$user/$box\">$box</p>\n";
-            $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?sandbox=$user/$box");
+            $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?sandbox=$user/$box");
             do_systems($systems);
             echo "  </div>\n";
         }
@@ -118,11 +117,11 @@ function do_sandboxes($boxen) {
 }
 
 
-$boxen = file_get_contents($config['AQUILON']['URL'] . "sandbox/command/show_all");
+$boxen = file_get_contents($CONFIG['AQUILON']['URL'] . "sandbox/command/show_all");
 $boxen = explode("\n", $boxen);
 
 $domains = Array();
-$domain_info = file_get_contents($config['AQUILON']['URL'] . "domain?all");
+$domain_info = file_get_contents($CONFIG['AQUILON']['URL'] . "domain?all");
 $domain_info = explode("\n", $domain_info);
 foreach ($domain_info as $line) {
     $l = explode(' ', trim($line));

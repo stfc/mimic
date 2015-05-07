@@ -8,15 +8,15 @@ $cluster = '';
 $num = 0;
 $allnodes = pg_query(
   "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\" "
- ."from \"vBuildTemplate\" "
- ."where \"systemHostname\" not like '%.internal'"
- ."and (\"categoryName\" like 'wn%' or \"categoryName\" = 'vm-nubes')"
- ."and \"systemId\" > 2449"
- ."order by \"categoryName\", \"systemHostname\";"
-);
+  ."from \"vBuildTemplate\" "
+  ."where \"systemHostname\" not like '%.internal'"
+  ."and (\"categoryName\" like 'wn%' or \"categoryName\" = 'vm-nubes')"
+  ."and \"systemId\" > 2449"
+  ."order by \"categoryName\", \"systemHostname\";"
+  );
 
 if ($allnodes and pg_num_rows($allnodes)){
-    
+
     while ($r = pg_fetch_row($allnodes)) {
         /**
          * Start of main loop...
@@ -29,13 +29,13 @@ if ($allnodes and pg_num_rows($allnodes)){
         //In this cluster
         if ($r[2] != $cluster) {
             if ($cluster != '') {
-            echo "        </div>\n";
+                echo "</div>\n";
             }
             $cluster = $r[2];
             $s_cluster = str_replace("/", "", $cluster);
 
-            echo "        <div class=\"cluster\" id=\"cl_$s_cluster\">\n";
-            echo "          <p class=\"cluster\">$s_cluster</p>\n";
+            echo "<div class=\"cluster\" id=\"cl_$s_cluster\">\n";
+            echo "<p class=\"cluster\">$s_cluster</p>\n";
         }
 
         //Set defaults
@@ -60,8 +60,8 @@ if ($allnodes and pg_num_rows($allnodes)){
                     $nodeStatus = "batchdown";
                 }
 
-                $nodeInfo .= " <p><b>Status:</b> $nodeStatus</p>";
-                $nodeInfo .= " <p><b>Source:</b> $source</p>";
+                $nodeInfo .= "<p><b>Status:</b> $nodeStatus</p>";
+                $nodeInfo .= "<p><b>Source:</b> $source</p>";
             }
         }
 
@@ -77,12 +77,12 @@ if ($allnodes and pg_num_rows($allnodes)){
         unset($ntup);
 
         // And show it
-        echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"$nodeInfo\"></span>\n";
-        
+        echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"$nodeInfo\"></span>\n";
+
     }
-    
-    echo "        </div>\n";
-    echo "      </div>\n";
+
+    echo "</div>\n";
+    echo "</div>\n";
 
 }
 

@@ -1,7 +1,6 @@
 <?php
 //Important includes
 require("header.php");
-$config = parse_ini_file("config/config.ini", true);
 
 $archetype = 'ral-tier1';
 
@@ -39,28 +38,28 @@ function do_node($node) {
     if (in_array($node, $vms_bad)) {
       $nodeStatus = 'cloud-bad';
       $nodeInfo .= "<p><b>Warning:</b> VM host not in prod or personality not nubesvms, will need to be cleaned up after deletion.</p>";
-    }
+  }
 
-    $nodeNote = $nodecsf[0];
+  $nodeNote = $nodecsf[0];
 
-    $ntup = nagios_state($short, $node, $nodeStatus);
-    if ($ntup[1]) {
-        $nodeStatus = $ntup[0];
-        $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
-    }
-    unset($ntup);
+  $ntup = nagios_state($short, $node, $nodeStatus);
+  if ($ntup[1]) {
+    $nodeStatus = $ntup[0];
+    $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
+}
+unset($ntup);
 
     //Process notes
-    if ($nodeNote != "") {
+if ($nodeNote != "") {
       //Tack note onto end of info string
-      $nodeInfo .= ' - '.$nodeNote;
+  $nodeInfo .= ' - '.$nodeNote;
 
       //We want to be case insensitive!
-      $s = strtolower($nodeNote);
-      $nodeStatus .= ' note';
-    }
+  $s = strtolower($nodeNote);
+  $nodeStatus .= ' note';
+}
 
-    echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
 }
 
 function do_systems($systems) {
@@ -81,10 +80,10 @@ function do_personalities($personalities, $archetype, $dnsDomains, $sectionTitle
     foreach ($personalities as $personality) {
         $allSystems = Array();
         foreach ($dnsDomains as $dns_domain) {
-                    $queryReturn =file_get_contents("http://aquilon.gridpp.rl.ac.uk:6901/find/host?personality=$personality&archetype=$archetype&dns_domain=$dns_domain"); 
-                    if (!empty ($queryReturn)) {
-                        $allSystems[] = $queryReturn;
-                    }
+            $queryReturn =file_get_contents("http://aquilon.gridpp.rl.ac.uk:6901/find/host?personality=$personality&archetype=$archetype&dns_domain=$dns_domain");
+            if (!empty ($queryReturn)) {
+                $allSystems[] = $queryReturn;
+            }
         }
         if (!empty($allSystems)) {
             echo "  <div style=\"top: 0;\" class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";

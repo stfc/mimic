@@ -1,7 +1,6 @@
 <?php
 //Important includes
 require("header.php");
-$config = parse_ini_file("config/config.ini", true);
 
 function do_node($node) {
     $short = explode('.', $node);
@@ -56,14 +55,14 @@ function do_systems($systems) {
 
 
 function do_personalities($archetypes) {
-    global $config;
-    foreach ($archetypes as $archetype => $personalities) 
+    global $CONFIG;
+    foreach ($archetypes as $archetype => $personalities)
     {
         echo "  <div style='float: none; clear: both; position: relative; top: 60px;'><p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);'>$archetype</p>\n";
         foreach ($personalities as $personality) {
             echo "  <div style=\"top: 0;\" class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
             echo "      <p class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</p>\n";
-            $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
+            $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
             do_systems($systems);
             echo "  </div>\n";
         }
@@ -73,7 +72,7 @@ function do_personalities($archetypes) {
 
 
 $personalities = Array();
-$personality_info = file_get_contents($config['AQUILON']['URL'] . "personality?all");
+$personality_info = file_get_contents($CONFIG['AQUILON']['URL'] . "personality?all");
 $personality_info = explode("\n", $personality_info);
 foreach ($personality_info as $line) {
     $l = explode(' ', trim($line));

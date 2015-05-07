@@ -1,6 +1,6 @@
 <?php
 //Important includes
-require("header.php");;
+require("header.php");
 
 //Go find all our nodes
 $instance = '';
@@ -8,9 +8,9 @@ $hardwareGroup = '';
 $num = 0;
 $allnodes = pg_query(
   "select \"fqdn\" as \"name\", \"machineName\" as \"short\", \"currentStatus\", \"hardwareGroup\", \"castorInstance\" "
- ."from \"vCastorFQDN\" "
- ."order by \"hardwareGroup\", \"machineName\";"
-);
+  ."from \"vCastorFQDN\" "
+  ."order by \"hardwareGroup\", \"machineName\";"
+  );
 if ($allnodes and pg_num_rows($allnodes)) {
   while ($r = pg_fetch_row($allnodes)) {
     /**
@@ -24,8 +24,8 @@ if ($allnodes and pg_num_rows($allnodes)) {
     $instance = $r[2];
     $currStat = $r[2];
 
-  $preprod = ($r[4] == "Preprod");
-    
+    $preprod = ($r[4] == "Preprod");
+
     //In this diskpool
     if ($r[3] != $hardwareGroup) {
       if ($hardwareGroup != '') {
@@ -54,7 +54,7 @@ if ($allnodes and pg_num_rows($allnodes)) {
     $nodeStatus = "unknown";
     $nodeNote   = "";
     $nodeInfo   = "";
-  
+
     $nodeNote = $nodecsf[0];
 
     $nodeInfo = "<h4>$node</h4>";
@@ -62,8 +62,8 @@ if ($allnodes and pg_num_rows($allnodes)) {
 
     $ntup = nagios_state($short, $node, $nodeStatus);
     if ($ntup[1]) {
-        $nodeStatus = $ntup[0];
-        $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
+      $nodeStatus = $ntup[0];
+      $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
     }
     unset($ntup);
 
@@ -71,20 +71,20 @@ if ($allnodes and pg_num_rows($allnodes)) {
     if (strlen($nodeNote) > 0) {
       //Tack note onto end of info string
       $nodeInfo .= ' - '.$nodeNote;
-      
+
       //We want to be case insensitive!
       $s = strtolower($nodeNote);
-      
+
       $nodeStatus .= ' note';
     }
 
     // Apply castor status
     $nodeStatus .= " castor" . $currStat;
 
-  if ($preprod) {
+    if ($preprod) {
       $nodeStatus .= " castorPreprod";
-  }
-  
+    }
+
     # And show it
     echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
   }
