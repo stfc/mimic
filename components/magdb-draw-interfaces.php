@@ -34,8 +34,8 @@ $graph_text .= "node [shape=\"box\" fontsize=8 fontname=\"sans-serif\" height=0 
 $graph_text .= "edge [dir=none];\n";
 
 if ($system) {
-  $interfaces = pg_fetch_all(pg_query('select "name", "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = '.$system.' order by "name" desc'));
-  $records = pg_fetch_all(pg_query('select "macAddress", "ipAddress", "fqdn", "alias" from "vNetwork3" where "systemId" = '.$system));
+  $interfaces = pg_fetch_all(pg_query_params('select name, "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = $1 order by name desc', Array($system)));
+  $records = pg_fetch_all(pg_query_params('select "macAddress", "ipAddress", "fqdn", "alias" from "vNetwork3" where "systemId" = $1', Array($system)));
   // Last Seen
   $ls = pg_fetch_all(pg_query('select "ipAddress", EXTRACT(EPOCH FROM now() - "lastSeen") as "lastSeen", date_trunc(\'day\', "lastSeen") = date_trunc(\'day\', now()) as "today" from "ipSurvey"'));
   $lastseen = Array();
