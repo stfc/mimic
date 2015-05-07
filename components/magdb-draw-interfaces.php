@@ -74,6 +74,39 @@ if ($system) {
       }
       $v = ouilookup($i["macAddress"]);
       $graph_text .= sprintf('"%s" [label="%s\n%s\n%s"%s];'."\n", $i["macAddress"], $i["name"], $i["macAddress"], $v, $style);
+
+      $links = pg_fetch_all(pg_query_params('select "localMac", "localPort", "remoteMac", "remotePort", "remoteHost", "lastUpdateDate" from "networkLinks" where "localMac" = $1;', Array($i["macAddress"])));
+      if ($links) {
+        foreach ($links as $l) {
+          $graph_text .= 'subgraph "cluster_'.$l['remoteMac'].'"{'."\n";
+          $graph_text .= '  color="none"'."\n";
+          $lastUpdateDate = explode(" ", $l["lastUpdateDate"]);
+          $lastUpdateDate = $lastUpdateDate[0];
+          if ($l["localPort"] != "") {
+            $graph_text .= sprintf('"%s" [tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["localPort"], $v);
+            $graph_text .= sprintf('"%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l["localPort"], $l["localMac"]);
+          }
+          else {
+            $graph_text .= '"'.$l["remoteMac"].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
+          }
+          $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'" [color="#8f5902"];'."\n";
+          $graph_text .= '}'."\n";
+          $v = ouilookup($l["remoteMac"]);
+          $graph_text .= sprintf('"%s" [label="%s\n%s\n%s" tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["remoteMac"], $l["remotePort"], $l["remoteMac"], $v);
+          $graph_text .= sprintf(
+            '"%s" [label="%s\nObserved %s" color="#8f5902" tooltip="LLDP Information" fillcolor="#e9b96e" URL="/node.php?n=%s" target="_parent"];'."\n",
+            $l["remoteHost"], $l["remoteHost"], $lastUpdateDate, $l['remoteHost']
+          );
+        }
+      }
+      else {
+        $us = 'UnknownSwitchFor'.$i["macAddress"];
+        $up = 'UnknownPortFor'.$i["macAddress"];
+        $graph_text .= '"'.$us.'" [label="Unknown Switch" style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$up.'" [label="Unknown Port" style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$us.'" -> "'.$up.'" [style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$up.'" -> "'.$i["macAddress"].'" [style="dashed" color="#888a85"];'."\n";
+      }
     }
     foreach ($records as $r) {
       $graph_text .= '"'.$r["macAddress"].'" -> "'.$r["ipAddress"].'";'."\n";
