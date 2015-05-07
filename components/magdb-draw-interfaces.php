@@ -1,8 +1,9 @@
 <?php
-
-require_once("db-magdb-open.inc.php");
-require_once("ouilookup.inc.php");
-require_once("functions.inc.php");
+$path = '/var/www/html/';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+require_once("inc/db-magdb-open.inc.php");
+require_once("inc/ouilookup.inc.php");
+require_once("inc/functions.inc.php");
 
 $system = "793";
 
@@ -17,7 +18,7 @@ $DNS_CACHE_FILE = "../cache/dns-aliases.json";
 $dns = array();
 
 if (file_exists($DNS_CACHE_FILE)) {
-  $dns = file_get_content($DNS_CACHE_FILE);
+  $dns = file_get_contents($DNS_CACHE_FILE);
   $dns = str_replace("'", '"', $dns);
   $dns = json_decode($dns, True);
 }
@@ -29,12 +30,14 @@ $graph_text .= "dpi=72;\n";
 $graph_text .= "overlap=none;\n";
 $graph_text .= "rankdir=\"LR\";\n";
 $graph_text .= "concentrate=true;\n";
-$graph_text .= "node [shape=\"box\" fontsize=8 fontname=sans height=0 style=filled fillcolor=white];\n";
+$graph_text .= "node [shape=\"box\" fontsize=8 fontname=\"sans-serif\" height=0 style=filled fillcolor=white width=1.6];\n";
 $graph_text .= "edge [dir=none];\n";
 
 if ($system) {
-  $interfaces = pg_fetch_all(pg_query('select "name", "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = '.$system.' order by "name" desc'));
-  $records = pg_fetch_all(pg_query('select "macAddress", "ipAddress", "fqdn", "alias" from "vNetwork3" where "systemId" = '.$system));
+  $interfaces = pg_fetch_all(pg_query_params('select name, "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = $1 order by name desc', Array($system)));
+  $records = pg_fetch_all(pg_query_params('select "macAddress", "ipAddress", "fqdn", "alias" from "vNetwork3" where "systemId" = $1', Array($system)));
+  $bonds = pg_fetch_all(pg_query_params('select "bondName", "macAddress", "lastUpdateDate" from "networkInterfaceBonds" where "systemId" = $1', Array($system)));
+  $bond_details = pg_fetch_all(pg_query_params('select "bondName", "bondMode" from "networkInterfaceBondDetails" where "systemId" = $1', Array($system)));
   // Last Seen
   $ls = pg_fetch_all(pg_query('select "ipAddress", EXTRACT(EPOCH FROM now() - "lastSeen") as "lastSeen", date_trunc(\'day\', "lastSeen") = date_trunc(\'day\', now()) as "today" from "ipSurvey"'));
   $lastseen = Array();
@@ -46,6 +49,24 @@ if ($system) {
 
   if ($interfaces or $records) {
     $count_ip = 0;
+    if ($bonds) {
+      foreach($bonds as $b) {
+        $graph_text .= 'subgraph "cluster_'.$b["bondName"].'" {'."\n";
+        $graph_text .= '    "'.$b["macAddress"].'"'."\n";
+        $graph_text .= '    style="filled"'."\n";
+        $graph_text .= '    color="#75507b"'."\n";
+        $graph_text .= '    fillcolor="#ad7fa8"'."\n";
+        $graph_text .= '    label="'.$b["bondName"].'"'."\n";
+        $graph_text .= '}'."\n";
+      }
+    }
+    if ($bond_details) {
+      foreach($bond_details as $b) {
+        $graph_text .= 'subgraph "cluster_'.$b["bondName"].'" {'."\n";
+        $graph_text .= '    label="'.$b["bondName"].'\n'.$b["bondMode"]."\n";
+        $graph_text .= '}'."\n";
+      }
+    }
     foreach ($interfaces as $i) {
       $style = "";
       if ($i["isBootInterface"] == "t") {
@@ -53,13 +74,51 @@ if ($system) {
       }
       $v = ouilookup($i["macAddress"]);
       $graph_text .= sprintf('"%s" [label="%s\n%s\n%s"%s];'."\n", $i["macAddress"], $i["name"], $i["macAddress"], $v, $style);
+
+      $links = pg_fetch_all(pg_query_params('select "localMac", "localPort", "remoteMac", "remotePort", "remoteHost", "lastUpdateDate" from "networkLinks" where "localMac" = $1;', Array($i["macAddress"])));
+      if ($links) {
+        foreach ($links as $l) {
+          $graph_text .= 'subgraph "cluster_'.$l['remoteMac'].'"{'."\n";
+          $graph_text .= '  color="none"'."\n";
+          $lastUpdateDate = explode(" ", $l["lastUpdateDate"]);
+          $lastUpdateDate = $lastUpdateDate[0];
+          if ($l["localPort"] != "") {
+            $graph_text .= sprintf('"%s" [tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["localPort"], $v);
+            $graph_text .= sprintf('"%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l["localPort"], $l["localMac"]);
+          }
+          else {
+            $graph_text .= '"'.$l["remoteMac"].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
+          }
+          $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'" [color="#8f5902"];'."\n";
+          $graph_text .= '}'."\n";
+          $v = ouilookup($l["remoteMac"]);
+          $graph_text .= sprintf('"%s" [label="%s\n%s\n%s" tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["remoteMac"], $l["remotePort"], $l["remoteMac"], $v);
+          $graph_text .= sprintf(
+            '"%s" [label="%s\nObserved %s" color="#8f5902" tooltip="LLDP Information" fillcolor="#e9b96e" URL="/node.php?n=%s" target="_parent"];'."\n",
+            $l["remoteHost"], $l["remoteHost"], $lastUpdateDate, $l['remoteHost']
+          );
+        }
+      }
+      else {
+        $us = 'UnknownSwitchFor'.$i["macAddress"];
+        $up = 'UnknownPortFor'.$i["macAddress"];
+        $graph_text .= '"'.$us.'" [label="Unknown Switch" style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$up.'" [label="Unknown Port" style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$us.'" -> "'.$up.'" [style="dashed" color="#888a85"];'."\n";
+        $graph_text .= '"'.$up.'" -> "'.$i["macAddress"].'" [style="dashed" color="#888a85"];'."\n";
+      }
     }
     foreach ($records as $r) {
       $graph_text .= '"'.$r["macAddress"].'" -> "'.$r["ipAddress"].'";'."\n";
       $seen = "Never Seen";
       $count_ip += 1;
       if (isset($lastseen[$r["ipAddress"]])) {
-        $seen = 'Last Seen '.prettytime($lastseen[$r["ipAddress"]]);
+        $seen = $lastseen[$r["ipAddress"]];
+        if ($seen <= 86400) {
+          $seen = "Last Seen Today";
+        } else {
+          $seen = 'Last Seen '.prettytime($seen);
+        }
       }
       $graph_text .= '"'.$r["ipAddress"].'" [label="'.$r["ipAddress"].'\n '.$seen.'" URL="http://'.$r["ipAddress"].'" target="_parent"];'."\n";
       if ($r["fqdn"]) {
@@ -72,32 +131,15 @@ if ($system) {
           }
         }
       }
-// 2012-02-08  Removed Aliases Code as DB always out of data compared to DNS ~ JRHA
-/*      if ($r["alias"]) {
-        $graph_text .= '"'.$r["fqdn"].'" -> "'.$r["alias"].'";'."\n";
-        if (isset($dns[$r["alias"]])) {
-          $a = $dns[$r["alias"]];
-          $graph_text .= '"'.$a[0].'" -> "'.$r["fqdn"].'";'."\n";
-        }
-      }*/
     }
   } else {
     $graph_text .= "\"No Interfaces Found\";\n";
   }
-
-/*  if ($aliases) {
-    foreach ($aliases as $r) {
-      $graph_text .= "\"".$r["src"]."\" -> \"".$r["tgt"]."\";\n";
-    }
-  }*/
 } else {
   $graph_text .= "\"No System Specified\";\n";
 }
 
 $graph_text .= "}\n";
-
-//print($graph_text);
-//die();
 
 $descriptorspec = array(
    0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
@@ -105,19 +147,13 @@ $descriptorspec = array(
    2 => array("file", "/dev/null", "a") // stderr is a file to write to
 );
 
-$cwd = '/tmp';
-$env = array('some_option' => 'aeiou');
-
-//echo $graph_text;
-//die();
-
 $cmd = ' /usr/bin/dot -Tsvg';
 
 if ($count_ip > 4) {
   $cmd = "unflatten -l 5 -f | $cmd";
 }
 
-$process = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
+$process = proc_open($cmd, $descriptorspec, $pipes, '/tmp');
 
 if (is_resource($process)) {
     fwrite($pipes[0], $graph_text);
