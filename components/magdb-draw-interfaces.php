@@ -1,5 +1,4 @@
 <?php
-
 $path = '/var/www/html/';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once("inc/db-magdb-open.inc.php");
@@ -31,7 +30,7 @@ $graph_text .= "dpi=72;\n";
 $graph_text .= "overlap=none;\n";
 $graph_text .= "rankdir=\"LR\";\n";
 $graph_text .= "concentrate=true;\n";
-$graph_text .= "node [shape=\"box\" fontsize=8 fontname=sans height=0 style=filled fillcolor=white];\n";
+$graph_text .= "node [shape=\"box\" fontsize=8 fontname=\"sans-serif\" height=0 style=filled fillcolor=white width=1.6];\n";
 $graph_text .= "edge [dir=none];\n";
 
 if ($system) {
