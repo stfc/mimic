@@ -107,9 +107,6 @@ $descriptorspec = array(
    2 => array("file", "/dev/null", "a") // stderr is a file to write to
 );
 
-$cwd = '/tmp';
-$env = array('some_option' => 'aeiou');
-
 //echo $graph_text;
 //die();
 
@@ -119,7 +116,7 @@ if ($count_ip > 4) {
   $cmd = "unflatten -l 5 -f | $cmd";
 }
 
-$process = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
+$process = proc_open($cmd, $descriptorspec, $pipes, '/tmp');
 
 if (is_resource($process)) {
     fwrite($pipes[0], $graph_text);
