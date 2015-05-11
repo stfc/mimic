@@ -1,9 +1,9 @@
 <?php
   header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-  header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT'); 
-  ?>
-  <!DOCTYPE html>
-  <?php
+  header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+?>
+<!DOCTYPE html>
+<?php
 
 # Some variables to get us started...
 $NODES = array (); # For names from csf_monitor
@@ -70,7 +70,7 @@ else
         $("#farm").html(msg_loading);
         update();
       });
-      // Shows and hides key 
+      // Shows and hides key
       $("#btnkey").click(function(e) {
         $(this).toggleClass("active");
         $("#key").slideToggle();
@@ -79,8 +79,8 @@ else
   </div>
   <!-- Needs to change per view -->
   <div id="key">
-    <ul class="key">
-      
+    <ul class="key-dropdown">
+
       <li><span class="node unknown note">&nbsp;</span>Note</li>
       <li><span class="node downtime">&nbsp;</span>Downtime</li>
       <li><span class="node unknown warning">&nbsp;</span>Warning</li>

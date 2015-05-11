@@ -1,13 +1,12 @@
 <?php
-//Important includes
-require("header.php");
+require("header.php"); // Important includes
 
 $SHARD_STATES = Array(
     'STARTED' => 'free',
     'RELOCATING' => 'full',
     'INITIALIZING' => 'offline',
     'UNASSIGNED' => 'batchdown',
-    );
+);
 
 function bool2str($v) {
   // PHP is pretty bad at representing booleans in a human readable way so we'll do it ourselves
@@ -58,13 +57,13 @@ echo "<!--\n";
 print_r($host_shards);
 echo "-->\n";
 
-echo "<div style='float: none; clear: both; position: relative; top: 60px;'>\n";
-echo "<p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</p>\n";
+echo "<div class='cluster-container'>\n";
+echo "<h2 class='cluster' style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
 foreach ($nodes as $node_id => $node) {
     if (!$node['attributes']['client']) {
         $node_name = $node['name'];
         echo "<div class=\"cluster\">\n";
-        echo "<p class=\"cluster\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</p>\n";
+        echo "<h5 class=\"cluster\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
         foreach ($host_shards[$node_id] as $shard) {
             $shard_class = $SHARD_STATES[$shard['state']];
             if (! $shard['primary']) {
@@ -92,4 +91,3 @@ foreach ($nodes as $node_id => $node) {
 echo "</div>\n";
 
 ?>
-</div>

@@ -1,30 +1,26 @@
 <?php
-//Important includes
-require("header.php");
+require("header.php"); // Important includes
 
-//Go find all our nodes
+// Go find all our nodes
 $instance = '';
 $cluster = '';
 $num = 0;
 $allnodes = pg_query(
-  "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\", \"rackId\", \"systemRackPos\" "
-  ."from \"vBuildTemplate\" "
-  ."where \"systemHostname\" not like '%.internal'"
-  ."order by \"categoryName\" desc, \"systemHostname\";"
-  );
+    "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\", \"rackId\", \"systemRackPos\" "
+    ."from \"vBuildTemplate\" "
+    ."where \"systemHostname\" not like '%.internal'"
+    ."order by \"categoryName\" desc, \"systemHostname\";"
+);
 
 if ($allnodes and pg_num_rows($allnodes)){
     while ($r = pg_fetch_row($allnodes)) {
-        /**
-         * Start of main loop...
-         */
-
-        //We're looking at this node
-        $node  = $r[0];
+        /* Start of main loop... */
+        // We're looking at this node
+        $node = $r[0];
         $short = explode(".", $node);
         $short = $short[0];
 
-        //In this cluster
+        // In this cluster
         if ($r[2] != $cluster) {
             if ($cluster != '') {
                 echo "        </div>\n";
@@ -32,15 +28,14 @@ if ($allnodes and pg_num_rows($allnodes)){
             $cluster = $r[2];
             $s_cluster = str_replace("/", "", $cluster);
 
-            echo "        <div class=\"cluster\" id=\"cl_$s_cluster\">\n";
-            echo "          <p class=\"cluster\">$s_cluster</p>\n";
+            echo "<div class=\"cluster\" id=\"cl_$s_cluster\">\n";
+            echo "<h5 class=\"cluster\">$s_cluster</h5>\n";
         }
 
-        //Set defaults
+        // Set defaults
         $nodeInfo = "";
         $nodeStatus = "unknown";
         $nodeNote = "";
-
 
         // Batch & Notes
         $mynode = mysql_query("select state, note from state LEFT JOIN notes on (notes.name=state.name) where state.name='$node';");
@@ -58,7 +53,6 @@ if ($allnodes and pg_num_rows($allnodes)){
             $nodeStatus = "batchdown";
         }
 
-
         $nodeInfo = "<h4>$node</h4> ($nodeStatus - Torque)";
 
         // Add note flag
@@ -74,18 +68,10 @@ if ($allnodes and pg_num_rows($allnodes)){
         unset($ntup);
 
         // And show it
-        echo '          <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+        echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
     }
-    echo "        </div>\n";
-    echo "      </div>\n";
+    echo "</div>\n";
+    echo "</div>\n";
 }
 
 ?>
-<script type="text/javascript">
-    $('#key-view ul').html('');
-    $("#key-view ul").append('<li><span class="node free" title="Free (In the batch system, not running any jobs)">&nbsp;</span>Free</li>');
-    $("#key-view ul").append('<li><span class="node inuse" title="In Use (In the batch system, running jobs but not full)">&nbsp;</span>In Use</li>');
-    $("#key-view ul").append('<li><span class="node full" title="Full (In the batch system, running jobs and full)">&nbsp;</span>Full</li>');
-    $("#key-view ul").append('<li><span class="node offline" title="Offline (In the batch system, not open to new jobs)">&nbsp;</span>Offline</li>');
-    $("#key-view ul").append('<li><span class="node batchdown" title="Down In the batch system (Cannot be reached by scheduler)">&nbsp;</span>Client Down</li>');
-</script>

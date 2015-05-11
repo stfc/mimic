@@ -1,12 +1,10 @@
 <?php
-//Important includes
-require("header.php");
+require("header.php"); // Important includes
 
 function do_node($node) {
     $short = explode('.', $node);
     $short = $short[0];
-
-    $mynode  = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
+    $mynode = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
     if ($mynode and mysql_num_rows($mynode)) {
         $nodecsf = mysql_fetch_row($mynode);
     }
@@ -14,11 +12,10 @@ function do_node($node) {
         $nodecsf = null;
     }
 
-    //Set defaults
+    // Set defaults
     $nodeStatus = "unknown";
-    $nodeNote   = "";
-    $nodeInfo   = "<h4>$node</h4>";
-
+    $nodeNote = "";
+    $nodeInfo = "<h4>$node</h4>";
     $nodeNote = $nodecsf[0];
 
     $ntup = nagios_state($short, $node, $nodeStatus);
@@ -28,17 +25,17 @@ function do_node($node) {
     }
     unset($ntup);
 
-    //Process notes
+    // Process notes
     if ($nodeNote != "") {
-      //Tack note onto end of info string
+
+      // Tack note onto end of info string
       $nodeInfo .= ' - '.$nodeNote;
 
-      //We want to be case insensitive!
+      // We want to be case insensitive!
       $s = strtolower($nodeNote);
       $nodeStatus .= ' note';
-  }
-
-  echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+    }
+    echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
 }
 
 function do_systems($systems) {
@@ -49,18 +46,20 @@ function do_systems($systems) {
         }
     }
     else {
-        echo "      <span title='No managed systems'>&nbsp;&#x2205;</span>";
+        echo "<span title='No managed systems'>&nbsp;&#x2205;</span>";
     }
 }
 
 
 function do_domains($domains) {
+
     global $CONFIG;
+
     echo "<div class=\"cluster\" style=\"width: auto\" id=\"cl_domains\">\n";
-    echo "  <p class=\"cluster\">Domains</p>\n";
+    echo "  <h4 class=\"cluster\">Domains</h4>\n";
     foreach ($domains as $domain) {
         echo "  <div class=\"diskpool\" id=\"dp_$domain\">\n";
-        echo "    <p class=\"diskpool\">$domain</p>\n";
+        echo "    <h4 class=\"diskpool\">$domain</h4>\n";
         $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?domain=$domain");
         do_systems($systems);
         echo "  </div>\n";
@@ -70,7 +69,9 @@ function do_domains($domains) {
 
 
 function do_sandboxes($boxen) {
+
     global $CONFIG;
+
     $sandboxes = Array();
     $sandboxname = '';
     $realnames = Array();
@@ -104,10 +105,10 @@ function do_sandboxes($boxen) {
 
     foreach ($sandboxes as $user => $boxes) {
         echo "<div class=\"cluster\" id=\"cl_$user\">\n";
-        echo "  <p class=\"cluster\" title=\"$user\">{$realnames[$user]}</p>\n";
+        echo "  <h4 class=\"cluster\" title=\"$user\">{$realnames[$user]}</h4>\n";
         foreach ($boxes as $box) {
             echo "  <div class=\"diskpool\" id=\"dp_$box\">\n";
-            echo "    <p class=\"diskpool\" title=\"$user/$box\">$box</p>\n";
+            echo "    <h5 class=\"diskpool\" title=\"$user/$box\">$box</h5>\n";
             $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?sandbox=$user/$box");
             do_systems($systems);
             echo "  </div>\n";
@@ -123,6 +124,7 @@ $boxen = explode("\n", $boxen);
 $domains = Array();
 $domain_info = file_get_contents($CONFIG['AQUILON']['URL'] . "domain?all");
 $domain_info = explode("\n", $domain_info);
+
 foreach ($domain_info as $line) {
     $l = explode(' ', trim($line));
     if ($l[0] == 'Domain:') {

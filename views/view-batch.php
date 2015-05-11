@@ -1,19 +1,18 @@
 <?php
-//Important includes
-require("header.php");
+require("header.php"); // Important includes
 
-//Go find all our nodes
+// Go find all our nodes
 $instance = '';
 $cluster = '';
 $num = 0;
 $allnodes = pg_query(
-  "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\" "
-  ."from \"vBuildTemplate\" "
-  ."where \"systemHostname\" not like '%.internal'"
-  ."and (\"categoryName\" like 'wn%' or \"categoryName\" = 'vm-nubes')"
-  ."and \"systemId\" > 2449"
-  ."order by \"categoryName\", \"systemHostname\";"
-  );
+    "select \"systemHostname\" as \"name\", \"systemHostname\" as \"short\", \"categoryName\" "
+    ."from \"vBuildTemplate\" "
+    ."where \"systemHostname\" not like '%.internal'"
+    ."and (\"categoryName\" like 'wn%' or \"categoryName\" = 'vm-nubes')"
+    ."and \"systemId\" > 2449"
+    ."order by \"categoryName\", \"systemHostname\";"
+);
 
 if ($allnodes and pg_num_rows($allnodes)){
 
@@ -21,12 +20,12 @@ if ($allnodes and pg_num_rows($allnodes)){
         /**
          * Start of main loop...
          */
-        //We're looking at this node
-        $node  = $r[0];
+        // We're looking at this node
+        $node = $r[0];
         $short = explode(".", $node);
         $short = $short[0];
 
-        //In this cluster
+        // In this cluster
         if ($r[2] != $cluster) {
             if ($cluster != '') {
                 echo "</div>\n";
@@ -35,10 +34,10 @@ if ($allnodes and pg_num_rows($allnodes)){
             $s_cluster = str_replace("/", "", $cluster);
 
             echo "<div class=\"cluster\" id=\"cl_$s_cluster\">\n";
-            echo "<p class=\"cluster\">$s_cluster</p>\n";
+            echo "<h5 class=\"cluster\">$s_cluster</h5>\n";
         }
 
-        //Set defaults
+        // Set defaults
         $nodeInfo = "<h4>$node</h4>";
         $nodeStatus = "unknown";
         $nodeNote = "";
@@ -78,12 +77,9 @@ if ($allnodes and pg_num_rows($allnodes)){
 
         // And show it
         echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"$nodeInfo\"></span>\n";
-
     }
-
     echo "</div>\n";
     echo "</div>\n";
-
 }
 
 ?>
