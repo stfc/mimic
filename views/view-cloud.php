@@ -4,9 +4,9 @@ require("header.php"); // Important includes
 $archetype = 'ral-tier1';
 
 // Generate list of VMs that are in a resting state (i.e. correct personality and in prod)
-$vms_all = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=nubes.stfc.ac.uk");
+$vms_all = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=" . $CONFIG['NUBES']['URL']);
 $vms_all = explode("\n", $vms_all);
-$vms_good = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=nubes.stfc.ac.uk&personality=nubesvms&domain=prod");
+$vms_good = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=" . $CONFIG['NUBES']['URL'] . "&personality=nubesvms&domain=prod");
 $vms_good = explode("\n", $vms_good);
 $vms_bad = array_diff($vms_all, $vms_good);
 unset($vms_all);
