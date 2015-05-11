@@ -48,12 +48,12 @@ ul.state-jobs li {
 
 
 span.package:before {
-  content: url("/images/icons/mimetypes/package-x-generic.png");
+  content: url("../images/icons/package-x-generic.png");
   margin-right: 8px;
 }
 
 span.kernel:before {
-  content: url("/images/icons/categories/applications-system.png");
+  content: url("../images/icons/applications-system.png");
   margin-right: 8px;
 }
 
@@ -105,7 +105,7 @@ SPAN.time {
   text-align: center;
   vertical-align: middle;
   border: 1px solid #555;
-} 
+}
 .crit {
   color: #FFF;
   background: #F00;
@@ -140,19 +140,19 @@ p {
   font-size: 8pt;
 }
 p.info:before {
-  content: url("/images/icons/status/dialog-information.png");
+  content: url("../images/icons/dialog-information.png");
   margin-right: 8px;
 }
 p.warning:before {
-  content: url("/images/icons/status/dialog-warning.png");
+  content: url("../images/icons/dialog-warning.png");
   margin-right: 8px;
 }
 p.error:before {
-  content: url("/images/icons/status/dialog-error.png");
+  content: url("../images/icons/dialog-error.png");
   margin-right: 8px;
 }
 p.loading:before, span.loading:before {
-  content: url("/images/icons/actions/view-refresh.png");
+  content: url("../images/icons/view-refresh.png");
   margin-right: 8px;
 }
 p.info, p.warning, p.error, p.loading {
@@ -193,11 +193,11 @@ a.delete {
   text-decoration: none;
 }
 a.delete:before {
-  content:url("/images/icons/actions/edit-delete.png");
+  content:url("../images/icons/edit-delete.png");
   padding-right: 0.5em;
 }
 a.edit:before {
-  content:url("/images/icons/actions/edit.png");
+  content:url("../images/icons/edit.png");
   padding-left: 0.5em;
   padding-right: 0.5em;
   cursor: pointer;

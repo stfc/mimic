@@ -1,13 +1,10 @@
 <?php
-//Important includes
-require("header.php");
-$config = parse_ini_file("config/config.ini", true);
+require("header.php"); // Important includes
 
 function do_node($node) {
     $short = explode('.', $node);
     $short = $short[0];
-
-    $mynode  = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
+    $mynode = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
     if ($mynode and mysql_num_rows($mynode)) {
         $nodecsf = mysql_fetch_row($mynode);
     }
@@ -15,11 +12,10 @@ function do_node($node) {
         $nodecsf = null;
     }
 
-    //Set defaults
+    // Set defaults
     $nodeStatus = "unknown";
-    $nodeNote   = "";
-    $nodeInfo   = "<h4>$node</h4>";
-
+    $nodeNote = "";
+    $nodeInfo = "<h4>$node</h4>";
     $nodeNote = $nodecsf[0];
 
     $ntup = nagios_state($short, $node, $nodeStatus);
@@ -29,17 +25,17 @@ function do_node($node) {
     }
     unset($ntup);
 
-    //Process notes
+    // Process notes
     if ($nodeNote != "") {
-      //Tack note onto end of info string
+
+      // Tack note onto end of info string
       $nodeInfo .= ' - '.$nodeNote;
 
-      //We want to be case insensitive!
+      // We want to be case insensitive!
       $s = strtolower($nodeNote);
       $nodeStatus .= ' note';
-  }
-
-  echo '      <span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+    }
+    echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
 }
 
 function do_systems($systems) {
@@ -50,30 +46,30 @@ function do_systems($systems) {
         }
     }
     else {
-        echo "      <span title='No managed systems'>&nbsp;&#x2205;</span>";
+        echo "<span title='No managed systems'>&nbsp;&#x2205;</span>";
     }
 }
 
 
 function do_personalities($archetypes) {
-    global $config;
-    foreach ($archetypes as $archetype => $personalities) 
-    {
-        echo "  <div style='float: none; clear: both; position: relative; top: 60px;'><p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);'>$archetype</p>\n";
+
+    global $CONFIG;
+
+    foreach ($archetypes as $archetype => $personalities) {
+        echo "<div class='cluster-container'><h2>$archetype</h2>\n";
         foreach ($personalities as $personality) {
-            echo "  <div style=\"top: 0;\" class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
-            echo "      <p class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</p>\n";
-            $systems = file_get_contents($config['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
+            echo "<div class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
+            echo "<h5 class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</h5>\n";
+            $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
             do_systems($systems);
-            echo "  </div>\n";
+            echo "</div>\n";
         }
-        echo "  </div>\n";
+        echo "</div>\n";
     }
 }
 
-
 $personalities = Array();
-$personality_info = file_get_contents($config['AQUILON']['URL'] . "personality?all");
+$personality_info = file_get_contents($CONFIG['AQUILON']['URL'] . "personality?all");
 $personality_info = explode("\n", $personality_info);
 foreach ($personality_info as $line) {
     $l = explode(' ', trim($line));
@@ -81,9 +77,5 @@ foreach ($personality_info as $line) {
         $personalities[$l[4]][] = $l[2];
     }
 }
-
-
-
 do_personalities($personalities);
-
 ?>

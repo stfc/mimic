@@ -22,12 +22,12 @@ include('node/node-getName.inc.php');
   <script type="text/javascript" src="components/jquery-1.8.0.min.js"></script>
   <script type="text/javascript" src="components/jquery.cookie.js"></script>
   <script type="text/javascript" src="components/cookiecuttr/jquery.cookiecuttr.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.core.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.position.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.widget.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.dialog.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.effects.core.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.effects.blind.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.ui.core.min.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.ui.position.min.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.ui.widget.min.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.ui.dialog.min.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.effects.core.min.js"></script>
+  <script type="text/javascript" src="components/ui/jquery.effects.blind.min.js"></script>
   <script type="text/javascript" src="js/plugins.js"></script>
 </head>
 <body>

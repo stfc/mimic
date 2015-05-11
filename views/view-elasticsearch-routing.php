@@ -1,7 +1,5 @@
 <?php
-$path = '/var/www/html/';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path); // Fixes PHP's silly path handling with includes
-$config = parse_ini_file("config/config.ini", true);
+require("header.php"); // Important includes
 
 $SHARD_STATES = Array(
     'STARTED' => 'free',
@@ -20,27 +18,27 @@ function bool2str($v) {
   return($v);
 }
 
-$nodes = file_get_contents($config['ES']['URL'] . "_cluster/state/nodes");
+$nodes = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
 
-$health = file_get_contents($config['ES']['URL'] . "_cluster/health/?level=shards");
+$health = file_get_contents($CONFIG['ES']['URL'] . "_cluster/health/?level=shards");
 $health = json_decode($health, true);
 $health = $health;
 
-$cluster = file_get_contents($config['ES']['URL'] . "_cluster/state/routing_table");
+$cluster = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/routing_table");
 $cluster = json_decode($cluster, true);
 
 $indices = $cluster['routing_table']['indices'];
 $index_names = array_keys($cluster['routing_table']['indices']);
 sort($index_names);
 
-echo "<div style='float: none; clear: both; position: relative; top: 60px;'>\n";
-echo "<p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</p>\n";
+echo "<div class='cluster-container'>\n";
+echo "<h2 style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
 foreach ($index_names as $index_name) {
     $index_data = $indices[$index_name];
     echo "<div class=\"cluster\">\n";
-    echo "<p class=\"cluster\" style=\"text-shadow: 1px 1px 4px {$health['indices'][$index_name]['status']};\" title=\"Index: $index_name\">$index_name</p>\n";
+    echo "<h5 class=\"cluster\" style=\"text-shadow: 1px 1px 4px {$health['indices'][$index_name]['status']};\" title=\"Index: $index_name\">$index_name</h5>\n";
     $shard_ids = array_keys($index_data['shards']);
     sort($shard_ids);
     foreach ($shard_ids as $shard_id) {

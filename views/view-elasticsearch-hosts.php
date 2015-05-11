@@ -1,7 +1,5 @@
 <?php
-$path = '/var/www/html/';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path); // Fixes PHP's silly path handling with includes
-$config = parse_ini_file("config/config.ini", true);
+require("header.php"); // Important includes
 
 $SHARD_STATES = Array(
     'STARTED' => 'free',
@@ -20,16 +18,18 @@ function bool2str($v) {
   return($v);
 }
 
-$nodes = file_get_contents($config['ES']['URL'] . "_cluster/state/nodes");
+$nodes = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
-// $nodes['unassigned'] = Array('name' => 'unassigned');
 
-$health = file_get_contents($config['ES']['URL'] . "_cluster/health/?level=cluster");
+// Add a fake node called "unassigned" so that unassigned shards are grouped on the display
+$nodes['unassigned'] = Array('name' => 'unassigned');
+
+$health = file_get_contents($CONFIG['ES']['URL'] . "_cluster/health/?level=cluster");
 $health = json_decode($health, true);
 $health = $health;
 
-$cluster = file_get_contents($config['ES']['URL'] . "_cluster/state/routing_table");
+$cluster = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/routing_table");
 $cluster = json_decode($cluster, true);
 
 $indices = $cluster['routing_table']['indices'];
@@ -44,11 +44,11 @@ foreach ($indices as $index_name => $index) {
             if ($shard['node']) {
                 $node = $shard['node'];
             }
-                $shard['index'] = $index_name;
-                if (!array_key_exists($node, $host_shards)) {
-                    $host_shards[$node] = Array();
-                }
-                array_push($host_shards[$node], $shard);
+            $shard['index'] = $index_name;
+            if (!array_key_exists($node, $host_shards)) {
+                $host_shards[$node] = Array();
+            }
+            array_push($host_shards[$node], $shard);
         }
     }
 }
@@ -57,19 +57,19 @@ echo "<!--\n";
 print_r($host_shards);
 echo "-->\n";
 
-echo "<div style='float: none; clear: both; position: relative; top: 60px;'>\n";
-echo "<p class='cluster' style='font-size: 18pt; padding: 4px; text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</p>\n";
+echo "<div class='cluster-container'>\n";
+echo "<h2 class='cluster' style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
 foreach ($nodes as $node_id => $node) {
     if (!$node['attributes']['client']) {
         $node_name = $node['name'];
         echo "<div class=\"cluster\">\n";
-        echo "<p class=\"cluster\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</p>\n";
+        echo "<h5 class=\"cluster\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
         foreach ($host_shards[$node_id] as $shard) {
             $shard_class = $SHARD_STATES[$shard['state']];
             if (! $shard['primary']) {
                 $shard_class .= ' replica';
             }
-    
+
             $shard_info = "";
             unset($shard['node']);
             if ($shard['state'] != 'RELOCATING') {

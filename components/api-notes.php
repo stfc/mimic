@@ -1,7 +1,8 @@
 <?php
-
-require('functions.inc.php');
-require('db-open.inc.php');
+$path = '/var/www/html/';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+require('inc/functions.inc.php');
+require('inc/db-open.inc.php');
 
 $redo = 0;
 $NOTE = (isset($_REQUEST["note"])) ? $_REQUEST["note"] : Null;
