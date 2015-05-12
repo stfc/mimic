@@ -11,7 +11,12 @@ require 'inc/header.inc.php';
   $('#farm').html(msg_loading);
 
   function update() {
+    var requested_view = view;
     var request = $.get('views/view-'+view+'.php').done(function(d) {
+      if (view != requested_view) {
+        console.log("Ignoring callback for "+requested_view+", current view is "+view);
+        return;
+      }
       $("#farm").html(d);
       locateNode($('#inLocate').val());
       $('span.node').tooltip({html: true, container: '#farm', placement: 'bottom'});
