@@ -1,20 +1,18 @@
 <?php
 require("header.php"); // Important includes
 
-$archetype = 'ral-tier1';
+// Config
+$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 
-// Generate list of VMs that are in a resting state (i.e. correct personality and in prod)
-$vms_all = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=" . $CONFIG['NUBES']['URL']);
-$vms_all = explode("\n", $vms_all);
-$vms_good = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?dns_domain=" . $CONFIG['NUBES']['URL'] . "&personality=nubesvms&domain=prod");
-$vms_good = explode("\n", $vms_good);
-$vms_bad = array_diff($vms_all, $vms_good);
-unset($vms_all);
+// Gets node data and formats it
+$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch_nubes");
+$allnodes = json_decode($jsondata, true);
+ksort ($allnodes);
 
-function do_node($node) {
-
-    global $vms_good;
-    global $vms_bad;
+// Loop for all nodes
+function do_node($node, $section) {
+    global $allnodes;
+    global $mynode;
 
     $short = explode('.', $node);
     $short = $short[0];
@@ -32,9 +30,11 @@ function do_node($node) {
 
     // Set defaults
     $nodeStatus = "unknown";
-    if (in_array($node, $vms_bad)) {
-        $nodeStatus = 'cloud-bad';
-        $nodeInfo .= "<p><b>Warning:</b> VM host not in prod or personality not nubesvms, will need to be cleaned up after deletion.</p>";
+    if ($section == "vm") {
+        if (($allnodes[$node]["branch_name"] != "prod") or ($allnodes[$node]["personality"] != "nubesvms")) {
+            $nodeStatus = 'cloud-bad';
+            $nodeInfo .= "<p><b>Warning:</b> VM host not in prod or personality not nubesvms, will need to be cleaned up after deletion.</p>";
+        }
     }
 
     $nodeNote = $nodecsf[0];
@@ -50,67 +50,44 @@ function do_node($node) {
         // Tack note onto end of info string
         $nodeInfo .= ' - '.$nodeNote;
 
-        //We want to be case insensitive!
+        // We want to be case insensitive!
         $s = strtolower($nodeNote);
         $nodeStatus .= ' note';
     }
 
-    echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
+    // Makes the node display
+    echo '<span id="n_'.$short.'" onclick="node(\''.$node.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
 }
 
-function do_systems($systems) {
-    if ($systems) {
-        $systems = explode("\n", trim($systems));
-        foreach ($systems as $s) {
-            do_node($s);
-        }
+// Separates nodes to their correct sections
+$cluster = Array();
+foreach ($allnodes as $name => $values) {
+    $type = "infrastructure";
+    if (strpos($name, "vm") !== false) {
+       $type = "vm";
     }
-    else {
-        echo "<span title='No managed systems'>&nbsp;&#x2205;</span>";
-    }
+    $cluster[$type][$values["personality"]][] = $name;
 }
 
-function do_personalities($personalities, $archetype, $dnsDomains, $sectionTitle) {
+// Loops through for each cluster of nodes
+function do_clusters($section){
 
-    global $CONFIG;
+    global $allnodes;
+    global $cluster;
 
-    echo "<div class=\"cluster-container\"><h2 class=\"cluster\">$sectionTitle</h2>\n";
-    foreach ($personalities as $personality) {
-        $allSystems = Array();
-        foreach ($dnsDomains as $dns_domain) {
-            $queryReturn =file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype&dns_domain=$dns_domain");
-            if (!empty ($queryReturn)) {
-                $allSystems[] = $queryReturn;
-            }
-        }
-        if (!empty($allSystems)) {
-            echo "<div style=\"top: 0;\" class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
-            echo "<h5 class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</h5>\n";
-            foreach ($allSystems as $systems) {
-                do_systems($systems);
+    foreach ($cluster as $section_title => $values) {
+        echo "<div class=\"cluster-container\">";
+        echo "<h2 class=\"$section_title\">$section_title</h2>\n";
+        foreach ($values as $c_name => $key) {
+            echo "<div class=\"cluster\"><h5>$c_name</h5>";
+            foreach ($key as $f) {
+                do_node($f, $section_title);
             }
             echo "</div>\n";
         }
-    }
-    echo "</div>\n";
-}
-
-$personalities = Array();
-$personality_info = file_get_contents($CONFIG['AQUILON']['URL'] . "personality?archetype=$archetype");
-$personality_info = explode("\n", $personality_info);
-foreach ($personality_info as $line) {
-    $l = explode(' ', trim($line));
-    if ($l[0] == 'Host' and $l[1] == 'Personality:') {
-        $personalities[] = $l[2];
+        echo "</div>\n";
     }
 }
-
-//Actually Generating Page
-
-//First Infrastructure
-do_personalities($personalities, $archetype, Array($CONFIG['NUBES']['URL_RL'], $CONFIG['STFC']['URL']), 'Infrastructure');
-
-//Then VMs
-do_personalities($personalities, $archetype, Array($CONFIG['NUBES']['URL_STFC']), 'VMs');
-
+// Shows content on page
+do_clusters($cluster);
 ?>

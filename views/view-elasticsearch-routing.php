@@ -1,6 +1,9 @@
 <?php
 require("header.php"); // Important includes
 
+// Config
+$ES_URL = $CONFIG['URL']['ES'].":9200";
+
 $SHARD_STATES = Array(
     'STARTED' => 'free',
     'RELOCATING' => 'full',
@@ -18,15 +21,15 @@ function bool2str($v) {
   return($v);
 }
 
-$nodes = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/nodes");
+$nodes = file_get_contents("$ES_URL/_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
 
-$health = file_get_contents($CONFIG['ES']['URL'] . "_cluster/health/?level=shards");
+$health = file_get_contents("$ES_URL/_cluster/health/?level=shards");
 $health = json_decode($health, true);
 $health = $health;
 
-$cluster = file_get_contents($CONFIG['ES']['URL'] . "_cluster/state/routing_table");
+$cluster = file_get_contents("$ES_URL/_cluster/state/routing_table");
 $cluster = json_decode($cluster, true);
 
 $indices = $cluster['routing_table']['indices'];

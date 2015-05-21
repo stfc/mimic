@@ -1,6 +1,9 @@
 <?php
 require("header.php"); // Important includes
 
+// Config
+$AQUILON_URL = $CONFIG['URL']['AQUILON'].":6901";
+
 function do_node($node) {
     $short = explode('.', $node);
     $short = $short[0];
@@ -53,14 +56,14 @@ function do_systems($systems) {
 
 function do_personalities($archetypes) {
 
-    global $CONFIG;
+    global $AQUILON_URL;
 
     foreach ($archetypes as $archetype => $personalities) {
         echo "<div class='cluster-container'><h2>$archetype</h2>\n";
         foreach ($personalities as $personality) {
             echo "<div class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
             echo "<h5 class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</h5>\n";
-            $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?personality=$personality&archetype=$archetype");
+            $systems = file_get_contents("$AQUILON_URL/find/host?personality=$personality&archetype=$archetype");
             do_systems($systems);
             echo "</div>\n";
         }
@@ -69,7 +72,7 @@ function do_personalities($archetypes) {
 }
 
 $personalities = Array();
-$personality_info = file_get_contents($CONFIG['AQUILON']['URL'] . "personality?all");
+$personality_info = file_get_contents("$AQUILON_URL/personality?all");
 $personality_info = explode("\n", $personality_info);
 foreach ($personality_info as $line) {
     $l = explode(' ', trim($line));

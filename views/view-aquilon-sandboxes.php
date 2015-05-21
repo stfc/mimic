@@ -1,6 +1,9 @@
 <?php
 require("header.php"); // Important includes
 
+// Config
+$AQUILON_URL = $CONFIG['URL']['AQUILON'].":6901";
+
 function do_node($node) {
     $short = explode('.', $node);
     $short = $short[0];
@@ -53,14 +56,14 @@ function do_systems($systems) {
 
 function do_domains($domains) {
 
-    global $CONFIG;
+    global $AQUILON_URL;
 
     echo "<div class=\"cluster\" style=\"width: auto\" id=\"cl_domains\">\n";
     echo "  <h4 class=\"cluster\">Domains</h4>\n";
     foreach ($domains as $domain) {
         echo "  <div class=\"diskpool\" id=\"dp_$domain\">\n";
         echo "    <h4 class=\"diskpool\">$domain</h4>\n";
-        $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?domain=$domain");
+        $systems = file_get_contents("$AQUILON_URL/find/host?domain=$domain");
         do_systems($systems);
         echo "  </div>\n";
     }
@@ -71,6 +74,7 @@ function do_domains($domains) {
 function do_sandboxes($boxen) {
 
     global $CONFIG;
+    global $AQUILON_URL;
 
     $sandboxes = Array();
     $sandboxname = '';
@@ -85,13 +89,16 @@ function do_sandboxes($boxen) {
         elseif ($l[0] == 'Owner:') {
             $owner = $l[1];
             if (!array_key_exists($owner, $realnames)) {
-                $realname = exec("/usr/local/bin/federal_id.py $owner");
-                $realname = explode(',', $realname);
-                $realname = $realname[0];
-                if (! $realname) {
-                    $realname = $owner;
+                $id = $CONFIG['ID']['PATH'];
+                if (file_exists($id)) {
+                    $realname = exec("$id $owner");
+                    $realname = explode(',', $realname);
+                    $realname = $realname[0];
+                    if (! $realname) {
+                        $realname = $owner;
+                    }
+                    $realnames[$owner] = $realname;
                 }
-                $realnames[$owner] = $realname;
             }
             if (!array_key_exists($owner, $sandboxes)) {
                 $sandboxes{$owner} = Array();
@@ -109,7 +116,7 @@ function do_sandboxes($boxen) {
         foreach ($boxes as $box) {
             echo "  <div class=\"diskpool\" id=\"dp_$box\">\n";
             echo "    <h5 class=\"diskpool\" title=\"$user/$box\">$box</h5>\n";
-            $systems = file_get_contents($CONFIG['AQUILON']['URL'] . "find/host?sandbox=$user/$box");
+            $systems = file_get_contents("$AQUILON_URL/find/host?sandbox=$user/$box");
             do_systems($systems);
             echo "  </div>\n";
         }
@@ -118,11 +125,11 @@ function do_sandboxes($boxen) {
 }
 
 
-$boxen = file_get_contents($CONFIG['AQUILON']['URL'] . "sandbox/command/show_all");
+$boxen = file_get_contents("$AQUILON_URL/sandbox/command/show_all");
 $boxen = explode("\n", $boxen);
 
 $domains = Array();
-$domain_info = file_get_contents($CONFIG['AQUILON']['URL'] . "domain?all");
+$domain_info = file_get_contents("$AQUILON_URL/domain?all");
 $domain_info = explode("\n", $domain_info);
 
 foreach ($domain_info as $line) {
