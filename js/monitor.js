@@ -2,7 +2,7 @@
 var nodewin = null;
 
 function node(n) {
-  nodewin = window.open("node.php?n="+n, "node", "width=640,height=480,left=128,top=128,resizable=yes,scrollbars=yes,directories=no,titlebar=no,toolbar=no,status=no"); nodewin.window.focus();
+  nodewin = window.open("views/node/node.php?n="+n, "node", "width=640,height=480,left=128,top=128,resizable=yes,scrollbars=yes,directories=no,titlebar=no,toolbar=no,status=no"); nodewin.window.focus();
 }
 
 function updatePos() {

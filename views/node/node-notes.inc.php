@@ -60,17 +60,18 @@ class pNotes
                     "node" : "<?php echo $NODE; ?>",
                     "time" : Date.now()
                 };
-                $.get("components/api-notes.php", args, noteCallbackDisplay);
+                $.get("/components/api-notes.php", args, noteCallbackDisplay);
             }
 
             // Update note (delete with empty string)
             function noteUpdate(text) {
+                $root = realpath($_SERVER["DOCUMENT_ROOT"]);
                 var args = {
                     "node" : "<?php echo $NODE; ?>",
                     "time" : Date.now(),
                     "note" : text
                 };
-                $.get("components/api-notes.php", args, noteCallbackDisplay);
+                $.get("/components/api-notes.php", args, noteCallbackDisplay);
             }
 
         </script>

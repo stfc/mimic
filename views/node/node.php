@@ -3,37 +3,44 @@
 
 $path = '/var/www/html/';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-$CONFIG = parse_ini_file("config/config.ini", true);
+if (file_exists("/var/www/html/config/user-config.ini")) {
+    $CONFIG = parse_ini_file("config/user-config.ini", true);
+    printf("<!-- User config detected. Using user config -->"."\n");
+} else {
+    $CONFIG = parse_ini_file("config/default-config.ini", true);
+    printf("<!-- User config not found! Using default -->"."\n");
+};
 include('inc/functions.inc.php');
 include('inc/db-open.inc.php');
-include('node/node-getName.inc.php');
-
+include('node-getName.inc.php');
+global $NODE;
+global $SHORT;
 ?>
 <html lang="en">
 <head>
   <title>Tier1A monitor: <?php echo htmlspecialchars($NODE) ?></title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="refresh" content="300" />
-  <link rel="icon" href="images/mimic-icon.png" type="image/png" />
-  <link rel="stylesheet" type="text/css" href="css/info.css" media="screen" />
+  <link rel="icon" href="/images/mimic-icon.png" type="image/png" />
+  <link rel="stylesheet" type="text/css" href="/css/info.css" media="screen" />
 
-  <link rel="stylesheet" type="text/css" href="components/cookiecuttr/cookiecuttr.css" media="screen" />
-  <link rel="stylesheet" type="text/css" href="components/themes/base/jquery.ui.all.css" media="screen" />
-  <script type="text/javascript" src="components/jquery-1.8.0.min.js"></script>
-  <script type="text/javascript" src="components/jquery.cookie.js"></script>
-  <script type="text/javascript" src="components/cookiecuttr/jquery.cookiecuttr.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.core.min.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.position.min.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.widget.min.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.ui.dialog.min.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.effects.core.min.js"></script>
-  <script type="text/javascript" src="components/ui/jquery.effects.blind.min.js"></script>
-  <script type="text/javascript" src="js/plugins.js"></script>
+  <link rel="stylesheet" type="text/css" href="/components/cookiecuttr/cookiecuttr.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/components/themes/base/jquery.ui.all.css" media="screen" />
+  <script type="text/javascript" src="/components/jquery-1.8.0.min.js"></script>
+  <script type="text/javascript" src="/components/jquery.cookie.js"></script>
+  <script type="text/javascript" src="/components/cookiecuttr/jquery.cookiecuttr.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.ui.core.min.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.ui.position.min.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.ui.widget.min.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.ui.dialog.min.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.effects.core.min.js"></script>
+  <script type="text/javascript" src="/components/ui/jquery.effects.blind.min.js"></script>
+  <script type="text/javascript" src="/js/plugins.js"></script>
 </head>
 <body>
   <?php
   //Header
-  include('node/node-header.inc.php');
+  include('node-header.inc.php');
 
   //Set custom error handler so plugins stand less chance of killing everything
   set_error_handler("fPluginFail");
@@ -41,7 +48,7 @@ include('node/node-getName.inc.php');
   include('config/plugins.inc.php');
 
   foreach ($plugins as $p) {
-    $plugfile = "node/node-$p.inc.php";
+    $plugfile = "node-$p.inc.php";
     if (file_exists($plugfile)) {
       $plug = include($plugfile);
       if (is_object($plug)) {

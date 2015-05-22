@@ -12,6 +12,7 @@ require_once('Horde/Text/Diff/Renderer/Inline.php');
 
 $path = '/var/www/html/';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+include("inc/config-call.inc.php");
 include("inc/db-magdb-open.inc.php");
 include("inc/ouilookup.inc.php");
 
@@ -174,7 +175,7 @@ class pMagdb
         if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "webkit")) {
           echo 'style="width: 100%;" ';
         }
-        echo "type=\"image/svg+xml\" data=\"$STATUS_URL/components/magdb-draw-interfaces.php?system={$r2["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+        echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$r2["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
       } else {
         echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
       }
@@ -249,8 +250,8 @@ class pMagdb
             if ($k == "lastUpdateDate" and $c != "Current") {
               $c = prettytime(time() - strtotime($c));
             } elseif ($k == "miscComments" ) {
-              $c = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'Ticket/Display.html?id=$1">#$1</a>', $c);
-              $c = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'Ticket/Display.html?id=$1">RT$1</a>', $c);
+              $c = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $c);
+              $c = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $c);
             } elseif (strpos($k, "Managed")) {
               if ($c == "t") {
                 $c = "&#x2713;";

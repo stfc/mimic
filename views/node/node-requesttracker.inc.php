@@ -44,7 +44,7 @@ class pRequestTracker
             }
         }
         $(function() {
-            $.get("node/node-requesttracker-rest.php", { "name" : "<?php echo $SHORT; ?>", "time" : Date.now() }, requestTrackerCallbackDisplay);
+            $.get("node-requesttracker-rest.php", { "name" : "<?php echo $SHORT; ?>", "time" : Date.now() }, requestTrackerCallbackDisplay);
         });
     </script>
     <?php
