@@ -60,7 +60,7 @@ class pNotes
                     "node" : "<?php echo $NODE; ?>",
                     "time" : Date.now()
                 };
-                $.get("components/api-notes.php", args, noteCallbackDisplay);
+                $.get("/components/api-notes.php", args, noteCallbackDisplay);
             }
 
             // Update note (delete with empty string)
@@ -70,7 +70,7 @@ class pNotes
                     "time" : Date.now(),
                     "note" : text
                 };
-                $.get("components/api-notes.php", args, noteCallbackDisplay);
+                $.get("/components/api-notes.php", args, noteCallbackDisplay);
             }
 
         </script>

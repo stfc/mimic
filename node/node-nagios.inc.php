@@ -88,7 +88,7 @@ class pNagios
                         echo "<td>$text";
                         //Create new ticket link-btn
                         echo "&nbsp;<a title=\"Create new ticket\" href=\"$HELPDESK_URL/Ticket/Create.html?Queue=Fabric&amp;Subject=";
-                        echo rawurlencode($node." - ".$name)."&amp;Content=".rawurlencode("Nagios check ".$name." returned ".$text)."\"><img src=\"images/icons/actions/document-new.png\" alt=\"Create new ticket\" /></a>\n";
+                        echo rawurlencode($node." - ".$name)."&amp;Content=".rawurlencode("Nagios check ".$name." returned ".$text)."\"><img src=\"images/icons/document-new.png\" alt=\"Create new ticket\" /></a>\n";
                         echo "</td>";
 
                         echo "<td><span style=\"white-space: nowrap;\" class=\"time\">&#8634; ".prettytime(time() - $s["last_state_change"])."</span></td>";

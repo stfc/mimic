@@ -3,11 +3,12 @@
 
 $path = '/var/www/html/';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-$CONFIG = parse_ini_file("config/config.ini", true);
+require("inc/config-call.inc.php");
 include('inc/functions.inc.php');
 include('inc/db-open.inc.php');
 include('node/node-getName.inc.php');
-
+global $NODE;
+global $SHORT;
 ?>
 <html lang="en">
 <head>
@@ -83,21 +84,6 @@ include('node/node-getName.inc.php');
     }
   }
 
-  //This needs to be called before anything else that needs the castorInstance info
-  /*
-  $castorInstance = $oOverwatch -> getDBinfo($SHORT);
-  if ($castorInstance !== null) {
-    $castorInstance = $castorInstance['castorInstance'];
-  }
-
-  include('node/node-pakiti2-json.inc.php');  //Pakiti2 package info
-  $oPakiti2   = new pPakiti2();
-  $oPakiti2   -> detail($NODE, $SHORT);
-
-  include('node/node-ganglia.inc.php');   // Ganglia info
-  $oGanglia = new pGanglia();
-  $oGanglia -> detail($NODE, $SHORT, $castorInstance);
-*/
   //Put error handler back
   restore_error_handler();
 
