@@ -7,10 +7,7 @@ $plugins = Array(
   'requesttracker',
   'magdb',
   'aquilon',
-  'observium',
-  'pakiti2-json',
-  'ganglia',
-  'sitefirewall-json',
+  'pakiti2-json'
 );
 
 ?>
