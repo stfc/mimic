@@ -75,8 +75,7 @@ if ($allnodes and pg_num_rows($allnodes)){
         }
         unset($ntup);
 
-        // And show it
-        echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"$nodeInfo\"></span>\n";
+        echo '<span id="n_'.$short.'" onclick="node(\''.$node.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
     }
     echo "</div>\n";
     echo "</div>\n";

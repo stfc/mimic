@@ -1,6 +1,7 @@
 <?php
 $path = '/var/www/html/';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+require_once("inc/config-call.inc.php");
 require_once("inc/db-magdb-open.inc.php");
 require_once("inc/ouilookup.inc.php");
 require_once("inc/functions.inc.php");
@@ -13,7 +14,7 @@ if (isset($_REQUEST["system"])) {
 
 $graph_text = "";
 
-$DNS_CACHE_FILE = "../cache/dns-aliases.json";
+$DNS_CACHE_FILE = "cache/dns-aliases.json";
 
 $dns = array();
 

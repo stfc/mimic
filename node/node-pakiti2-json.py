@@ -2,10 +2,17 @@
 import httplib
 from sys import argv, exit
 import ConfigParser
+from os.path import exists
+
+USER_CONFIG = "../config/user-config.ini"
+DEFAULT_CONFIG = "../config/default-config.ini"
 
 # Calling ini file
 config = ConfigParser.ConfigParser()
-config.read("../config/config.ini")
+if exists(USER_CONFIG):
+    config.read(USER_CONFIG)
+else:
+    config.read(DEFAULT_CONFIG)
 
 WEBHOST  = config.get("PAKITI", "URL")
 KEYFILE = config.get("PAKITI", "KEYFILE")

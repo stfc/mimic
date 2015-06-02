@@ -33,10 +33,11 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+view-dev.php
 
 # DB and DS Connections
-db-*.inc.php
+# db-*.inc.php
 ds-*.inc.php
 
 # Just to make sure
-config
+user-config.ini

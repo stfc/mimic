@@ -9,7 +9,7 @@ import ConfigParser
 
 # Calling ini file
 config = ConfigParser.ConfigParser()
-config.read("../config/config.ini")
+config.read("../config/user-config.ini")
 
 # connection details
 uri = config.get("HELPDESK", "URL")
@@ -42,7 +42,7 @@ if len(argv) == 2 or len(argv) == 3:
   if not history:
     query = query + " AND ( Status = 'new' OR Status = 'open' )"
   query = quote(query)
-  search = Request(uri + "REST/1.0/search/ticket/" + '?query=' + query)
+  search = Request(uri + "/REST/1.0/search/ticket/" + '?query=' + query)
 
   try:
     response = urlopen(login)

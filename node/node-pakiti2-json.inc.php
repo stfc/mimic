@@ -1,5 +1,5 @@
 <?php
-
+global $CONFIG;
 #Config
 $PAKITI_SERVER = $CONFIG['PAKITI']['URL'];
 
