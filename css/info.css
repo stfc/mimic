@@ -210,27 +210,7 @@ img, a.image, a.plain {
 textarea {
   font: 8pt monospace;
 }
-/*
-input {
-  font: 8pt sans-serif;
-  color: #1F201F;
-  background: #9FA09E;
-  border: solid #4F504F 1px;
-  border-top: solid #CFCFCE 1px;
-  border-left: solid #CFCFCE 1px;
-  padding: 0;
-}
-input:hover {
-  background-color: #A8A9A7;
-  color: #002740;
-}
-input:active, input.active {
-  background-color: #8F908E;
-  border: solid #4F504F 1px;
-  border-bottom: solid #CFCFCE 1px;
-  border-right: solid #CFCFCE 1px;
-}
-*/
+
 ol>li {
   margin:0;
   padding:4px;
