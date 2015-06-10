@@ -1,86 +1,82 @@
 <?php
 require("header.php"); // Important includes
 
-// Go find all our nodes
-$instance = '';
-$hardwareGroup = '';
-$num = 0;
-$allnodes = pg_query(
-    "select \"fqdn\" as \"name\", \"machineName\" as \"short\", \"currentStatus\", \"hardwareGroup\", \"castorInstance\" "
+// Gathers clusters
+$all_clusters = Array();
+$all_nodes = pg_query("select \"fqdn\" as \"name\", \"machineName\" as \"short\", \"currentStatus\", \"hardwareGroup\", \"castorInstance\" "
     ."from \"vCastorFQDN\" "
-    ."order by \"hardwareGroup\", \"machineName\";"
-);
-
-if ($allnodes and pg_num_rows($allnodes)) {
-    while ($r = pg_fetch_row($allnodes)) {
-        /* Start of main loop... */
-        //We're looking at this node
-        $node  = $r[0];
-        $short = $r[1];
-        $instance = $r[2];
-        $currStat = $r[2];
-        $preprod = ($r[4] == "Preprod");
-
-        // In this diskpool
-        if ($r[3] != $hardwareGroup) {
-            if ($hardwareGroup != '') {
-                echo "</div>\n";
-                echo "</div>\n";
-            }
-
-            $hardwareGroup = $r[3];
-            $s_hardwareGroup = str_replace("/", "", $hardwareGroup);
-
-            echo "<div class=\"instance\" id=\"dp_$s_hardwareGroup\">\n";
-            echo "<h5 class=\"instance\">$s_hardwareGroup</h5>\n";
-            echo "<div class=\"diskpool\">\n";
-        }
-
-        $mynode = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
-        if ($mynode and mysql_num_rows($mynode)) {
-            $nodecsf = mysql_fetch_row($mynode);
-        }
-        else {
-            $nodecsf = null;
-        }
-
-        // Set defaults
-        $nodeStatus = "unknown";
-        $nodeNote = "";
-        $nodeInfo = "";
-        $nodeNote = $nodecsf[0];
-        $nodeInfo = "<h4>$node</h4>";
-        $nodeInfo .= "<p><b>MagDB:</b> $currStat</p>";
-
-        $ntup = nagios_state($short, $node, $nodeStatus);
-        if ($ntup[1]) {
-            $nodeStatus = $ntup[0];
-            $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
-        }
-        unset($ntup);
-
-        // Process notes
-        if (strlen($nodeNote) > 0) {
-            // Tack note onto end of info string
-            $nodeInfo .= ' - '.$nodeNote;
-
-            // We want to be case insensitive!
-            $s = strtolower($nodeNote);
-            $nodeStatus .= ' note';
-        }
-
-        // Apply castor status
-        $nodeStatus .= " castor" . $currStat;
-
-        if ($preprod) {
-            $nodeStatus .= " castorPreprod";
-        }
-
-        # And show it
-        echo '<span id="n_'.$short.'" onclick="node(\''.$node.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
+    ."order by \"hardwareGroup\", \"machineName\";");
+if ($all_nodes and pg_num_rows($all_nodes)){
+    while ($row = pg_fetch_assoc($all_nodes)) {
+        $all_clusters[$row['name']] = Array(
+            'cluster' => $row['hardwareGroup'],
+            'status' => $row['currentStatus'],
+            );
     }
-    echo "</div>\n";
-    echo "</div>\n";
 }
 
-?>
+// Gathers notes
+$all_notes = Array();
+$notes = mysql_query("select name, note from notes");
+if ($notes and mysql_num_rows($notes)) {
+    while ($note = mysql_fetch_assoc($notes)) {
+        $all_notes[$note['name']] = $note['note'];
+    }
+}
+
+// Generates main array
+$results = Array();
+foreach ($all_clusters as $name => $clusterinfo) {
+
+    $cluster =  $clusterinfo['cluster'];
+
+    $results[$cluster][$name] = Array();
+
+    $results[$cluster][$name]['status']['state'] = $clusterinfo['status'];
+
+    if (array_key_exists($name, $all_notes)) {
+        $results[$cluster][$name]['note'] = $all_notes[$name];
+    };
+}
+
+// Renders page
+echo "<div class=\"cluster-container\">";
+foreach ($results as $m_cluster_name => $cluster) {
+    echo "<div id=\"$m_cluster_name\" class=\"cluster\">";
+    echo "<h5 id=\"$m_cluster_name\">$m_cluster_name</h5>";
+        foreach ($cluster as $node_name => $node) {
+
+        // Node information
+            $nodeInfo = "<h4>$node_name</h4>";
+
+            // Shows node status
+            $nodeStatus = "unknown"; // Default
+            if ($node['status']['state'] == true) {
+                $nodeStatus = $node['status']['state'];
+                $nodeInfo .= "<p><b>Status:</b> ".$nodeStatus."</p>";
+            }
+
+            // Shows node note
+            if ($node['note'] == true) {
+                $nodeNote = $node['note'];
+                $nodeStatus .= ' note';
+                $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
+            }
+
+            // Shows nagios state
+            $short = explode(".", $node_name);
+            $short = $short[0];
+            $ntup = nagios_state($short, $node_name, $nodeStatus);
+            if ($ntup[1] == true) {
+                $nodeStatus .= ' '.$ntup[0];
+                $nodeInfo .= '<p><b>Nagios:</b>'.$ntup[1].'</p>';
+            }
+            unset($ntup);
+
+            // Renders node
+            echo '<span id="n_'.$node_name.'" onclick="node(\''.$node_name.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
+        }
+
+    echo "</div>\n";
+}
+echo "</div>\n";
