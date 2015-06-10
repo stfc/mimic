@@ -114,11 +114,7 @@ class pNagios
                     echo "      <div id=\"nagios-state\">\n";
 
                     if ($s["state"] != 0) {
-                        echo "      <p class=\"info\">In scheduled downtime</p>\n";
-                    }
-
-                    if ($s["state"] == 1) {
-                       echo "      <p class=\"warning\">System down</p>\n";
+                        echo "      <p class=\"warning\">System down/unreachable</p>\n";
                     }
 
                     echo "      </div>\n";
