@@ -2,83 +2,80 @@
 require("header.php"); // Important includes
 
 // Config
-$AQUILON_URL = $CONFIG['URL']['AQUILON'].":6901";
+$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 
-function do_node($node) {
-    $short = explode('.', $node);
-    $short = $short[0];
-    $mynode = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
-    if ($mynode and mysql_num_rows($mynode)) {
-        $nodecsf = mysql_fetch_row($mynode);
-    }
-    else {
-        $nodecsf = null;
-    }
-
-    // Set defaults
-    $nodeStatus = "unknown";
-    $nodeNote = "";
-    $nodeInfo = "<h4>$node</h4>";
-    $nodeNote = $nodecsf[0];
-
-    $ntup = nagios_state($short, $node, $nodeStatus);
-    if ($ntup[1]) {
-        $nodeStatus = $ntup[0];
-        $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
-    }
-    unset($ntup);
-
-    // Process notes
-    if ($nodeNote != "") {
-
-      // Tack note onto end of info string
-      $nodeInfo .= ' - '.$nodeNote;
-
-      // We want to be case insensitive!
-      $s = strtolower($nodeNote);
-      $nodeStatus .= ' note';
-    }
-    echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
-}
-
-function do_systems($systems) {
-    if ($systems) {
-        $systems = explode("\n", trim($systems));
-        foreach ($systems as $s) {
-            do_node($s);
-        }
-    }
-    else {
-        echo "<span title='No managed systems'>&nbsp;&#x2205;</span>";
+// Gets node data and formats it
+$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch");
+$data = json_decode($jsondata, true);
+ksort ($data);
+// Gets notes for nodes
+$all_notes = Array();
+$notes = mysql_query("select name, note from notes");
+if ($notes and mysql_num_rows($notes)) {
+    while ($note = mysql_fetch_assoc($notes)) {
+        $all_notes[$note['name']] = $note['note'];
     }
 }
 
+// Separates nodes to their correct sections
+$cluster = Array();
+foreach ($data as $name => $values) {
 
-function do_personalities($archetypes) {
+    // Gathers nodes into the top level groups
+    $archetype = $values["archetype"];
 
-    global $AQUILON_URL;
+    if ($archetype === "rig") {
+        $group_name = "rig";
+    } elseif ($archetype === "rig_unmanaged") {
+        $group_name = "rig_unmanaged";
+    } elseif ($archetype === "isis") {
+        $group_name = "isis";
+    } elseif ($archetype === "ral-tier1") {
+        $group_name = "ral-tier1";
+    } else {
+        $group_name = "unknown";
+    }
 
-    foreach ($archetypes as $archetype => $personalities) {
-        echo "<div class='cluster-container'><h2>$archetype</h2>\n";
-        foreach ($personalities as $personality) {
-            echo "<div class=\"cluster\" id=\"cl_{$archetype}_{$personality}\">\n";
-            echo "<h5 class=\"cluster\" title=\"Archetype: $archetype\nPersonality: $personality\">$personality</h5>\n";
-            $systems = file_get_contents("$AQUILON_URL/find/host?personality=$personality&archetype=$archetype");
-            do_systems($systems);
-            echo "</div>\n";
+    // Gathers nodes into second clusters
+    $cluster[$group_name][$values["personality"]][] = $name;
+}
+
+// Loops through for each cluster of nodes
+foreach ($cluster as $section_title => $values) {
+    echo "<div class='cluster-container'>";
+    echo "<h2 class='$section_title'>$section_title</h2>\n";
+    foreach ($values as $c_name => $key) {
+        echo "<div class='cluster'><h5>$c_name</h5>";
+        foreach ($key as $node_name) {
+
+            $nodeInfo = "<h4>$node_name</h4>";
+
+            // Shows node status
+            $nodeStatus = "unknown";
+
+            // Shows node note
+            if ($all_notes[$node_name] == true) {
+                $nodeNote = $node['note'];
+                $nodeStatus .= ' note';
+                $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
+            }
+
+            // Shows nagios state
+            $short = explode(".", $node_name);
+            $short = $short[0];
+            $ntup = nagios_state($short, $node_name, $nodeStatus);
+            if ($ntup[1] == true) {
+                $nodeStatus .= ' '.$ntup[0];
+                $nodeInfo .= '<p><b>Nagios:</b>'.$ntup[1].'</p>';
+            }
+            unset($ntup);
+
+            // Renders node
+            echo '<span id="n_'.$node_name.'" onclick="node(\''.$node_name.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
         }
         echo "</div>\n";
     }
+    echo "</div>\n";
 }
 
-$personalities = Array();
-$personality_info = file_get_contents("$AQUILON_URL/personality?all");
-$personality_info = explode("\n", $personality_info);
-foreach ($personality_info as $line) {
-    $l = explode(' ', trim($line));
-    if ($l[0] == 'Host' and $l[1] == 'Personality:') {
-        $personalities[$l[4]][] = $l[2];
-    }
-}
-do_personalities($personalities);
 ?>
