@@ -1,6 +1,9 @@
 <?php
 require("header.php"); // Important includes
 
+// Configuration
+$AQUILON_URL = $CONFIG['URL']['AQUILON'];
+
 // Gathers clusters
 $all_clusters = Array();
 $data = pg_query('select "name", "categoryName" from "vBatchAndCloudVMs"');
@@ -31,16 +34,30 @@ if ($status and mysql_num_rows($status)) {
     }
 }
 
+// Gathers VM node if a worker
+$personality = Array();
+$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch_nubes");
+$vms = json_decode($jsondata, true);
+foreach ($vms as $name => $values) {
+    foreach ($values as $key => $value) {
+        if (strpos($value, "workernode") !== false) {
+            $personality[$name][$value] = $name;
+        }
+    }
+}
+
 // Generates main array
 $results = Array();
 foreach ($all_clusters as $name => $cluster) {
-    $results[$cluster][$name] = Array();
-    if (array_key_exists($name, $all_notes)) {
-        $results[$cluster][$name]['note'] = $all_notes[$name];
-    };
-    if (array_key_exists($name, $all_status)) {
-        $results[$cluster][$name]['status'] = $all_status[$name];
-    };
+    if (($cluster != "vm-nubes") or (array_key_exists($name, $personality) == true)) {
+        $results[$cluster][$name] = Array();
+        if (array_key_exists($name, $all_notes)) {
+            $results[$cluster][$name]['note'] = $all_notes[$name];
+        };
+        if (array_key_exists($name, $all_status)) {
+            $results[$cluster][$name]['status'] = $all_status[$name];
+        };
+    }
 }
 
 // Renders page
