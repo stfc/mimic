@@ -2,7 +2,7 @@
   GLOBAL SETTINGS
 ==================================*/
 * {
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -26,26 +26,21 @@ h2 {
   border-bottom: 4px solid #555;
   border-top: 4px solid #555;
   font-size: 18pt;
-  margin: 0px 0px 10px;
+  margin: 0 0 10px;
   padding: 8px;
 }
 
 h3 {
-  margin: 0px;
-  padding: 4px 0 0px 4px;
+  margin: 0;
+  padding: 4px 0 0 4px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 h5 {
   font-size: 9pt;
-  font-weight: bold;
   padding: 4px 0 4px 2px;
   margin: 0;
-}
-
-h5.diskpool {
-  font-weight: normal;
-  clear: both;
-  padding: 10px 0 4px 4px;
 }
 
 /*==================================
@@ -61,14 +56,13 @@ header {
   z-index: 9999;
 }
 
-#menu {
+nav {
   float: right;
   height: 29px;
 }
 
 .tab {
   padding: 8px;
-  margin: 0;
   border-left: 1px solid rgb(46, 52, 54);
   border-right: 1px solid rgb(46, 52, 54);
   color: #EDEDED;
@@ -77,24 +71,24 @@ header {
   float: left;
 }
 
-#menu:first-child {
-  border-left: 2px solid rgb(46, 52, 54);
+nav:first-child {
+  border-left: 1px solid rgb(46, 52, 54);
 }
 
-#menu:last-child {
+nav:last-child {
   border-right: none;
 }
 
 .tab:hover {
   background: linear-gradient(#aaa, #666 ,#666 ,#666 ,#666);
-  height: 20px;
+  padding-bottom: 14px;
   box-shadow: 0 -9px 8px rgba(0, 0, 0, 0.6);
 }
 
 .tab.active {
   background: #666;
   color: #fff;
-  height: 20px;
+  padding-bottom: 14px;
   box-shadow: 0 -9px 8px rgba(0, 0, 0, 0.6);
 }
 
@@ -111,12 +105,11 @@ header {
   width: 130px;
 }
 
-
 /* === Key === */
 #key-button {
   padding: 4px;
-
 }
+
 #key {
   position: fixed;
   right: 0;
@@ -154,128 +147,59 @@ header {
 }
 
 /*==================================
-  LOGO, MENU & KEY
+  LAYOUT
 ==================================*/
-.label, .label-bold {
-  position: absolute;
-  font-size: 7pt;
-  width: 180px;
-  height: 12px;
-  text-align: center;
-  color: #EEE;
+.col-small {
+  height: 80px !important;
 }
 
-.label-bold {
-  font-weight: bold;
+.col-3 {
+  width: 32.6% !important;
 }
 
-
-
-
-
-
-.width-col6 {
-  width: 16.4% !important;
-  height: 156px !important;
-  /*background: #fff;*/
+.col-2 {
+  width: 49.4% !important;
+  background: #fff;
 }
 
-.width-col3 {
-  width: 33% !important;
-  min-height: 156px !important;
-  /*background: #fff;*/;
-}
-
-.width-col1 {
+.col-1 {
   width: 99.4% !important;
-  /*background: #fff;*/;
+  height: auto !important;
 }
 
-.width-small {
-  height: 78px !important;
-  /*background-color: red;*/
-}
-#n\/a {
-  width: 16.4% !important;
+/* === View Specific === */
+.size-auto .col-small {
+  height: auto !important;
 }
 
+.size-auto #n\/a.col-2 {
+  width: 16% !important;
+  height: auto !important;
+}
 
+/* === Node Containers === */
+.node-group {
+  clear: both;
+  float: left;
+  width: 100%;
+}
 
-
-
-
-/* Define instances and clusters */
-div.instance, div.cluster {
+.node-panel {
+  background-color: #717171;
   position: relative;
-  margin: 0px 0px 4px 4px;
-  padding: 0px 0px 1px 0px;
+  margin: 4px;
   width: 16%;
   float: left;
-  outline: 1px dotted #555;
-  min-width: 160px;
-  min-height: 48px;
+  height: 156px;
+  padding: 4px;
 }
 
-div.room {
-  float: none;
-  width: auto;
-  overflow: auto;
-}
-
-div.room {
-  position: relative;
-  padding: 0px 0px 1px 0px;
-  width: auto;
+.node-cluster {
+  padding: 4px;
   float: left;
 }
-.room h5 {
-  font-size: 7pt;
-  font-weight: normal;
-  margin: 0;
-}
 
-
-
-
-
-
-
-/* Define diskpools */
-
-div.rack {
-  padding: 0;
-  width: 19px;
-  float: left;
-  overflow: auto;
-}
-p.rack {
-  padding: 0;
-  margin: 0;
-  font-size: 6pt;
-  width: 16px;
-  text-align: center;
-}
-
-div.diskpool > span.node, div.cluster > span.node {
-  float: left;
-  margin: 1px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Define nodes */
+/* === Define nodes === */
 .node {
   color: #000;
   width: 16px;
@@ -287,6 +211,9 @@ div.diskpool > span.node, div.cluster > span.node {
   text-align: center;
   font-size: 7px;
   background-position: center center;
+  float: left;
+  margin: 1px;
+  box-sizing: content-box;
 }
 
 .node:hover {
@@ -294,40 +221,39 @@ div.diskpool > span.node, div.cluster > span.node {
   z-index: 10000;
 }
 
-.cluster-container {
-  clear: both;
+
+
+/* === ES only (to be removed soon) === */
+div.instance, div.cluster {
   position: relative;
+  margin: 0 0 4px 4px;
+  padding: 0 0 1px 0;
+  width: 16%;
+  float: left;
+  outline: 1px dotted #555;
+  min-width: 160px;
+  min-height: 48px;
 }
 
+.rack {
+  padding: 0;
+  width: 22px;
+  float: left;
+  overflow: auto;
+}
 
-
-
-div.message {
-  position: absolute;
-  width: 100%;
+p.rack {
+  padding: 0;
+  margin: 0;
+  font-size: 6pt;
+  width: 22px;
   text-align: center;
-  height: 228px;
-  top: 45%;
-  margin-top: -124px;
 }
 
-.message img {
-  width: 200px;
-}
-
-.tooltip-inner {
-  text-align: left;
-  max-width: 300px;
-}
-
-
-
-
-
-
-
-
-/* Elasticsearch statuses */
+/*==================================
+  COLOURS
+==================================*/
+/* === Elastic Search Statuses === */
 .red            {outline: 1px solid #D00;}
 .yellow         {outline: 1px solid #FC0;}
 .red            {background-color: #D00;}
@@ -344,7 +270,8 @@ div.message {
 
 .note {
   background-image: url("../images/icons/multi_note.gif");
-  background-position: center 0px;
+  background-position: center 0;
+  background-repeat: no-repeat;
 }
 .warning, .critical {
   background-image: url("../images/icons/multi_plain.gif");
@@ -354,8 +281,6 @@ div.message {
 .downtime       {background-image: url("../images/icons/downtime.png");}
 .down           {background-image: url("../images/icons/dead.png");}
 .Test           {background-color: #999;}
-.maintenance    {}
-.pps            {}
 .cloud-bad      {background-color: #f57900;}
 .Production     {background-color: rgb(115, 210, 22);}
 .Ready          {background-color: rgb(201, 234, 22);}
@@ -365,3 +290,31 @@ div.message {
 .Draining       {background-color: rgb(32, 74, 135);}
 .Intervention   {background-color: rgb(193, 125, 17);}
 .Decomissioned  {background-color: rgb(0, 0, 0);}
+
+/*==================================
+  LABELS & POPUPS
+==================================*/
+.label, .label-bold {
+  position: absolute;
+  font-size: 7pt;
+  width: 180px;
+  height: 12px;
+  text-align: center;
+  color: #EEE;
+}
+
+.label-bold {
+  font-weight: bold;
+}
+
+.message {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 25%;
+}
+
+.tooltip-inner {
+  text-align: left;
+  max-width: 300px;
+}
