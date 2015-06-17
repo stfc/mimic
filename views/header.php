@@ -58,7 +58,7 @@ function display($results) {
                         }
 
                         // Renders node
-                        echo '<span id="n_'.$node_name.'" onclick="node('.$node_name.')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
+                        echo '<span id="n_'.$node_name.'" onclick="node(\''.$node_name.'\')" class="node '.$nodeStatus.'" title="'.htmlentities($nodeInfo).'"></span>';
                     }
                 } else {
                     // Renders no node
