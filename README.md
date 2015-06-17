@@ -3,6 +3,22 @@ mimic
 
 Mimic Is Monitoring Information Concisely
 
+Dependences
+---------
+For Scientific Linux release 6.4 (Carbon)
+```
+php
+php-mysql
+php-pgsql
+php-pear
+php-pear-Text-Diff
+php-horde-Horde-Text-Diff
+nc
+python-argparse
+python-ldap
+graphviz
+```
+
 Configuration
 ---------
 
@@ -34,7 +50,7 @@ LOOKUP[KEY] = /etc/keys/key.py
 Views
 ---------
 
-Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. It can then be added to the menu section in `index.php`.
+Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. It can then be added to the menu section in `index.php`. The view files should only be used to get the data and arrange it into the correct structure - the code that renders the page is located in `/views/header.php`
 
 
 Node page

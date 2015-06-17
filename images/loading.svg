@@ -7,19 +7,4 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
- width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
- <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
-  s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
-  c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
-  <path fill="#222" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
-    C22.32,8.481,24.301,9.057,26.013,10.047z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 20 20"
-      to="360 20 20"
-      dur="0.5s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="400" height="400" viewBox="0 0 40 40" xml:space="preserve"><path opacity="1" fill="#888" d="M20.2 5.17c-8.25 0-14.95 6.69-14.95 14.95 0 8.26 6.69 14.95 14.95 14.95s14.95-6.69 14.95-14.95C35.15 11.86 28.46 5.17 20.2 5.17zM20.2 31.75c-6.42 0-11.63-5.21-11.63-11.63 0-6.42 5.21-11.63 11.63-11.63 6.43 0 11.63 5.21 11.63 11.63C31.83 26.54 26.63 31.75 20.2 31.75z"/><path fill="#444" d="M26.01 10.05l1.65-2.87c-2.2-1.27-4.74-2.01-7.47-2.01h0v3.31h0C22.32 8.48 24.3 9.06 26.01 10.05z"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"/></path></svg>
