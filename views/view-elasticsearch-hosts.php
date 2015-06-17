@@ -56,10 +56,6 @@ foreach ($indices as $index_name => $index) {
     }
 }
 
-// echo "<!--\n";
-// print_r($host_shards);
-// echo "-->\n";
-
 echo "<div class='cluster-container'>\n";
 echo "<h2 class='cluster' style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
 foreach ($nodes as $node_id => $node) {
@@ -92,5 +88,3 @@ foreach ($nodes as $node_id => $node) {
     }
 }
 echo "</div>\n";
-
-?>

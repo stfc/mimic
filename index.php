@@ -28,7 +28,7 @@ require("inc/config-call.inc.php");
 </head>
 <body>
 <header>
-    <nav id="menu">
+    <nav>
         <li id="logical-workers" class="tab menu-link" title="Logical overview of worker nodes">Logical - Workers</li>
         <li id="logical-storage" class="tab menu-link" title="Logical overview of storage nodes">Logical - Storage</li>
         <li id="generational-storage" class="tab menu-link" title="Generational overview of storage nodes">Generational - Storage</li>
@@ -65,23 +65,20 @@ require("inc/config-call.inc.php");
 
             $("#farm").html(d);
             locateNode($('#inLocate').val());
-            $('span.node').tooltip({html: true, container: '#farm', placement: 'bottom'});
+            $('span.node').tooltip({html: true, container: '#farm', placement: 'auto bottom'});
 
             $.getScript("js/key.js"); // Gets the conditions for if a key should be shown or not
 
-            $.each($('div.cluster, div.instance'), function() {
-                $con_width = $(this).children('span.node').length;
-                if ($con_width <= 40) {
-                    $(this).addClass('width-small');
-                }
-                else if ($con_width > 40 && $con_width < 100) {
-                    $(this).addClass('width-col6');
-                }
-                else if ($con_width > 100 && $con_width < 200) {
-                    $(this).addClass('width-col3');
-                }
-                else if ($con_width > 500) {
-                    $(this).addClass('width-col1');
+            $.each($('.node-cluster'), function() {
+                $con_width = $(this).children('.node').length;
+                if ($con_width < 17) {
+                    $(this).parent().addClass('col-small');
+                } else if ($con_width > 80 && $con_width <= 136) {
+                    $(this).parent().addClass('col-3');
+                } else if ($con_width > 136 && $con_width <= 208) {
+                    $(this).parent().addClass('col-2');
+                } else if ($con_width > 208) {
+                    $(this).parent().addClass('col-1');
                 };
             });
 

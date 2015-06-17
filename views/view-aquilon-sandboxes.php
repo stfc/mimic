@@ -2,149 +2,81 @@
 require("header.php"); // Important includes
 
 // Config
-$AQUILON_URL = $CONFIG['URL']['AQUILON'].":6901";
+$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 
-function do_node($node) {
-    $short = explode('.', $node);
-    $short = $short[0];
-    $mynode = mysql_query("select note from nodelist LEFT JOIN notes on (notes.name=nodelist.name) where name=$short ORDER BY layer;");
-    if ($mynode and mysql_num_rows($mynode)) {
-        $nodecsf = mysql_fetch_row($mynode);
-    }
-    else {
-        $nodecsf = null;
-    }
+// Gets node data and formats it
+$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch");
+$all_nodes = json_decode($jsondata, true);
 
-    // Set defaults
-    $nodeStatus = "unknown";
-    $nodeNote = "";
-    $nodeInfo = "<h4>$node</h4>";
-    $nodeNote = $nodecsf[0];
+$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/branch_type_owner");
+$branches = json_decode($jsondata, true);
 
-    $ntup = nagios_state($short, $node, $nodeStatus);
-    if ($ntup[1]) {
-        $nodeStatus = $ntup[0];
-        $nodeInfo .= "<p><b>Nagios:</b> {$ntup[1]}</p>";
-    }
-    unset($ntup);
-
-    // Process notes
-    if ($nodeNote != "") {
-
-      // Tack note onto end of info string
-      $nodeInfo .= ' - '.$nodeNote;
-
-      // We want to be case insensitive!
-      $s = strtolower($nodeNote);
-      $nodeStatus .= ' note';
-    }
-    echo '<span id="n_'.$short.'" onclick="node(\''.$node."')\" class=\"node $nodeStatus\" title=\"".htmlentities($nodeInfo).'"></span>'."\n";
-}
-
-function do_systems($systems) {
-    if ($systems) {
-        $systems = explode("\n", trim($systems));
-        foreach ($systems as $s) {
-            do_node($s);
-        }
-    }
-    else {
-        echo "<span title='No managed systems'>&nbsp;&#x2205;</span>";
+// Gets notes for nodes
+$all_notes = Array();
+$notes = mysql_query("select name, note from notes");
+if ($notes and mysql_num_rows($notes)) {
+    while ($note = mysql_fetch_assoc($notes)) {
+        $all_notes[$note['name']] = $note['note'];
     }
 }
 
+// Initialise all branches (even empty ones!)
+$results = Array();
+foreach ($branches as $branch) {
 
-function do_domains($domains) {
+    $group = $branch['branch_type'];
+    $panel = $branch['branch_owner'];
+    $cluster = $branch['branch_name'];
 
-    global $AQUILON_URL;
-
-    echo "<div class=\"cluster\" style=\"width: auto\" id=\"cl_domains\">\n";
-    echo "  <h4 class=\"cluster\">Domains</h4>\n";
-    foreach ($domains as $domain) {
-        echo "  <div class=\"diskpool\" id=\"dp_$domain\">\n";
-        echo "    <h4 class=\"diskpool\">$domain</h4>\n";
-        $systems = file_get_contents("$AQUILON_URL/find/host?domain=$domain");
-        do_systems($systems);
-        echo "  </div>\n";
-    }
-    echo "</div>\n";
+    $results[$group][$panel][$cluster] = Array();
 }
 
+// Generates main array
+foreach ($all_nodes as $name => $panels) {
 
-function do_sandboxes($boxen) {
+    $group = $panels["branch_type"];
+    $panel = $panels["branch_owner"];
+    $cluster = $panels["branch_name"];
 
-    global $CONFIG;
-    global $AQUILON_URL;
+    $results[$group][$panel][$cluster][$name] = Array();
+    if (array_key_exists($name, $all_nodes)) {
+        $results[$group][$panel][$cluster][$name] = $all_nodes[$name];
+    };
+    if (array_key_exists($name, $all_notes)) {
+        $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
+    };
+}
 
-    $sandboxes = Array();
-    $sandboxname = '';
-    $realnames = Array();
-
-    foreach ($boxen as $l) {
-        $l = explode(' ', trim($l));
-
-        if ($l[0] == 'Sandbox:') {
-            $sandboxname = $l[1];
-        }
-        elseif ($l[0] == 'Owner:') {
-            $owner = $l[1];
-            if (!array_key_exists($owner, $realnames)) {
-                $id = $CONFIG['ID']['PATH'];
-                if (file_exists($id)) {
-                    $realname = exec("$id $owner");
-                    $realname = explode(',', $realname);
-                    $realname = $realname[0];
-                    if (! $realname) {
-                        $realname = $owner;
-                    }
-                    $realnames[$owner] = $realname;
+foreach ($results as $group => $panel) {
+    foreach ($panel as $owner => $nodes) {
+        if ($group != "domain") {
+            $realname = $owner;
+            $id = $CONFIG['ID']['PATH'];
+            if (file_exists($id)) {
+                $realname = exec("$id $owner");
+                $realname = explode(',', $realname);
+                $realname = $realname[0];
+                if (! $realname) {
+                    $realname = $owner;
                 }
             }
-            if (!array_key_exists($owner, $sandboxes)) {
-                $sandboxes{$owner} = Array();
+            if ($realname != $owner) {
+                $results[$group][$realname] = $results[$group][$owner];
+                unset($results[$group][$owner]);
             }
-            $sandboxes{$owner}[] = $sandboxname;
-            $sandboxname = '';
+        } else {
+            $results[$group]["Aquilon"] = $results[$group][$owner];
+            unset($results[$group][$owner]);
         }
-    }
-
-    asort($sandboxes);
-
-    foreach ($sandboxes as $user => $boxes) {
-        echo "<div class=\"cluster\" id=\"cl_$user\">\n";
-        echo "  <h4 class=\"cluster\" title=\"$user\">{$realnames[$user]}</h4>\n";
-        foreach ($boxes as $box) {
-            echo "  <div class=\"diskpool\" id=\"dp_$box\">\n";
-            echo "    <h5 class=\"diskpool\" title=\"$user/$box\">$box</h5>\n";
-            $systems = file_get_contents("$AQUILON_URL/find/host?sandbox=$user/$box");
-            do_systems($systems);
-            echo "  </div>\n";
-        }
-        echo "</div>\n";
     }
 }
 
-
-$boxen = file_get_contents("$AQUILON_URL/sandbox/command/show_all");
-$boxen = explode("\n", $boxen);
-
-$domains = Array();
-$domain_info = file_get_contents("$AQUILON_URL/domain?all");
-$domain_info = explode("\n", $domain_info);
-
-foreach ($domain_info as $line) {
-    $l = explode(' ', trim($line));
-    if ($l[0] == 'Domain:') {
-        $domains[] = $l[1];
-    }
+ksort($results);
+foreach ($results as $group => $panel) {
+    asort($results[$group]);
 }
 
-echo "<div>\n";
-do_domains($domains);
-echo "</div>\n";
-
-echo "<div style=\"clear: both\">\n";
-do_sandboxes($boxen);
-echo "</div>\n";
-
-?>
+// Renders page
+echo "<div class='size-auto'>";
+display($results);
+echo "</div>";
