@@ -1,8 +1,8 @@
 <?php
 
 #Config
-$NAGIOS_URL = $CONFIG['NAGIOS']['URL'];
-$HELPDESK_URL = $CONFIG['HELPDESK']['URL'];
+$NAGIOS_URL = $CONFIG['URL']['NAGIOS'];
+$HELPDESK_URL = $CONFIG['URL']['HELPDESK'];
 
 #Workhorse
 class pNagios

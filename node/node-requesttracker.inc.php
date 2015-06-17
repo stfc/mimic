@@ -10,7 +10,7 @@ class pRequestTracker
   function detail($NODE, $SHORT)
   {
     global $CONFIG;
-    $HELPDESK_URL = $CONFIG['HELPDESK']['URL'];
+    $HELPDESK_URL = $CONFIG['URL']['HELPDESK'];
     ?>
     <div id="requestTrackerDetails">
     <p class="loading">Loading...</p>
