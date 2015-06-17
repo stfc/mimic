@@ -16,10 +16,9 @@ include("inc/config-call.inc.php");
 include("inc/db-magdb-open.inc.php");
 include("inc/ouilookup.inc.php");
 
-$OVERWATCH_URL = $CONFIG['OVERWATCH']['URL'];
-$HARDTRACK_URL = $CONFIG['HARDTRACK']['URL'] . "hardtrack";
-$HELPDESK_URL = $CONFIG['HELPDESK']['URL'];
-$STATUS_URL = $CONFIG['STATUS']['URL'];
+$OVERWATCH_URL = $CONFIG['URL']['OVERWATCH'];
+$HARDTRACK_URL = $CONFIG['URL']['HARDTRACK'] . "hardtrack";
+$HELPDESK_URL = $CONFIG['URL']['HELPDESK'];
 
 class pMagdb
 {
@@ -117,7 +116,6 @@ class pMagdb
     global $OVERWATCH_URL;
     global $HARDTRACK_URL;
     global $HELPDESK_URL;
-    global $STATUS_URL;
 
     $renderer = new Horde_Text_Diff_Renderer_Inline();
 

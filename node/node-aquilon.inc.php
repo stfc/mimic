@@ -9,7 +9,7 @@ class pAquilon {
 <div id="aquilonDetails">
  <?php
  $info = False;
- $url = $CONFIG['AQUILON']['URL'] . ":6901/host/".urlencode($NODE);
+ $url = $CONFIG['URL']['AQUILON'] . ":6901/host/".urlencode($NODE);
 
  $h = get_headers($url);
  $h = substr($h[0], 9, 3);
