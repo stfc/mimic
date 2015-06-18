@@ -43,6 +43,9 @@ h5 {
   margin: 0;
 }
 
+a {
+  color: #6DD;
+}
 /*==================================
   LOGO, MENU & KEY
 ==================================*/
@@ -144,6 +147,14 @@ nav:last-child {
 #farm {
   float: left;
   margin-top: 40px;
+}
+
+footer {
+  padding: 40px 0;
+  float: left;
+  text-align: center;
+  width: 100%;
+  font-size: 12px;
 }
 
 /*==================================
