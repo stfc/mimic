@@ -1,6 +1,8 @@
 <?php
-$path = '/var/www/html/';
+
+$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
 require("inc/config-call.inc.php");
 require("inc/db-open.inc.php"); // MySQL Data sources
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
@@ -30,13 +32,19 @@ function display($results) {
                         $nodeStatus = "";
 
                         $nodeStatus = "unknown";
-                        if ($node['status']['state'] == true) {
-                            $nodeStatus = $node['status']['state'];
+                        if (array_key_exists('status', $node)) {
+                            if (array_key_exists('state', $node['status'])) {
+                                if ($node['status']['state'] == true) {
+                                    $nodeStatus = $node['status']['state'];
+                                }
+                            }
                         }
-                        if ($node['note'] == true) {
-                            $nodeNote = $node['note'];
-                            $nodeStatus .= ' note';
-                            $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
+                        if (array_key_exists('note', $node)) {
+                            if ($node['note'] == true) {
+                                $nodeNote = $node['note'];
+                                $nodeStatus .= ' note';
+                                $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
+                            }
                         }
                         $short = explode(".", $node_name);
                         $short = $short[0];

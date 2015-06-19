@@ -1,5 +1,5 @@
 <?php
-$path = '/var/www/html/';
+$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require('inc/config-call.inc.php');
 require('inc/functions.inc.php');
