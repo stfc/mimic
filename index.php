@@ -106,6 +106,7 @@ require("inc/config-call.inc.php");
         $(this).toggleClass("active");
         $("#key").slideToggle();
     });
-    </script>
+</script>
+<footer>Please report any bugs/issues to the mimic <a href="https://github.com/stfc/mimic/issues">GitHub</a> repository</footer>
 </body>
 </html>
