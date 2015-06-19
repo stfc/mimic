@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <?php
 
-$path = '/var/www/html/';
+$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require("inc/config-call.inc.php");
-include('inc/functions.inc.php');
-include('inc/db-open.inc.php');
-include('node/node-getName.inc.php');
+require('inc/functions.inc.php');
+require('inc/db-open.inc.php');
+require('node/node-getName.inc.php');
 global $NODE;
 global $SHORT;
 ?>
