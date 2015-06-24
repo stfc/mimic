@@ -147,6 +147,7 @@ nav:last-child {
 #farm {
   float: left;
   margin-top: 40px;
+  width: 100%;
 }
 
 footer {
@@ -291,6 +292,8 @@ p.rack {
 .critical       {background-position: center -22px;}
 .downtime       {background-image: url("../images/icons/downtime.png");}
 .down           {background-image: url("../images/icons/dead.png");}
+.uninstantiated {background-color: #666;}
+.instantiated   {background-color: #6DD;}
 .Test           {background-color: #999;}
 .cloud-bad      {background-color: #f57900;}
 .Production     {background-color: rgb(115, 210, 22);}
@@ -319,13 +322,13 @@ p.rack {
 }
 
 .message {
-  position: absolute;
-  width: 100%;
   text-align: center;
-  top: 25%;
 }
 
 .tooltip-inner {
   text-align: left;
   max-width: 300px;
+}
+.tooltip-inner .info-type {
+  text-transform: capitalize;
 }

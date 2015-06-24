@@ -17,9 +17,11 @@ if ($(".critical")[0]){
     $('.key-dropdown').append('<li><span class="node unknown critical"></span>Critical Alarm</li>');
 }
 if ($(".down")[0]){
-    $('.key-dropdown').append('<li><span class="node down"></span>Down/Unreachable</li>');
+    $('.key-dropdown').append('<li><span class="node down"></span>Unreachable</li>');
 }
-
+if ($(".uninstantiated")[0]){
+    $('.key-dropdown').append('<li><span class="node uninstantiated"></span>Uninstantiated</li>');
+}
 
 
 

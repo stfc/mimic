@@ -36,3 +36,4 @@ nosetests.xml
 
 # Keeping custom project files safe
 user-config.ini
+xmlrpc.config
