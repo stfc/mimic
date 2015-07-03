@@ -7,7 +7,8 @@ $plugins = Array(
   'requesttracker',
   'magdb',
   'aquilon',
-  'pakiti2-json'
+  'pakiti2-json',
+  'scd-cloud'
 );
 
 ?>
