@@ -3,14 +3,16 @@
 ==================================*/
 * {
   box-sizing: border-box;
+  margin: 0;
 }
 
-body {
+html, body {
   background: #666;
   color: #fff;
   font: 8pt 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 /*==================================
@@ -22,11 +24,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
-  background-color: #777;
-  border-bottom: 4px solid #555;
-  border-top: 4px solid #555;
-  font-size: 18pt;
-  margin: 0 0 10px;
+  background-color: #717171;
+  font-size: 22pt;
+  margin: 0 0 8px;
   padding: 8px;
 }
 
@@ -35,12 +35,14 @@ h3 {
   padding: 4px 0 0 4px;
   font-size: 14px;
   font-weight: bold;
+  cursor: default;
 }
 
 h5 {
   font-size: 9pt;
   padding: 4px 0 4px 2px;
   margin: 0;
+  cursor: default;
 }
 
 a {
@@ -143,7 +145,10 @@ nav:last-child {
   float: left;
   margin-right: 4px;
 }
-
+.wrapper {
+  min-height: 100%;
+  margin: 0 auto -80px;
+}
 #farm {
   float: left;
   margin-top: 40px;
@@ -157,6 +162,9 @@ footer {
   width: 100%;
   font-size: 12px;
 }
+footer, .push {
+  height: 80px;
+}
 
 /*==================================
   LAYOUT
@@ -166,16 +174,16 @@ footer {
 }
 
 .col-3 {
-  width: 32.6% !important;
+  width: 33.3% !important;
 }
 
 .col-2 {
-  width: 49.4% !important;
+  width: 50% !important;
   background: #fff;
 }
 
 .col-1 {
-  width: 99.4% !important;
+  width: 100% !important;
   height: auto !important;
 }
 
@@ -185,7 +193,7 @@ footer {
 }
 
 .size-auto #n\/a.col-2 {
-  width: 16% !important;
+  width: 16.6% !important;
   height: auto !important;
 }
 
@@ -194,13 +202,13 @@ footer {
   clear: both;
   float: left;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .node-panel {
   background-color: #717171;
-  position: relative;
-  margin: 4px;
-  width: 16%;
+  border: 4px solid #666;
+  width: 16.66%;
   float: left;
   height: 156px;
   padding: 4px;
@@ -321,8 +329,11 @@ p.rack {
   font-weight: bold;
 }
 
-.message {
+.loading {
+  position: absolute;
+  width: 100%;
   text-align: center;
+  top: 20%;
 }
 
 .tooltip-inner {
