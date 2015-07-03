@@ -23,7 +23,7 @@ require("inc/config-call.inc.php");
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
     <script type="text/javascript" src="js/monitor.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -48,64 +48,76 @@ require("inc/config-call.inc.php");
 
 <?php require 'inc/functions.inc.php'; ?>
 
-<div id="farm"><!-- Nodes get rendered in here --></div>
+<div class="wrapper">
+    <div id="farm"></div><!-- Nodes get rendered in here -->
+    <div class="push"></div>
+</div>
 <script>
-    var view = 'logical-workers';
-    $('#'+view).addClass('active');
-    var msg_loading = '<div class="message"><img src="images/loading.svg" alt="loading" /></div>';
-    $('#farm').html(msg_loading);
+var view = 'logical-workers';
+$('#' + view).addClass('active');
 
-    function update() {
-        var requested_view = view;
-        var request = $.get('views/view-'+view+'.php').done(function(d) {
-            if (view != requested_view) {
-                console.log("Ignoring callback for "+requested_view+", current view is "+view);
-                return;
+$loading = '<div class="loading"><img src="images/loading.svg" alt="loading" /></div>';
+$('#farm').html($loading);
+
+function update() {
+    var requested_view = view;
+    $.get('views/view-' + view + '.php').done(function (d) {
+        if (view !== requested_view) {
+            console.log('Ignoring callback for ' + requested_view + ', current view is ' + view);
+            return;
+        }
+
+        $('#farm').html(d);
+        locateNode($('#inLocate').val());
+
+        $('span.node').tooltip({html: true, container: '#farm', placement: 'auto bottom'});
+
+        // Gets the conditions for if a key should be shown or not
+        $.getScript('js/key.js');
+
+        // Increases width of panel if number of nodes is too high
+        $.each($('.node-cluster'), function () {
+            $con_width = $(this).children('.node').length;
+
+            if ($con_width < 17) {
+                $(this).parent().addClass('col-small');
+            } else if ($con_width > 80 && $con_width <= 136) {
+                $(this).parent().addClass('col-3');
+            } else if ($con_width > 136 && $con_width <= 208) {
+                $(this).parent().addClass('col-2');
+            } else if ($con_width > 208) {
+                $(this).parent().addClass('col-1');
             }
-
-            $("#farm").html(d);
-            locateNode($('#inLocate').val());
-            $('span.node').tooltip({html: true, container: '#farm', placement: 'auto bottom'});
-
-            $.getScript("js/key.js"); // Gets the conditions for if a key should be shown or not
-
-            $.each($('.node-cluster'), function() {
-                $con_width = $(this).children('.node').length;
-                if ($con_width < 17) {
-                    $(this).parent().addClass('col-small');
-                } else if ($con_width > 80 && $con_width <= 136) {
-                    $(this).parent().addClass('col-3');
-                } else if ($con_width > 136 && $con_width <= 208) {
-                    $(this).parent().addClass('col-2');
-                } else if ($con_width > 208) {
-                    $(this).parent().addClass('col-1');
-                };
-            });
-
         });
-    }
+    });
+}
 
-    //Refresh page
-    window.setInterval('update()', 60000);
+//Refresh page
+window.setInterval(function (){
     update();
+}, 60000); // Every 60 seconds
+update();
 
-    // Allows user to search
-    $("#inLocate").keyup(function(e) {
-        locateNode(this.value);
-    });
-    // Makes menu functional
-    $(".menu-link").click(function(e) {
-        $(".menu-link").removeClass("active");
-        $(this).addClass("active");
-        view = this.id;
-        $("#farm").html(msg_loading);
-        update();
-    });
-    // Shows and hides key
-    $("#key-button").click(function(e) {
-        $(this).toggleClass("active");
-        $("#key").slideToggle();
-    });
+// Allows user to search
+$('#inLocate').keyup(function () {
+    locateNode(this.value);
+});
+
+// Makes menu functional
+$('.menu-link').click(function () {
+    $('.menu-link').removeClass('active');
+    $(this).addClass('active');
+    view = this.id;
+    $("#farm").html($loading);
+    update();
+});
+
+// Shows and hides key
+$('#key-button').click(function () {
+    $(this).toggleClass('active');
+    $('#key').slideToggle();
+});
+
 </script>
 <footer>Please report any bugs/issues to the mimic <a href="https://github.com/stfc/mimic/issues">GitHub</a> repository</footer>
 </body>
