@@ -22,7 +22,7 @@ function display($results) {
             foreach ($panel as $cluster_name => $cluster) {
                 echo "<div class='node-cluster' id='$cluster_name'>";
                 if ($cluster_name == true) {
-                    echo "<h5>$cluster_name</h5>";
+                    echo "<h5 class='cluster-name'>$cluster_name</h5>";
                 };
 
                 if (!empty($cluster)) {
