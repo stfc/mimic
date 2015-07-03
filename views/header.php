@@ -38,6 +38,24 @@ function display($results) {
                                     $nodeStatus = $node['status']['state'];
                                 }
                             }
+
+                            // VMs only - Node shows as critical if conditions are met
+                            if (strpos($node_name, "vm") !== false) {
+                                if ($node['status']['state'] == "uninstantiated") {
+                                    if ($node["branch_name"] != "prod") {
+                                        $nodeStatus .= ' critical';
+                                        $nodeInfo .= "<p><b>Aquilon:</b> Warning: Uninstantiated VM not in prod, needs to be cleaned up!</p>";
+                                    }
+                                    if ($node["personality"] != "nubesvms") {
+                                        $nodeStatus .= ' critical';
+                                        $nodeInfo .= "<p><b>Aquilon:</b> Warning: Uninstantiated VM personality not nubesvms, needs to be cleaned up!</p>";
+                                    }
+                                }
+                                elseif ($node["branch_name"] != "prod") {
+                                    $nodeStatus .= ' warning';
+                                    $nodeInfo .= "<p><b>Aquilon:</b> Warning: VM host not in prod</p>";
+                                }
+                            }
                         }
                         if (array_key_exists('note', $node)) {
                             if ($node['note'] == true) {
@@ -59,7 +77,7 @@ function display($results) {
                             if (is_array($value)) {
                                 foreach($value as $k => $v) {
                                     if ( $k != 'panel' and $k != 'cluster') {
-                                        $nodeInfo .= "<p><b>$k</b>: $v</p>\n";
+                                        $nodeInfo .= "<p><b class='info-type'>$k</b>: $v</p>\n";
                                     }
                                 }
                             }
