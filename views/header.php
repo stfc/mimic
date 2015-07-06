@@ -40,7 +40,7 @@ function display($results) {
                             }
 
                             // VMs only - Node shows as critical if conditions are met
-                            if (strpos($node_name, "vm") !== false) {
+                            if (strpos($node_name, "vm") !== false and $group_name == "vm") {
                                 if ($node['status']['state'] == "uninstantiated") {
                                     if ($node["branch_name"] != "prod") {
                                         $nodeStatus .= ' critical';
