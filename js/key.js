@@ -1,12 +1,7 @@
-
 $('.key-dropdown').html('<li></li>');
-
-// Note
 if ($(".note")[0]){
     $('.key-dropdown').append('<li><span class="node unknown note"></span>Note</li>');
 }
-
-// Nagios
 if ($(".downtime")[0]){
     $('.key-dropdown').append('<li><span class="node downtime"></span>Downtime</li>');
 }
@@ -22,9 +17,6 @@ if ($(".down")[0]){
 if ($(".uninstantiated")[0]){
     $('.key-dropdown').append('<li><span class="node uninstantiated"></span>Uninstantiated</li>');
 }
-
-
-
 if ($(".full")[0]){
     $('.key-dropdown').append('<li><span class="node full"></span>Full</li>');
 }
@@ -37,7 +29,6 @@ if ($(".offline")[0]){
 if ($(".free")[0]){
     $('.key-dropdown').append('<li><span class="node free"></span>Free</li>');
 }
-
 if ($(".ReadOnly")[0]){
     $('.key-dropdown').append('<li><span class="node ReadOnly"></span>ReadOnly</li>');
 }
@@ -56,6 +47,9 @@ if ($(".replica")[0]){
 if ($(".Production")[0]){
     $('.key-dropdown').append('<li><span class="node Production"></span>Production</li>');
 }
-if ($(".Test")[0]){
-    $('.key-dropdown').append('<li><span class="node Test"></span>Test</li>');
+if ($(".Draining")[0]){
+    $('.key-dropdown').append('<li><span class="node Draining"></span>Draining</li>');
+}
+if ($(".Decomissioned")[0]){
+    $('.key-dropdown').append('<li><span class="node Decomissioned"></span>Decomissioned</li>');
 }
