@@ -11,13 +11,14 @@ require("inc/main-nagios.inc.php"); // Nagios library
 function display($results) {
 
     foreach ($results as $group_name => $group) {
-        echo "<div class='node-group' id='$group_name'>";
+
         if ($group_name == true) {
             echo "<h2 class='group-name'>$group_name</h2>";
         }
-
+        echo "<div class='node-group' id='$group_name'>";
         foreach ($group as $panel_name => $panel) {
-            echo "<div class='node-panel' id='$panel_name'>";
+
+            echo "<div class='node-panel grid-item' id='$panel_name'>";
             echo "<h3 class='panel-name'>$panel_name</h3>";
             foreach ($panel as $cluster_name => $cluster) {
                 echo "<div class='node-cluster' id='$cluster_name'>";

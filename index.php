@@ -1,6 +1,6 @@
 <?php
-  header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-  header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
 ?>
 <!DOCTYPE html>
 <?php
@@ -10,9 +10,9 @@ $SHORT = array (); # For names from nagios
 
 // Which page are we viewing?
 if (isset($_REQUEST['page']))
-  $page = mysql_escape_string($_REQUEST['page']);
+$page = mysql_escape_string($_REQUEST['page']);
 else
-  $page = 1;
+$page = 1;
 require("inc/config-call.inc.php");
 ?>
 <html>
@@ -25,107 +25,145 @@ require("inc/config-call.inc.php");
     <script type="text/javascript" src="js/monitor.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
+    <script src="http://enscrollplugin.com/releases/enscroll-0.6.1.min.js"></script>
 </head>
 <body>
-<header>
-    <nav>
-        <li id="logical-workers" class="tab menu-link" title="Logical overview of worker nodes">Logical - Workers</li>
-        <li id="logical-storage" class="tab menu-link" title="Logical overview of storage nodes">Logical - Storage</li>
-        <li id="generational-storage" class="tab menu-link" title="Generational overview of storage nodes">Generational - Storage</li>
-        <li id="generational-all" class="tab menu-link" title="Generational overview of all nodes">Generational - All</li>
-        <li id="aquilon-sandboxes" class="tab menu-link" title="Nodes in aquilon domains and sandboxes">AQ Sandboxes</li>
-        <li id="aquilon-personalities" class="tab menu-link" title="Nodes with aquilon personalities">AQ Personalities</li>
-        <li id="cloud" class="tab menu-link" title="Overview of cloud nodes">Cloud</li>
-        <li id="elasticsearch-routing" class="tab menu-link" title="Elasticsearch Routing Table">ES Routing</li>
-        <li id="elasticsearch-hosts" class="tab menu-link" title="Elasticsearch Shards by Host">ES Hosts</li>
-        <input type="text" id="inLocate" placeholder="Search by name" title="Names to search for (space or comma seperated)"/>
-        <li id="key-button" class="tab" title="Node colour key"><img src="images/icons/key.png"></li>
-    </nav>
-</header>
+    <header>
+        <img src="images/mimic-logo.png" width="170">
+        <input type="text" id="inLocate" placeholder="Search current view ..." title="Names to search for (space or comma seperated)"/>
+        <div class="scroll">
+        <nav>
+            <ul>
+                <div class="drop-head">
+                    <h4>Logical</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <li id="logical-workers" class="tab" title="Logical overview of worker nodes">Workers</li>
+                <li id="logical-storage" class="tab" title="Logical overview of storage nodes">Storage</li>
+            </ul>
+            <ul>
+                <div class="drop-head">
+                    <h4>Generational</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <li id="generational-storage" class="tab" title="Generational overview of storage nodes">Storage</li>
+                <li id="generational-all" class="tab" title="Generational overview of all nodes">Overview</li>
+            </ul>
+            <ul>
+                <div class="drop-head">
+                    <h4>Aquilon</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <li id="aquilon-sandboxes" class="tab" title="Nodes in aquilon domains and sandboxes">Sandboxes & Prod</li>
+                <li id="aquilon-personalities" class="tab" title="Nodes with aquilon personalities">Personalities</li>
+            </ul>
+            <ul>
+                <div class="drop-head">
+                    <h4>Cloud</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <li id="cloud" class="tab" title="Overview of cloud nodes">Overview</li>
+            </ul>
+            <ul>
+                <div class="drop-head">
+                    <h4>Elasticsearch</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <li id="elasticsearch-routing" class="tab" title="Elasticsearch Routing Table">Routing</li>
+                <li id="elasticsearch-hosts" class="tab" title="Elasticsearch Shards by Host">Hosts</li>
+            </ul>
+            <ul>
+                <div class="drop-head">
+                    <h4>Key</h4>
+                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
+                </div>
+                <div class="key"></div>
+            </ul>
+        </nav>
 
-<!-- Gets content injected from 'js/key.js'-->
-<div id="key"><ul class="key-dropdown"></ul></div>
+        </div>
+        <footer><p>Please report any bugs or issues to the mimic <a href="https://github.com/stfc/mimic">GitHub</a> repository</p>
+        <a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">Issues</a>
+        </footer>
 
-<?php require 'inc/functions.inc.php'; ?>
+    </header>
 
-<div class="wrapper">
-    <div id="farm"></div><!-- Nodes get rendered in here -->
-    <div class="push"></div>
-</div>
-<script>
-var view = 'logical-workers';
-$('#' + view).addClass('active');
+    <!-- Gets content injected from 'js/key.js'-->
 
-$loading = '<div class="loading"><img src="images/loading.svg" alt="loading" /></div>';
-$('#farm').html($loading);
 
-function update() {
-    var requested_view = view;
-    $.get('views/view-' + view + '.php').done(function (d) {
-        if (view !== requested_view) {
-            console.log('Ignoring callback for ' + requested_view + ', current view is ' + view);
-            return;
-        }
+    <?php require 'inc/functions.inc.php'; ?>
 
-        $('#farm').html(d);
-        locateNode($('#inLocate').val());
-
-        $('span.node').tooltip({html: true, container: '#farm', placement: 'auto bottom'});
-
-        // Gets the conditions for if a key should be shown or not
-        $.getScript('js/key.js');
-
-        // Increases width of panel if number of nodes is too high
-        $.each($('.node-cluster'), function () {
-            $con_width = $(this).children('.node').length;
-
-            if ($con_width < 17) {
-                $(this).parent().addClass('col-small');
-            } else if ($con_width > 80 && $con_width <= 136) {
-                $(this).parent().addClass('col-3');
-            } else if ($con_width > 136 && $con_width <= 208) {
-                $(this).parent().addClass('col-2');
-            } else if ($con_width > 208) {
-                $(this).parent().addClass('col-1');
+    <div class="wrapper">
+        <div id="farm"></div><!-- Nodes get rendered in here -->
+    </div>
+    <script>
+    var view = 'logical-workers';
+    $('#' + view).addClass('active');
+    $loading = '<div class="loading"><img src="images/loading.svg" alt="loading" /></div>';
+    $('#farm').html($loading);
+    function update() {
+        var requested_view = view;
+        $.get('views/view-' + view + '.php').done(function (d) {
+            if (view !== requested_view) {
+                console.log('Ignoring callback for ' + requested_view + ', current view is ' + view);
+                return;
             }
+            $('#farm').html(d);
+            locateNode($('#inLocate').val());
+            $('span.node').tooltip({html: true, container: '#farm', placement: 'auto bottom'});
+            // Gets the conditions for if a key should be shown or not
+            $.getScript('js/key.js');
+            // Increases width of panel if number of nodes is too high
 
-            // Adds title with number of nodes in
-            if ($(".cluster-name")[0]) {
-                $(this).children(".cluster-name").prop('title', "This section contains " + $con_width + " nodes");
-            } else {
-                $(this).prev().prop('title', "This section contains " + $con_width + " nodes");
-            }
+            $.each($('.node-cluster'), function () {
+                $con_width = $(this).children('.node').length;
+                if ($con_width > 240) {
+                    // alert($con_width);
+                    $(this).parent().addClass('grid-item-big');
+                }
+                // Adds title with number of nodes in
+                if ($(".cluster-name")[0]) {
+                    $(this).children(".cluster-name").prop('title', "This section contains " + $con_width + " nodes");
+                } else {
+                    $(this).prev().prop('title', "This section contains " + $con_width + " nodes");
+                }
+            });
+            $('.node-group').masonry({
+                gutter: 16,
+                itemSelector: '.grid-item',
+                columnWidth: 228
+            });
         });
+    }
+    //Refresh page
+    window.setInterval(function (){
+        update();
+    }, 60000); // Every 60 seconds
+    update();
+    // Allows user to search
+    $('#inLocate').keyup(function () {
+        locateNode(this.value);
     });
-}
-
-//Refresh page
-window.setInterval(function (){
-    update();
-}, 60000); // Every 60 seconds
-update();
-
-// Allows user to search
-$('#inLocate').keyup(function () {
-    locateNode(this.value);
-});
-
-// Makes menu functional
-$('.menu-link').click(function () {
-    $('.menu-link').removeClass('active');
-    $(this).addClass('active');
-    view = this.id;
-    $("#farm").html($loading);
-    update();
-});
-
-// Shows and hides key
-$('#key-button').click(function () {
-    $(this).toggleClass('active');
-    $('#key').slideToggle();
-});
-
-</script>
-<footer>Please report any bugs/issues to the mimic <a href="https://github.com/stfc/mimic/issues">GitHub</a> repository</footer>
+    // Makes menu functional
+    $('.tab').click(function () {
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
+        view = this.id;
+        $("#farm").html($loading);
+        update();
+    });
+    // Shows and hides key
+    $('.drop-head').click(function () {
+        $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+        $(this).siblings('li, div').slideToggle();
+    });
+    $('.scroll').enscroll({
+        propagateWheelEvent: false,
+        verticalScrollerSide: 'left',
+        easingDuration: 300,
+    });
+    </script>
+    <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

@@ -56,13 +56,13 @@ foreach ($indices as $index_name => $index) {
     }
 }
 
-echo "<div class='cluster-container'>\n";
-echo "<h2 class='cluster' style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
+echo "<h2 class='group-name' style='text-shadow: 1px 1px 4px {$health['status']};'>{$cluster['cluster_name']}</h2>\n";
+echo "<div class='node-group'>\n";
 foreach ($nodes as $node_id => $node) {
     if (!$node['attributes']['client']) {
         $node_name = $node['name'];
-        echo "<div class=\"cluster\">\n";
-        echo "<h5 class=\"cluster\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
+        echo "<div class=\"node-panel grid-item\">\n";
+        echo "<h5 class=\"node-name\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
         foreach ($host_shards[$node_id] as $shard) {
             $shard_class = $SHARD_STATES[$shard['state']];
             if (! $shard['primary']) {
