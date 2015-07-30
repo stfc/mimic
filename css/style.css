@@ -327,9 +327,21 @@ COLOURS
   background-position: center 0;
   background-repeat: no-repeat;
 }
+
+.note.critical {
+  background-image: url("../images/icons/multi_note.gif");
+  background-position: center -22px;
+}
+
+.note.warning {
+  background-image: url("../images/icons/multi_note.gif");
+  background-position: center -11px;
+}
+
 .warning, .critical {
   background-image: url("../images/icons/multi_plain.gif");
 }
+
 .warning        {background-position: center -11px;}
 .critical       {background-position: center -22px;}
 .downtime       {background-image: url("../images/icons/downtime.png");}
