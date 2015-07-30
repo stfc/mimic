@@ -1,5 +1,5 @@
 /*==================================
-  GLOBAL SETTINGS
+GLOBAL SETTINGS
 ==================================*/
 * {
   box-sizing: border-box;
@@ -13,10 +13,11 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
 }
 
 /*==================================
-  HEADERS
+HEADERS
 ==================================*/
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
@@ -26,8 +27,10 @@ h1, h2, h3, h4, h5, h6 {
 h2 {
   background-color: #717171;
   font-size: 22pt;
-  margin: 0 0 8px;
+  margin: 0px 0px 8px;
   padding: 8px;
+  width: 100%;
+  float: left;
 }
 
 h3 {
@@ -49,175 +52,206 @@ a {
   color: #6DD;
 }
 /*==================================
-  LOGO, MENU & KEY
+LOGO, MENU & KEY
 ==================================*/
 header {
-  background: #444 url("../images/mimic-logo.png") no-repeat 0 -3px / 140px auto;
-  box-shadow: 0 0 4px #000;
-  padding: 0;
-  position: fixed;
+  background: #333;
   float: left;
-  width: 100%;
-  z-index: 9999;
+  width: 180px;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-flow: column;
+}
+
+.scroll {
+  /*height: 80vh;*/
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  width: 180px !important;
+  padding-left: 14px;
+  float: left;
+  margin-bottom: 110px;
+}
+
+.vertical-track {
+  width: 2px;
+  background: #474747;
+  margin: 0 6px;
+  -webkit-transition: background 250ms linear;
+  transition: background 250ms linear;
+}
+
+.vertical-track:hover,
+.vertical-track.dragging {
+  background: #929292;
+}
+
+.vertical-track:hover .vertical-handle,
+.vertical-track.dragging .vertical-handle {
+  background: #6DD;
+}
+
+.vertical-handle {
+  width: 4px;
+  left: -1px;
+  background: #356671;
+  border-radius: 7px;
+  -webkit-transition: background 250ms linear;
+  transition: background 250ms linear;
 }
 
 nav {
-  float: right;
-  height: 29px;
+  float: left;
+  width: 100%;
+}
+.drop-head {
+  width: 100%;
+  float: left;
+  height: 30px;
+
+  cursor: pointer;
+}
+nav h4 {
+  padding-left: 2px;
+  color: #909090;
+  margin: 4px 0;
+
+  float: left;
+}
+.drop-head:hover span,
+.drop-head:hover h4 {
+  color: #dbdbdb;
+}
+
+nav ul {
+  margin: 0;
+  border-top: 1px solid #3B3B3B;
+  border-bottom: 1px solid #2A2A2A;
+  padding: 10px 0;
+  float: left;
+  width: 100%;
+}
+nav ul:first-child {
+  border-top: none;
+}
+nav ul:last-child {
+  border-bottom: none;
 }
 
 .tab {
-  padding: 8px;
-  border-left: 1px solid rgb(46, 52, 54);
-  border-right: 1px solid rgb(46, 52, 54);
+  padding: 8px 0 8px 18px;
   color: #EDEDED;
   cursor: pointer;
-  display: inline;
+  list-style-type: none;
+  margin: 2px 0;
+  background: #383838;
   float: left;
-}
-
-nav:first-child {
-  border-left: 1px solid rgb(46, 52, 54);
-}
-
-nav:last-child {
-  border-right: none;
+  width: 100%;
 }
 
 .tab:hover {
-  background: linear-gradient(#aaa, #666 ,#666 ,#666 ,#666);
-  padding-bottom: 14px;
-  box-shadow: 0 -9px 8px rgba(0, 0, 0, 0.6);
+  background: #555;
 }
 
 .tab.active {
   background: #666;
   color: #fff;
-  padding-bottom: 14px;
-  box-shadow: 0 -9px 8px rgba(0, 0, 0, 0.6);
+}
+
+.arrow {
+  color: #515151;
+  float: right;
+  font-size: 14px;
+  padding: 4px 16px 0px 0px;
 }
 
 #inLocate {
   background: #3C6950;
-  border-left: 1px solid #2E3436;
   color: #fff;
   font-size: 13px;
   padding: 6px 10px;
-  float: left;
-  border-top: none;
-  border-bottom: none;
-  border-right: none;
-  width: 130px;
+  border: none;
+  margin: 10px 6px;
+  width: 168px;
 }
 
 /* === Key === */
-#key-button {
-  padding: 4px;
-}
 
-#key {
-  position: fixed;
-  right: 0;
-  top: 28px;
-  width: 160px;
-  background-color: #444;
+.key {
+  width: 100%;
   color: #EDEDED;
-  border: 1px solid rgb(46, 52, 54);
-  z-index: 9998;
-  display: none;
-  border-radius: 0 0 0 8px;
   padding: 6px;
+  float: left;
 }
 
-.key-dropdown {
-  padding: 4px;
-  margin-left: 8px;
-}
-
-.key-dropdown li {
+.key li {
   list-style-type: none;
   padding: 0;
   clear: both;
   margin: 4px;
 }
 
-.key-dropdown span {
+.key span {
   float: left;
   margin-right: 4px;
 }
+
+
+
+
+
 .wrapper {
   min-height: 100%;
-  margin: 0 auto -80px;
+  margin: 0 auto -172px 180px;
 }
+
 #farm {
+  margin-top: 16px;
   float: left;
-  margin-top: 40px;
   width: 100%;
 }
 
 footer {
-  padding: 40px 0;
-  float: left;
+  padding: 0 16px 16px 16px;
+  left: 0;
+  bottom: 0;
   text-align: center;
-  width: 100%;
+  width: 180px;
   font-size: 12px;
-}
-footer, .push {
-  height: 80px;
+  position: fixed;
 }
 
 /*==================================
-  LAYOUT
+LAYOUT
 ==================================*/
-.col-small {
-  height: 80px !important;
-}
-
-.col-3 {
-  width: 33.3% !important;
-}
-
-.col-2 {
-  width: 50% !important;
-  background: #fff;
-}
-
-.col-1 {
-  width: 100% !important;
-  height: auto !important;
-}
-
-/* === View Specific === */
-.size-auto .col-small {
-  height: auto !important;
-}
-
-.size-auto #n\/a.col-2 {
-  width: 16.6% !important;
-  height: auto !important;
-}
-
 /* === Node Containers === */
 .node-group {
   clear: both;
   float: left;
   width: 100%;
   margin-bottom: 20px;
+  padding: 0 16px;
 }
-
 .node-panel {
   background-color: #717171;
-  border: 4px solid #666;
-  width: 16.66%;
   float: left;
-  height: 156px;
-  padding: 4px;
+  padding: 10px;
 }
 
+.grid-item {
+  margin-bottom: 16px;
+  width: 228px;
+}
+.grid-item-big {
+  width: 960px;
+}
 .node-cluster {
   padding: 4px;
   float: left;
 }
+
+
+
 
 /* === Define nodes === */
 .node {
@@ -271,7 +305,7 @@ p.rack {
 }
 
 /*==================================
-  COLOURS
+COLOURS
 ==================================*/
 /* === Elastic Search Statuses === */
 .red            {outline: 1px solid #D00;}
@@ -293,9 +327,21 @@ p.rack {
   background-position: center 0;
   background-repeat: no-repeat;
 }
+
+.note.critical {
+  background-image: url("../images/icons/multi_note.gif");
+  background-position: center -22px;
+}
+
+.note.warning {
+  background-image: url("../images/icons/multi_note.gif");
+  background-position: center -11px;
+}
+
 .warning, .critical {
   background-image: url("../images/icons/multi_plain.gif");
 }
+
 .warning        {background-position: center -11px;}
 .critical       {background-position: center -22px;}
 .downtime       {background-image: url("../images/icons/downtime.png");}
@@ -304,17 +350,17 @@ p.rack {
 .instantiated   {background-color: #6DD;}
 .Test           {background-color: #999;}
 .cloud-bad      {background-color: #f57900;}
-.Production     {background-color: rgb(115, 210, 22);}
-.Ready          {background-color: rgb(201, 234, 22);}
-.Holding        {background-color: rgb(46, 52, 54);}
-.Deployment     {background-color: rgb(237, 212, 0);}
-.ReadOnly       {background-color: rgb(114, 159, 207);}
-.Draining       {background-color: rgb(32, 74, 135);}
-.Intervention   {background-color: rgb(193, 125, 17);}
-.Decomissioned  {background-color: rgb(0, 0, 0);}
+.Production     {background-color: #73d216;}
+.Ready          {background-color: #caeb16;}
+.Holding        {background-color: #2e3436;}
+.Deployment     {background-color: #edd400;}
+.ReadOnly       {background-color: #729fcf;}
+.Draining       {background-color: #204a87;}
+.Intervention   {background-color: #c17d11;}
+.Decomissioned  {background-color: #000000;}
 
 /*==================================
-  LABELS & POPUPS
+LABELS & POPUPS
 ==================================*/
 .label, .label-bold {
   position: absolute;
@@ -330,10 +376,9 @@ p.rack {
 }
 
 .loading {
-  position: absolute;
   width: 100%;
   text-align: center;
-  top: 20%;
+  margin-top: 5%;
 }
 
 .tooltip-inner {
