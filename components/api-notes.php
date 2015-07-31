@@ -53,5 +53,3 @@ if ($NODE) {
 }
 
 echo json_encode($result);
-
-?>

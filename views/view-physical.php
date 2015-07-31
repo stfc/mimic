@@ -124,5 +124,3 @@ if ($allnodes and pg_num_rows($allnodes)) {
     }
     echo "</div>\n";
 }
-
-?>

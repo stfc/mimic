@@ -175,5 +175,3 @@ if (is_resource($process)) {
         echo $graph;
     }
 }
-
-?>

@@ -81,5 +81,3 @@ class pPakiti2
 }
 
 return new pPakiti2();
-
-?>

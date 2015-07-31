@@ -159,4 +159,3 @@ class pNagios
 }
 
 return new pNagios();
-?>

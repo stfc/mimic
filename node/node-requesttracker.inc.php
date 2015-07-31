@@ -69,4 +69,3 @@ class pRequestTracker
 }
 
 return new pRequestTracker();
-?>

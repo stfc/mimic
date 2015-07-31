@@ -10,5 +10,3 @@ $plugins = Array(
   'pakiti2-json',
   'scd-cloud'
 );
-
-?>
