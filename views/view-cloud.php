@@ -7,7 +7,7 @@ $AQUILON_URL = $CONFIG['URL']['AQUILON'];
 // Gets node data and formats it
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch?filter=nubes");
 $all_nodes = json_decode($jsondata, true);
-ksort ($all_nodes);
+uksort($all_nodes, "strnatcmp");
 
 // Gets list of instantiated vms
 $vmoutput = shell_exec('/usr/bin/python ../xmlrpc/vmpoolinfo.py');
