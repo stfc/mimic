@@ -11,17 +11,18 @@ require("inc/main-nagios.inc.php"); // Nagios library
 function display($results) {
 
     foreach ($results as $group_name => $group) {
-        echo "<div class='node-group' id='$group_name'>";
-        if ($group_name == true) {
+
+        if (!empty($group_name)) {
             echo "<h2 class='group-name'>$group_name</h2>";
         }
-
+        echo "<div class='node-group' id='$group_name'>";
         foreach ($group as $panel_name => $panel) {
-            echo "<div class='node-panel' id='$panel_name'>";
+
+            echo "<div class='node-panel grid-item' id='$panel_name'>";
             echo "<h3 class='panel-name'>$panel_name</h3>";
             foreach ($panel as $cluster_name => $cluster) {
                 echo "<div class='node-cluster' id='$cluster_name'>";
-                if ($cluster_name == true) {
+                if (!empty($cluster_name)) {
                     echo "<h5 class='cluster-name'>$cluster_name</h5>";
                 };
 
@@ -34,7 +35,7 @@ function display($results) {
                         $nodeStatus = "unknown";
                         if (array_key_exists('status', $node)) {
                             if (array_key_exists('state', $node['status'])) {
-                                if ($node['status']['state'] == true) {
+                                if (!empty($node['status']['state'])) {
                                     $nodeStatus = $node['status']['state'];
                                 }
                             }
@@ -58,7 +59,7 @@ function display($results) {
                             }
                         }
                         if (array_key_exists('note', $node)) {
-                            if ($node['note'] == true) {
+                            if (!empty($node['note'])) {
                                 $nodeNote = $node['note'];
                                 $nodeStatus .= ' note';
                                 $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
@@ -67,7 +68,7 @@ function display($results) {
                         $short = explode(".", $node_name);
                         $short = $short[0];
                         $ntup = nagios_state($short, $node_name, $nodeStatus);
-                        if ($ntup[1] == true) {
+                        if (!empty($ntup[1])) {
                             $nodeStatus = $ntup[0];
                             $nodeInfo .= '<p><b>Nagios:</b>'.$ntup[1].'</p>';
                         }
