@@ -74,5 +74,3 @@ foreach ($index_names as $index_name) {
     echo "</div>\n";
 }
 echo "</div>\n";
-
-?>

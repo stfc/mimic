@@ -22,5 +22,3 @@ function prettytime ($t) {
 function fPluginFail($errno, $errstr, $errfile, $errline) {
   echo "  <div><p>Parse error while loading plugin. $errstr $errfile $errline</p></div>\n";
 }
-
-?>

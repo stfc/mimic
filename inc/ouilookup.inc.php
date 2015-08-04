@@ -19,4 +19,3 @@ function ouilookup($mac)
 	  return("Unknown OUI Prefix");
 	}
 }
-?>

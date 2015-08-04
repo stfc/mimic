@@ -279,5 +279,3 @@ class pMagdb
 }
 
 return new pMagdb();
-
-?>

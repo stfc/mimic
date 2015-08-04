@@ -97,4 +97,3 @@ class pBatchSystem
 }
 
 return new pBatchSystem();
-?>

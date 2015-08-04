@@ -44,5 +44,3 @@ function nagios_state($short, $node, $nodeStatus) {
     }
     return(Null);
 }
-
-?>

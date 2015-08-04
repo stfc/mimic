@@ -79,5 +79,3 @@ class pNotes
 }
 
 return new pNotes();
-
-?>
