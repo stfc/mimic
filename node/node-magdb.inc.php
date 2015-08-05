@@ -31,8 +31,8 @@ class pMagdb
     {
         $got = pg_query("select * from \"vCastor\" where \"machineName\" = '".mysql_real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_assoc($got);
-            return($r);
+            $row = pg_fetch_assoc($got);
+            return($row);
         }
         else {
             return(null);
@@ -43,8 +43,8 @@ class pMagdb
     {
         $got = pg_query("select \"lastUpdateDate\",\"lastUpdatedBy\",\"currentStatus\",\"normalStatus\",\"currentTeam\",\"serviceType\",\"virtualOrganisation\",\"diskPool\",\"sizeTb\",\"isPuppetManaged\" as \"puppetManaged\",\"isQuattorManaged\" as \"quattorManaged\",\"miscComments\" from \"storageSystemArchives\" where \"machineName\" = '".mysql_real_escape_string($machineName)."' order by \"lastUpdateDate\" asc");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_all($got);
-            return($r);
+            $row = pg_fetch_all($got);
+            return($row);
         }
         else {
             return(Array());
@@ -55,8 +55,8 @@ class pMagdb
     {
         $got = pg_query("select \"systemId\", \"ipAddress\" from \"vNetwork\" where \"fqdn\" = '".mysql_real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_assoc($got);
-            return($r);
+            $row = pg_fetch_assoc($got);
+            return($row);
         }
         else {
             return(null);
@@ -67,8 +67,8 @@ class pMagdb
     {
         $got = pg_query("select fqdn from \"vNetwork\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_all($got);
-            return($r);
+            $row = pg_fetch_all($got);
+            return($row);
         }
         else {
             return(null);
@@ -79,8 +79,8 @@ class pMagdb
     {
         $got = pg_query("select \"roomName\",\"rackId\", \"systemRackPos\", \"categoryName\", \"vendorName\", \"serviceTag\", \"serviceTagURL\", \"lifestageName\" from \"vStatus\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_assoc($got);
-            return($r);
+            $row = pg_fetch_assoc($got);
+            return($row);
         }
         else {
             return(null);
@@ -91,8 +91,8 @@ class pMagdb
     {
         $got = pg_query('SELECT "name", "roomBuilding", "roomName", "upsPowered" FROM "vRackRoomPdus" WHERE "rackId"=\''.mysql_real_escape_string($rackId)."'");
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_all($got);
-            return($r);
+            $row = pg_fetch_all($got);
+            return($row);
         }
         else {
             return(null);
@@ -103,8 +103,8 @@ class pMagdb
     {
         $got = pg_query('select "name", "macAddress", "ipAddresses", "description", "isBootInterface" from "vNetworkInterfaces" where "systemId" = \''.mysql_escape_string($systemId).'\'');
         if ($got and pg_num_rows($got)) {
-            $r = pg_fetch_all($got);
-            return($r);
+            $row = pg_fetch_all($got);
+            return($row);
         }
         else {
             return(null);
@@ -181,11 +181,11 @@ class pMagdb
             echo "      <p class=\"warning\">Host not in magDB.</p>\n";
         }
 
-        $r = $this->getDBinfo($SHORT);
-        if ($r !== null) {
+        $row = $this->getDBinfo($SHORT);
+        if ($row !== null) {
             echo "<h3>Overwatch</h3>\n";
             echo "<dl>\n";
-            foreach ($r as $col => $val) {
+            foreach ($row as $col => $val) {
                 if ($val === null) {
                     $val = "&nbsp;";
                 }
@@ -221,27 +221,27 @@ class pMagdb
                     echo "<th>$h</th>";
                 }
                 echo "</tr>";
-                $pr = array_merge(Array("lastUpdatedBy" => "Nobody", "lastUpdateDate" => "Current"), $r); # Previous row
+                $previous_row = array_merge(Array("lastUpdatedBy" => "Nobody", "lastUpdateDate" => "Current"), $row); # Previous row
 
                 //Copy relevant parts of current state to history for comparison
                 $fr = Array();
                 foreach (array_keys($history[0]) as $k) {
-                    $fr[$k] = $pr[$k];
+                    $fr[$k] = $previous_row[$k];
                 }
                 $history[] = $fr;
 
-                $pr = False;
+                $previous_row = False;
 
                 //Display history
-                foreach ($history as $r) {
+                foreach ($history as $row) {
                     // Bit of a hack to preserve blame for current record
-                    if ($r['lastUpdatedBy'] == 'Nobody') {
-                        $r['lastUpdatedBy'] = $pr['lastUpdatedBy'];
+                    if ($row['lastUpdatedBy'] == 'Nobody') {
+                        $row['lastUpdatedBy'] = $previous_row['lastUpdatedBy'];
                     }
                     echo "<tr>";
-                    foreach ($r as $k => $c) {
-                        if ($pr and $pr[$k] != $r[$k] and $k != "lastUpdateDate"){
-                            $diff = new Horde_Text_Diff('auto', Array(Array((String) $pr[$k]), Array((String) $r[$k])));
+                    foreach ($row as $k => $c) {
+                        if ($previous_row and $previous_row[$k] != $row[$k] and $k != "lastUpdateDate"){
+                            $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$k]), Array((String) $row[$k])));
                             $c = $renderer->render($diff);
                         }
 
@@ -258,14 +258,14 @@ class pMagdb
                             }
                         }
 
-                        if ($pr and $pr[$k] == $r[$k]) {
+                        if ($previous_row and $previous_row[$k] == $row[$k]) {
                             echo "<td class=\"unchanged\">$c</td>";
                         }
                         else {
                             echo "<td class=\"changed\">$c</td>";
                         }
                     }
-                    $pr = $r;
+                    $previous_row = $row;
                     echo "</tr>";
                 }
                 echo "</table>";
