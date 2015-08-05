@@ -152,6 +152,19 @@ class pMagdb
         }
     }
 
+    private function render_pdu_list($room_pdus)
+    {
+        echo "<dl>\n";
+        foreach ($room_pdus as $room_pdu) {
+            $extra_info = '';
+            if ($room_pdu['upsPowered'] == 't') {
+                $extra_info = ' <b>← UPS Powered</b>';
+            }
+            printf("<dt>%s</dt><dd>%s %s%s</dd>\n", $room_pdu['name'], $room_pdu['roomBuilding'], $room_pdu['roomName'], $extra_info);
+        }
+        echo "</dl>\n";
+    }
+
     function detail($NODE, $SHORT)
     {
         global $OVERWATCH_URL;
@@ -195,15 +208,7 @@ class pMagdb
                 echo "<h3>Rack Power</h3>\n";
                 $room_pdus = $this->getRoomPdus($rack_info["rackId"]);
                 if ($room_pdus) {
-                    echo "<dl>\n";
-                    foreach ($room_pdus as $room_pdu) {
-                        $extra_info = '';
-                        if ($room_pdu['upsPowered'] == 't') {
-                            $extra_info = ' <b>← UPS Powered</b>';
-                        }
-                        printf("<dt>%s</dt><dd>%s %s%s</dd>\n", $room_pdu['name'], $room_pdu['roomBuilding'], $room_pdu['roomName'], $extra_info);
-                    }
-                    echo "</dl>\n";
+                    render_pdu_list($room_pdus);
                 } else {
                     echo "<p class=\"warning\">No rack power information.</p>\n";
                 }
