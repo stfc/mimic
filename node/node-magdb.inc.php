@@ -239,30 +239,30 @@ class pMagdb
                         $row['lastUpdatedBy'] = $previous_row['lastUpdatedBy'];
                     }
                     echo "<tr>";
-                    foreach ($row as $k => $c) {
+                    foreach ($row as $k => $cell) {
                         if ($previous_row and $previous_row[$k] != $row[$k] and $k != "lastUpdateDate"){
                             $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$k]), Array((String) $row[$k])));
-                            $c = $renderer->render($diff);
+                            $cell = $renderer->render($diff);
                         }
 
-                        if ($k == "lastUpdateDate" and $c != "Current") {
-                            $c = prettytime(time() - strtotime($c));
+                        if ($k == "lastUpdateDate" and $cell != "Current") {
+                            $cell = prettytime(time() - strtotime($cell));
                         } elseif ($k == "miscComments" ) {
-                            $c = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $c);
-                            $c = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $c);
+                            $cell = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $cell);
+                            $cell = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $cell);
                         } elseif (strpos($k, "Managed")) {
-                            if ($c == "t") {
-                                $c = "&#x2713;";
+                            if ($cell == "t") {
+                                $cell = "&#x2713;";
                             } else {
-                                $c = "&nbsp;";
+                                $cell = "&nbsp;";
                             }
                         }
 
                         if ($previous_row and $previous_row[$k] == $row[$k]) {
-                            echo "<td class=\"unchanged\">$c</td>";
+                            echo "<td class=\"unchanged\">$cell</td>";
                         }
                         else {
-                            echo "<td class=\"changed\">$c</td>";
+                            echo "<td class=\"changed\">$cell</td>";
                         }
                     }
                     $previous_row = $row;
