@@ -182,7 +182,7 @@ class pMagdb
         if ($history) {
             echo "<h3><span class=\"rollup\" onclick=\"toggleRollup('#node-magdb-history');\" title=\"Rollup Section\">&#x25BE; Overwatch State History</span></h3>";
             echo "<div id=\"node-magdb-history\"";
-            if (isset($_COOKIE["rollup_#node-magdb-history"]) and $_COOKIE["rollup_#node-magdb-history"] == "hidden") {
+            if (filter_input(INPUT_COOKIE, 'rollup_#node-magdb-history', FILTER_SANITIZE_STRING) == "hidden") {
                 echo " style=\"display: none\"";
             }
             echo ">\n";
