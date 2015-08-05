@@ -231,6 +231,17 @@ class pMagdb
         }
     }
 
+    private function render_networking($magdb_info)
+    {
+        echo "<h3>Networking</h3>\n";
+        echo "<object ";
+        //Add work-around for webkit's broken SVG embedding.
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "webkit")) {
+            echo 'style="width: 100%;" ';
+        }
+        echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$magdb_info["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+    }
+
     function detail($NODE, $SHORT)
     {
         global $OVERWATCH_URL;
@@ -275,13 +286,7 @@ class pMagdb
                 $room_pdus = $this->getRoomPdus($rack_info["rackId"]);
                 render_pdu_list($room_pdus);
 
-                echo "<h3>Networking</h3>\n";
-                echo "<object ";
-                //Add work-around for webkit's broken SVG embedding.
-                if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "webkit")) {
-                    echo 'style="width: 100%;" ';
-                }
-                echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$magdb_info["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+                render_networking($magdb_info);
             } else {
                 echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
             }
