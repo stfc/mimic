@@ -8,8 +8,8 @@ require_once("inc/functions.inc.php");
 
 $system = "793";
 
-if (isset($_REQUEST["system"])) {
-  $system = $_REQUEST["system"];
+if (isset($_GET["system"])) {
+  $system = $_GET["system"];
 }
 
 $graph_text = "";
