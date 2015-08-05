@@ -49,7 +49,7 @@ if ($system) {
     }
     unset($observed_ips);
 
-  if ($interfaces or $records) {
+    if ($interfaces or $records) {
         $count_ip = 0;
         if ($bonds) {
             foreach($bonds as $b) {
