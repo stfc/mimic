@@ -181,11 +181,11 @@ class pMagdb
             echo "<p class=\"warning\">Host not in magDB.</p>\n";
         }
 
-        $row = $this->getDBinfo($SHORT);
-        if ($row !== null) {
+        $overwatch_info = $this->getDBinfo($SHORT);
+        if ($overwatch_info !== null) {
             echo "<h3>Overwatch</h3>\n";
             echo "<dl>\n";
-            foreach ($row as $col => $val) {
+            foreach ($overwatch_info as $col => $val) {
                 if ($val === null) {
                     $val = "&nbsp;";
                 }
@@ -221,7 +221,7 @@ class pMagdb
                     echo "<th>$h</th>";
                 }
                 echo "</tr>";
-                $previous_row = array_merge(Array("lastUpdatedBy" => "Nobody", "lastUpdateDate" => "Current"), $row); # Previous row
+                $previous_row = array_merge(Array("lastUpdatedBy" => "Nobody", "lastUpdateDate" => "Current"), $overwatch_info); # Previous row
 
                 //Copy relevant parts of current state to history for comparison
                 $fr = Array();
