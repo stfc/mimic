@@ -225,8 +225,8 @@ class pMagdb
 
                 //Copy relevant parts of current state to history for comparison
                 $fr = Array();
-                foreach (array_keys($history[0]) as $k) {
-                    $fr[$k] = $previous_row[$k];
+                foreach (array_keys($history[0]) as $column) {
+                    $fr[$column] = $previous_row[$column];
                 }
                 $history[] = $fr;
 
@@ -239,18 +239,18 @@ class pMagdb
                         $row['lastUpdatedBy'] = $previous_row['lastUpdatedBy'];
                     }
                     echo "<tr>";
-                    foreach ($row as $k => $cell) {
-                        if ($previous_row and $previous_row[$k] != $row[$k] and $k != "lastUpdateDate"){
-                            $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$k]), Array((String) $row[$k])));
+                    foreach ($row as $column => $cell) {
+                        if ($previous_row and $previous_row[$column] != $row[$column] and $column != "lastUpdateDate"){
+                            $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$column]), Array((String) $row[$column])));
                             $cell = $renderer->render($diff);
                         }
 
-                        if ($k == "lastUpdateDate" and $cell != "Current") {
+                        if ($column == "lastUpdateDate" and $cell != "Current") {
                             $cell = prettytime(time() - strtotime($cell));
-                        } elseif ($k == "miscComments" ) {
+                        } elseif ($column == "miscComments" ) {
                             $cell = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $cell);
                             $cell = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $cell);
-                        } elseif (strpos($k, "Managed")) {
+                        } elseif (strpos($column, "Managed")) {
                             if ($cell == "t") {
                                 $cell = "&#x2713;";
                             } else {
@@ -258,7 +258,7 @@ class pMagdb
                             }
                         }
 
-                        if ($previous_row and $previous_row[$k] == $row[$k]) {
+                        if ($previous_row and $previous_row[$column] == $row[$column]) {
                             echo "<td class=\"unchanged\">$cell</td>";
                         }
                         else {
