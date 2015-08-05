@@ -6,11 +6,7 @@ require_once("inc/db-magdb-open.inc.php");
 require_once("inc/ouilookup.inc.php");
 require_once("inc/functions.inc.php");
 
-$system = "793";
-
-if (isset($_GET["system"])) {
-    $system = $_GET["system"];
-}
+$system = filter_input(INPUT_GET, 'system', FILTER_SANITIZE_NUMBER_INT);
 
 $graph_text = "";
 
