@@ -111,6 +111,47 @@ class pMagdb
         }
     }
 
+    private function render_history_rows($history)
+    {
+        global $HELPDESK_URL;
+
+        foreach ($history as $row) {
+            // Bit of a hack to preserve blame for current record
+            if ($row['lastUpdatedBy'] == 'Nobody') {
+                $row['lastUpdatedBy'] = $previous_row['lastUpdatedBy'];
+            }
+            echo "<tr>";
+            foreach ($row as $column => $cell) {
+                if ($previous_row and $previous_row[$column] != $row[$column] and $column != "lastUpdateDate"){
+                    $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$column]), Array((String) $row[$column])));
+                    $cell = $renderer->render($diff);
+                }
+
+                if ($column == "lastUpdateDate" and $cell != "Current") {
+                    $cell = prettytime(time() - strtotime($cell));
+                } elseif ($column == "miscComments" ) {
+                    $cell = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $cell);
+                    $cell = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $cell);
+                } elseif (strpos($column, "Managed")) {
+                    if ($cell == "t") {
+                        $cell = "&#x2713;";
+                    } else {
+                        $cell = "&nbsp;";
+                    }
+                }
+
+                if ($previous_row and $previous_row[$column] == $row[$column]) {
+                    echo "<td class=\"unchanged\">$cell</td>";
+                }
+                else {
+                    echo "<td class=\"changed\">$cell</td>";
+                }
+            }
+            $previous_row = $row;
+            echo "</tr>";
+        }
+    }
+
     function detail($NODE, $SHORT)
     {
         global $OVERWATCH_URL;
@@ -233,41 +274,7 @@ class pMagdb
                 $previous_row = False;
 
                 //Display history
-                foreach ($history as $row) {
-                    // Bit of a hack to preserve blame for current record
-                    if ($row['lastUpdatedBy'] == 'Nobody') {
-                        $row['lastUpdatedBy'] = $previous_row['lastUpdatedBy'];
-                    }
-                    echo "<tr>";
-                    foreach ($row as $column => $cell) {
-                        if ($previous_row and $previous_row[$column] != $row[$column] and $column != "lastUpdateDate"){
-                            $diff = new Horde_Text_Diff('auto', Array(Array((String) $previous_row[$column]), Array((String) $row[$column])));
-                            $cell = $renderer->render($diff);
-                        }
-
-                        if ($column == "lastUpdateDate" and $cell != "Current") {
-                            $cell = prettytime(time() - strtotime($cell));
-                        } elseif ($column == "miscComments" ) {
-                            $cell = preg_replace("/#\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">#$1</a>', $cell);
-                            $cell = preg_replace("/RT\s*([0-9][0-9]*)/", '<a href="'.$HELPDESK_URL.'/Ticket/Display.html?id=$1">RT$1</a>', $cell);
-                        } elseif (strpos($column, "Managed")) {
-                            if ($cell == "t") {
-                                $cell = "&#x2713;";
-                            } else {
-                                $cell = "&nbsp;";
-                            }
-                        }
-
-                        if ($previous_row and $previous_row[$column] == $row[$column]) {
-                            echo "<td class=\"unchanged\">$cell</td>";
-                        }
-                        else {
-                            echo "<td class=\"changed\">$cell</td>";
-                        }
-                    }
-                    $previous_row = $row;
-                    echo "</tr>";
-                }
+                render_history_rows();
                 echo "</table>";
                 echo "</div>\n";
             }
