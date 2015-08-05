@@ -123,19 +123,19 @@ class pMagdb
         if ($magdb_info !== null) {
             echo "<h3>System</h3>\n";
 
-            echo "      <dl>\n";
+            echo "<dl>\n";
             foreach ($magdb_info as $col => $val) {
                 if ($val !== null) {
                     if ($col == "systemId" && $val != "&nbsp;") {
                         $val = "&#x2116;&nbsp;<a href=\"$HARDTRACK_URL/?section=system&amp;a=$val\" title=\"View platform $val in HardTrack\">$val</a>\n";
                     }
-                    echo "        <dt>$col</dt><dd>$val</dd>\n";
+                    echo "<dt>$col</dt><dd>$val</dd>\n";
                 }
             }
-            echo "      </dl>\n";
+            echo "</dl>\n";
 
             if ($magdb_info["systemId"] !== null) {
-                echo "      <dl>\n";
+                echo "<dl>\n";
 
                 $rack_info = $this->getRack($magdb_info["systemId"]);
                 foreach ($rack_info as $col => $val) {
@@ -145,16 +145,16 @@ class pMagdb
                         }
                         if ($col != 'lifestageName') {
                             # Hide lifestageName because we've been really bad at keeping it correct and it scares people.
-                            echo "        <dt>$col</dt><dd>$val</dd>\n";
+                            echo "<dt>$col</dt><dd>$val</dd>\n";
                         }
                     }
                 }
-                echo "      </dl>\n";
+                echo "</dl>\n";
 
                 echo "<h3>Rack Power</h3>\n";
                 $room_pdus = $this->getRoomPdus($rack_info["rackId"]);
                 if ($room_pdus) {
-                    echo "      <dl>\n";
+                    echo "<dl>\n";
                     foreach ($room_pdus as $room_pdu) {
                         $extra_info = '';
                         if ($room_pdu['upsPowered'] == 't') {
@@ -162,9 +162,9 @@ class pMagdb
                         }
                         printf("<dt>%s</dt><dd>%s %s%s</dd>\n", $room_pdu['name'], $room_pdu['roomBuilding'], $room_pdu['roomName'], $extra_info);
                     }
-                    echo "      </dl>\n";
+                    echo "</dl>\n";
                 } else {
-                    echo "      <p class=\"warning\">No rack power information.</p>\n";
+                    echo "<p class=\"warning\">No rack power information.</p>\n";
                 }
 
                 echo "<h3>Networking</h3>\n";
@@ -178,7 +178,7 @@ class pMagdb
                 echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
             }
         } else {
-            echo "      <p class=\"warning\">Host not in magDB.</p>\n";
+            echo "<p class=\"warning\">Host not in magDB.</p>\n";
         }
 
         $row = $this->getDBinfo($SHORT);
@@ -203,9 +203,9 @@ class pMagdb
                 } elseif ($col == "castorInstance") {
                     $val = "<a href=\"$OVERWATCH_URL/index.php?view:instance:$val\" title=\"Overwatch servers in $val instance\">$val</a>\n";
                 }
-                echo "        <dt>$col</dt><dd>$val</dd>\n";
+                echo "<dt>$col</dt><dd>$val</dd>\n";
             }
-            echo "      </dl>\n";
+            echo "</dl>\n";
 
             $history = $this->getOverwatchHistory($NODE);
             if ($history) {
