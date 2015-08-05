@@ -27,7 +27,7 @@ class pMagdb
         return("magDB");
     }
 
-    private function getDBinfo($machineName)
+    private function get_db_info($machineName)
     {
         $got = pg_query("select * from \"vCastor\" where \"machineName\" = '".mysql_real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
@@ -39,7 +39,7 @@ class pMagdb
         }
     }
 
-    private function getOverwatchHistory($machineName)
+    private function get_overwatch_history($machineName)
     {
         $got = pg_query("select \"lastUpdateDate\",\"lastUpdatedBy\",\"currentStatus\",\"normalStatus\",\"currentTeam\",\"serviceType\",\"virtualOrganisation\",\"diskPool\",\"sizeTb\",\"isPuppetManaged\" as \"puppetManaged\",\"isQuattorManaged\" as \"quattorManaged\",\"miscComments\" from \"storageSystemArchives\" where \"machineName\" = '".mysql_real_escape_string($machineName)."' order by \"lastUpdateDate\" asc");
         if ($got and pg_num_rows($got)) {
@@ -51,7 +51,7 @@ class pMagdb
         }
     }
 
-    private function getMagdbInfo($machineName)
+    private function get_magdb_info($machineName)
     {
         $got = pg_query("select \"systemId\", \"ipAddress\" from \"vNetwork\" where \"fqdn\" = '".mysql_real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
@@ -63,7 +63,7 @@ class pMagdb
         }
     }
 
-    private function getHostnames($systemId)
+    private function get_hostnames($systemId)
     {
         $got = pg_query("select fqdn from \"vNetwork\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
@@ -75,7 +75,7 @@ class pMagdb
         }
     }
 
-    private function getRack($systemId)
+    private function get_rack($systemId)
     {
         $got = pg_query("select \"roomName\",\"rackId\", \"systemRackPos\", \"categoryName\", \"vendorName\", \"serviceTag\", \"serviceTagURL\", \"lifestageName\" from \"vStatus\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
@@ -87,7 +87,7 @@ class pMagdb
         }
     }
 
-    private function getRoomPdus($rackId)
+    private function get_room_pdus($rackId)
     {
         $got = pg_query('SELECT "name", "roomBuilding", "roomName", "upsPowered" FROM "vRackRoomPdus" WHERE "rackId"=\''.mysql_real_escape_string($rackId)."'");
         if ($got and pg_num_rows($got)) {
@@ -99,7 +99,7 @@ class pMagdb
         }
     }
 
-    private function getInterfaces($systemId)
+    private function get_interfaces($systemId)
     {
         $got = pg_query('select "name", "macAddress", "ipAddresses", "description", "isBootInterface" from "vNetworkInterfaces" where "systemId" = \''.mysql_escape_string($systemId).'\'');
         if ($got and pg_num_rows($got)) {
@@ -178,7 +178,7 @@ class pMagdb
         }
         echo "</dl>\n";
 
-        $history = $this->getOverwatchHistory($NODE);
+        $history = $this->get_overwatch_history($NODE);
         if ($history) {
             echo "<h3><span class=\"rollup\" onclick=\"toggleRollup('#node-magdb-history');\" title=\"Rollup Section\">&#x25BE; Overwatch State History</span></h3>";
             echo "<div id=\"node-magdb-history\"";
@@ -250,7 +250,7 @@ class pMagdb
 
         $renderer = new Horde_Text_Diff_Renderer_Inline();
 
-        $magdb_info = $this->getMagdbInfo($NODE);
+        $magdb_info = $this->get_magdb_info($NODE);
         if ($magdb_info !== null) {
             echo "<h3>System</h3>\n";
 
@@ -268,7 +268,7 @@ class pMagdb
             if ($magdb_info["systemId"] !== null) {
                 echo "<dl>\n";
 
-                $rack_info = $this->getRack($magdb_info["systemId"]);
+                $rack_info = $this->get_rack($magdb_info["systemId"]);
                 foreach ($rack_info as $col => $val) {
                     if ($col != "serviceTagURL" and $val !== null) {
                         if ($col == "serviceTag" && $val != "&nbsp;" && $rack_info["serviceTagURL"] !== null) {
@@ -283,7 +283,7 @@ class pMagdb
                 echo "</dl>\n";
 
 
-                $room_pdus = $this->getRoomPdus($rack_info["rackId"]);
+                $room_pdus = $this->get_room_pdus($rack_info["rackId"]);
                 render_pdu_list($room_pdus);
 
                 render_networking($magdb_info);
@@ -294,7 +294,7 @@ class pMagdb
             echo "<p class=\"warning\">Host not in magDB.</p>\n";
         }
 
-        $overwatch_info = $this->getDBinfo($SHORT);
+        $overwatch_info = $this->get_db_info($SHORT);
         if ($overwatch_info !== null) {
             render_overwatch_info($overwatch_info);
         }
