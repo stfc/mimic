@@ -6,6 +6,44 @@ require_once("inc/db-magdb-open.inc.php");
 require_once("inc/ouilookup.inc.php");
 require_once("inc/functions.inc.php");
 
+$STYLE_GRAPH = '
+    graph [bgcolor=transparent]
+    dpi=72
+    overlap=none
+    rankdir="LR"
+    concentrate=true
+    node [shape="box" fontsize=8 fontname="sans-serif" height=0 style=filled fillcolor=white width=1.6]
+    edge [dir=none]
+';
+
+$STYLE_BOND = '
+    style="filled"
+    color="#75507b"
+    fillcolor="#ad7fa8"
+';
+
+$STYLE_LLDP = '
+    tooltip="LLDP Information"
+    color="#8f5902"
+    fillcolor="#e9b96e"
+';
+
+$STYLE_BOOTABLE = '
+    color="#204a87"
+    fillcolor="#729fcf"
+    tooltip="Bootable"
+';
+
+$STYLE_DNS = '
+    color="#555753"
+    fillcolor="#d3d7cf"
+';
+
+$STYLE_UNKNOWN = '
+    style="dashed"
+    color="#888a85"
+';
+
 $system = filter_input(INPUT_GET, 'system', FILTER_SANITIZE_NUMBER_INT);
 
 $graph_text = "";
@@ -20,15 +58,7 @@ if (file_exists($DNS_CACHE_FILE)) {
     $dns = json_decode($dns, True);
 }
 
-$graph_text .= "digraph \"aliases\" {\n";
-
-$graph_text .= "graph [bgcolor=transparent];\n";
-$graph_text .= "dpi=72;\n";
-$graph_text .= "overlap=none;\n";
-$graph_text .= "rankdir=\"LR\";\n";
-$graph_text .= "concentrate=true;\n";
-$graph_text .= "node [shape=\"box\" fontsize=8 fontname=\"sans-serif\" height=0 style=filled fillcolor=white width=1.6];\n";
-$graph_text .= "edge [dir=none];\n";
+$graph_text .= "digraph \"aliases\" {\n$STYLE_GRAPH";
 
 if ($system) {
     $interfaces = pg_fetch_all(pg_query_params('select name, "macAddress", "isBootInterface" from "vNetworkInterfaces" where "systemId" = $1 order by name desc', Array($system)));
@@ -51,9 +81,7 @@ if ($system) {
             foreach($bonds as $b) {
                 $graph_text .= 'subgraph "cluster_'.$b["bondName"].'" {'."\n";
                 $graph_text .= '    "'.$b["macAddress"].'"'."\n";
-                $graph_text .= '    style="filled"'."\n";
-                $graph_text .= '    color="#75507b"'."\n";
-                $graph_text .= '    fillcolor="#ad7fa8"'."\n";
+                $graph_text .= $STYLE_BOND;
                 $graph_text .= '    label="'.$b["bondName"].'"'."\n";
                 $graph_text .= '}'."\n";
             }
@@ -68,7 +96,7 @@ if ($system) {
         foreach ($interfaces as $i) {
             $style = "";
             if ($i["isBootInterface"] == "t") {
-                $style = ' color="#204a87" fillcolor="#729fcf" tooltip="Bootable"';
+                $style = $STYLE_BOOTABLE;
             }
             $vendor = ouilookup($i["macAddress"]);
             $graph_text .= sprintf('"%s" [label="%s\n%s\n%s"%s];'."\n", $i["macAddress"], $i["name"], $i["macAddress"], $vendor, $style);
@@ -81,7 +109,7 @@ if ($system) {
                     $lastUpdateDate = explode(" ", $l["lastUpdateDate"]);
                     $lastUpdateDate = $lastUpdateDate[0];
                     if ($l["localPort"] != "") {
-                        $graph_text .= sprintf('"%s" [tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["localPort"], $vendor);
+                        $graph_text .= sprintf('"%s" [$STYLE_LLDP];'."\n", $l["localPort"], $vendor);
                         $graph_text .= sprintf('"%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l["localPort"], $l["localMac"]);
                     }
                     else {
@@ -90,20 +118,20 @@ if ($system) {
                     $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'" [color="#8f5902"];'."\n";
                     $graph_text .= '}'."\n";
                     $vendor = ouilookup($l["remoteMac"]);
-                    $graph_text .= sprintf('"%s" [label="%s\n%s\n%s" tooltip="LLDP Information" color="#8f5902" fillcolor="#e9b96e"];'."\n", $l["remoteMac"], $l["remotePort"], $l["remoteMac"], $vendor);
+                    $graph_text .= sprintf('"%s" [label="%s\n%s\n%s" %s];'."\n", $l["remoteMac"], $l["remotePort"], $l["remoteMac"], $vendor, $STYLE_LLDP);
                     $graph_text .= sprintf(
-                        '"%s" [label="%s\nObserved %s" color="#8f5902" tooltip="LLDP Information" fillcolor="#e9b96e" URL="/node.php?n=%s" target="_parent"];'."\n",
+                        '"%s" [label="%s\nObserved %s" '.$STYLE_LLDP.' URL="/node.php?n=%s" target="_parent"];'."\n",
                         $l["remoteHost"], $l["remoteHost"], $lastUpdateDate, $l['remoteHost']
                     );
                 }
             }
             else {
-                $unknown_switch = 'UnknownSwitchFor'.$i["macAddress"];
-                $unknown_port = 'UnknownPortFor'.$i["macAddress"];
-                $graph_text .= '"'.$unknown_switch.'" [label="Unknown Switch" style="dashed" color="#888a85"];'."\n";
-                $graph_text .= '"'.$unknown_port.'" [label="Unknown Port" style="dashed" color="#888a85"];'."\n";
-                $graph_text .= '"'.$unknown_switch.'" -> "'.$unknown_port.'" [style="dashed" color="#888a85"];'."\n";
-                $graph_text .= '"'.$unknown_port.'" -> "'.$i["macAddress"].'" [style="dashed" color="#888a85"];'."\n";
+                $unknown_switch = "UnknownSwitchFor{$i["macAddress"]}";
+                $unknown_port = "UnknownPortFor{$i["macAddress"]}";
+                $graph_text .= "\"$unknown_switch\" [label=\"Unknown Switch\" $STYLE_UNKNOWN];\n";
+                $graph_text .= "\"$unknown_port\" [label=\"Unknown Port\" $STYLE_UNKNOWN];\n";
+                $graph_text .= "\"$unknown_switch\" -> \"$unknown_port\" [$STYLE_UNKNOWN];\n";
+                $graph_text .= "\"$unknown_port\" -> \"{$i["macAddress"]}\" [$STYLE_UNKNOWN];\n";
             }
         }
         foreach ($records as $r) {
@@ -124,7 +152,7 @@ if ($system) {
                 $graph_text .= '"'.$r["ipAddress"].'" -> "'.$r["fqdn"].'";'."\n";
                 if (is_array($dns) and array_key_exists($r["fqdn"], $dns)) {
                     foreach ($dns[$r["fqdn"]] as $a) {
-                        $graph_text .= '"'.$a[3].'" [label="'.$a[3].'\n'.$a[0].'  '.$a[1].'  '.$a[2].'" color="#555753" fillcolor="#d3d7cf"]'."\n";
+                        $graph_text .= '"'.$a[3].'" [label="'.$a[3].'\n'.$a[0].'  '.$a[1].'  '.$a[2].'" $STYLE_DNS]'."\n";
                         $graph_text .= '"'.$r["fqdn"].'" -> "'.$a[3].'";'."\n";
                     }
                 }
