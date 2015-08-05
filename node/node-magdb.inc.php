@@ -156,11 +156,11 @@ class pMagdb
                 if ($room_pdus) {
                     echo "      <dl>\n";
                     foreach ($room_pdus as $room_pdu) {
-                        $s = '';
+                        $extra_info = '';
                         if ($room_pdu['upsPowered'] == 't') {
-                            $s = ' <b>← UPS Powered</b>';
+                            $extra_info = ' <b>← UPS Powered</b>';
                         }
-                        printf("<dt>%s</dt><dd>%s %s%s</dd>\n", $room_pdu['name'], $room_pdu['roomBuilding'], $room_pdu['roomName'], $s);
+                        printf("<dt>%s</dt><dd>%s %s%s</dd>\n", $room_pdu['name'], $room_pdu['roomBuilding'], $room_pdu['roomName'], $extra_info);
                     }
                     echo "      </dl>\n";
                 } else {
