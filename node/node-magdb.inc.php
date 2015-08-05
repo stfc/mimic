@@ -75,7 +75,7 @@ class pMagdb
         }
     }
 
-    private function get_rack($systemId)
+    private function get_system($systemId)
     {
         $got = pg_query("select \"roomName\",\"rackId\", \"systemRackPos\", \"categoryName\", \"vendorName\", \"serviceTag\", \"serviceTagURL\", \"lifestageName\" from \"vStatus\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
@@ -268,11 +268,11 @@ class pMagdb
             if ($magdb_info["systemId"] !== null) {
                 echo "<dl>\n";
 
-                $rack_info = $this->get_rack($magdb_info["systemId"]);
-                foreach ($rack_info as $col => $val) {
+                $system_info = $this->get_system($magdb_info["systemId"]);
+                foreach ($system_info as $col => $val) {
                     if ($col != "serviceTagURL" and $val !== null) {
-                        if ($col == "serviceTag" && $val != "&nbsp;" && $rack_info["serviceTagURL"] !== null) {
-                            $val = "<a href=\"".htmlspecialchars($rack_info["serviceTagURL"])."$val\" title=\"View details of service tag on Vendor's site\">$val</a>&#x219D;\n";
+                        if ($col == "serviceTag" && $val != "&nbsp;" && $system_info["serviceTagURL"] !== null) {
+                            $val = "<a href=\"".htmlspecialchars($system_info["serviceTagURL"])."$val\" title=\"View details of service tag on Vendor's site\">$val</a>&#x219D;\n";
                         }
                         if ($col != 'lifestageName') {
                             # Hide lifestageName because we've been really bad at keeping it correct and it scares people.
@@ -283,7 +283,7 @@ class pMagdb
                 echo "</dl>\n";
 
 
-                $room_pdus = $this->get_room_pdus($rack_info["rackId"]);
+                $room_pdus = $this->get_room_pdus($system_info["rackId"]);
                 render_pdu_list($room_pdus);
 
                 render_networking($magdb_info);
