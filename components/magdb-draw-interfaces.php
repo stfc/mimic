@@ -47,6 +47,7 @@ if ($system) {
       $lastseen[$l["ipAddress"]] = $l["lastSeen"];
     }
   }
+  unset($observed_ips);
 
   if ($interfaces or $records) {
     $count_ip = 0;
