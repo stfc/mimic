@@ -3,21 +3,27 @@ mimic
 
 Mimic Is Monitoring Information Concisely
 
+[![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
+[![Test Coverage](https://codeclimate.com/github/stfc/mimic/badges/coverage.svg)](https://codeclimate.com/github/stfc/mimic/coverage)
+
 Dependences
----------
+-----------
+
 For Scientific Linux release 6.4 (Carbon)
-```
-php
-php-mysql
-php-pgsql
-php-pear
-php-pear-Text-Diff
-php-horde-Horde-Text-Diff
-nc
-python-argparse
-python-ldap
-graphviz
-```
+
+| Package                               | Description                                         |
+| ------------------------------------- | --------------------------------------------------- |
+| php                                   |                                                     |
+| php-mysql                             | MySQL module for php.                               |
+| php-pgsql                             | PostgreSQL module for php.                          |
+| php-pear                              | PEAR - PHP Extension and Application Repository.    |
+| php-pear-Text-Diff                    | Engine for performing and rendering text diffs.     |
+| php-horde-Horde-Text-Diff             | Engine for performing and rendering text diffs.     |
+| nc                                    | Reads and writes data across network connections.   |
+| python-argparse                       | For writing user friendly command line interfaces.  |
+| python-ldap                           | LDAP interface module for Python.                   |
+| graphviz                              | Graph drawing tools.                                |
+
 
 Configuration
 ---------
