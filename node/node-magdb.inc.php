@@ -119,12 +119,12 @@ class pMagdb
 
         $renderer = new Horde_Text_Diff_Renderer_Inline();
 
-        $r2 = $this->getMagdbInfo($NODE);
-        if ($r2 !== null) {
+        $magdb_info = $this->getMagdbInfo($NODE);
+        if ($magdb_info !== null) {
             echo "<h3>System</h3>\n";
 
             echo "      <dl>\n";
-            foreach ($r2 as $col => $val) {
+            foreach ($magdb_info as $col => $val) {
                 if ($val !== null) {
                     if ($col == "systemId" && $val != "&nbsp;") {
                         $val = "&#x2116;&nbsp;<a href=\"$HARDTRACK_URL/?section=system&amp;a=$val\" title=\"View platform $val in HardTrack\">$val</a>\n";
@@ -134,14 +134,14 @@ class pMagdb
             }
             echo "      </dl>\n";
 
-            if ($r2["systemId"] !== null) {
+            if ($magdb_info["systemId"] !== null) {
                 echo "      <dl>\n";
 
-                $r4 = $this->getRack($r2["systemId"]);
-                foreach ($r4 as $col => $val) {
+                $rack_info = $this->getRack($magdb_info["systemId"]);
+                foreach ($rack_info as $col => $val) {
                     if ($col != "serviceTagURL" and $val !== null) {
-                        if ($col == "serviceTag" && $val != "&nbsp;" && $r4["serviceTagURL"] !== null) {
-                            $val = "<a href=\"".htmlspecialchars($r4["serviceTagURL"])."$val\" title=\"View details of service tag on Vendor's site\">$val</a>&#x219D;\n";
+                        if ($col == "serviceTag" && $val != "&nbsp;" && $rack_info["serviceTagURL"] !== null) {
+                            $val = "<a href=\"".htmlspecialchars($rack_info["serviceTagURL"])."$val\" title=\"View details of service tag on Vendor's site\">$val</a>&#x219D;\n";
                         }
                         if ($col != 'lifestageName') {
                             # Hide lifestageName because we've been really bad at keeping it correct and it scares people.
@@ -152,7 +152,7 @@ class pMagdb
                 echo "      </dl>\n";
 
                 echo "<h3>Rack Power</h3>\n";
-                $room_pdus = $this->getRoomPdus($r4["rackId"]);
+                $room_pdus = $this->getRoomPdus($rack_info["rackId"]);
                 if ($room_pdus) {
                     echo "      <dl>\n";
                     foreach ($room_pdus as $room_pdu) {
@@ -173,7 +173,7 @@ class pMagdb
                 if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "webkit")) {
                     echo 'style="width: 100%;" ';
                 }
-                echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$r2["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+                echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$magdb_info["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
             } else {
                 echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
             }
