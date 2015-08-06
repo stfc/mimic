@@ -54,7 +54,7 @@ a {
 /*==================================
 LOGO, MENU & KEY
 ==================================*/
-header {
+aside {
   background: #333;
   float: left;
   width: 180px;
@@ -62,6 +62,7 @@ header {
   position: fixed;
   display: flex;
   flex-flow: column;
+  z-index: 2;
 }
 
 .scroll {
@@ -70,7 +71,9 @@ header {
   width: 180px !important;
   padding-left: 14px;
   float: left;
-  margin-bottom: 110px;
+  margin-bottom: 60px;
+  border-top: 3px solid #3F3F3F;
+  border-bottom: 3px solid #3F3F3F;
 }
 
 .vertical-track {
@@ -137,7 +140,10 @@ nav ul:first-child {
 nav ul:last-child {
   border-bottom: none;
 }
-
+.menu-items {
+  float: left;
+  width: 100%;
+}
 .tab {
   padding: 8px 0 8px 18px;
   color: #EDEDED;
@@ -173,6 +179,7 @@ nav ul:last-child {
   border: none;
   margin: 10px 6px;
   width: 168px;
+  border-radius: 13px;
 }
 
 /* === Key === */
