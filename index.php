@@ -14,90 +14,75 @@ $page = mysql_escape_string($_REQUEST['page']);
 else
 $page = 1;
 require("inc/config-call.inc.php");
+include('config/plugins.inc.php');
 ?>
 <html>
 <head>
     <title>Tier1 Mimic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="images/mimic-icon.png" type="image/png" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-    <link rel="icon" href="images/mimic-icon.png" type="image/png" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.cookiebar.css" />
+
     <script type="text/javascript" src="js/monitor.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
-    <script src="http://enscrollplugin.com/releases/enscroll-0.6.1.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
+    <script type="text/javascript" src="//enscrollplugin.com/releases/enscroll-0.6.1.min.js"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery.cookiebar/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookiebar.js"></script>
+    <script type="text/javascript" src="js/js.cookie-2.0.0.min.js"></script>
+
+    <script type="text/javascript" src="js/plugins.js"></script>
 </head>
 <body>
-    <header>
-        <img src="images/mimic-logo.png" width="170">
-        <input type="text" id="inLocate" placeholder="Search current view ..." title="Names to search for (space or comma seperated)"/>
-        <div class="scroll">
-        <nav>
-            <ul>
-                <div class="drop-head">
-                    <h4>Logical</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <li id="logical-workers" class="tab" title="Logical overview of worker nodes">Workers</li>
-                <li id="logical-storage" class="tab" title="Logical overview of storage nodes">Storage</li>
-            </ul>
-            <ul>
-                <div class="drop-head">
-                    <h4>Generational</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <li id="generational-storage" class="tab" title="Generational overview of storage nodes">Storage</li>
-                <li id="generational-all" class="tab" title="Generational overview of all nodes">Overview</li>
-            </ul>
-            <ul>
-                <div class="drop-head">
-                    <h4>Aquilon</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <li id="aquilon-sandboxes" class="tab" title="Nodes in aquilon domains and sandboxes">Sandboxes & Prod</li>
-                <li id="aquilon-personalities" class="tab" title="Nodes with aquilon personalities">Personalities</li>
-            </ul>
-            <ul>
-                <div class="drop-head">
-                    <h4>Cloud</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <li id="cloud" class="tab" title="Overview of cloud nodes">Overview</li>
-            </ul>
-            <ul>
-                <div class="drop-head">
-                    <h4>Elasticsearch</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <li id="elasticsearch-routing" class="tab" title="Elasticsearch Routing Table">Routing</li>
-                <li id="elasticsearch-hosts" class="tab" title="Elasticsearch Shards by Host">Hosts</li>
-            </ul>
-            <ul>
-                <div class="drop-head">
-                    <h4>Key</h4>
-                    <span class="arrow glyphicon glyphicon-circle-arrow-down"></span>
-                </div>
-                <div class="key"></div>
-            </ul>
-        </nav>
+    <?php
+    require("config/menu-config.php");
 
-        </div>
-        <footer><p>Please report any bugs or issues to the mimic <a href="https://github.com/stfc/mimic">GitHub</a> repository</p>
-        <a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">Issues</a>
-        </footer>
+    function loadMenu($menu) {
+        foreach($menu as $section => $item) {
+            echo "<ul><div class='drop-head' onclick=\"toggleRollup('#$section');\"><h4>$section</h4><span class='arrow glyphicon glyphicon-circle-arrow-down'></span></div>";
 
-    </header>
+            echo "<div id='$section' class='menu-items'";
+            if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
+                echo " style='display: none'";
+            }
+            echo ">";
 
-    <!-- Gets content injected from 'js/key.js'-->
+            foreach($item as $item_name => $item_info) {
+                if (array_key_exists('other', $item_info)) {
+                    echo $item_info['other'];
+                } else {
+                    echo "<li id='{$item_info['link']}' class='tab' title='{$item_info['text']}'>{$item_info['name']}</li>";
+                }
+            }
+            echo "</div></ul>";
+        }
+    }
+    ?>
 
+    <aside>
+        <!-- Header -->
+        <header>
+            <img src="images/mimic-logo.png" width="170">
+            <input type="text" id="inLocate" placeholder="Search current view ..." title="Names to search for (space or comma seperated)"/>
+        </header>
 
-    <?php require 'inc/functions.inc.php'; ?>
+        <!-- Menu -->
+        <div class="scroll"><nav><?php loadMenu($menu);?></nav></div>
 
+        <!-- Footer -->
+        <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">Issues</a></footer>
+    </aside>
+
+    <!-- Main content -->
     <div class="wrapper">
-        <div id="farm"></div><!-- Nodes get rendered in here -->
+        <div id="farm"><!-- Nodes get rendered in here --></div>
     </div>
-    <script>
+
+    <script type="text/javascript">
     var view = 'logical-workers';
     $('#' + view).addClass('active');
     $loading = '<div class="loading"><img src="images/loading.svg" alt="loading" /></div>';
@@ -154,14 +139,27 @@ require("inc/config-call.inc.php");
         update();
     });
     // Shows and hides key
-    $('.drop-head').click(function () {
-        $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
-        $(this).siblings('li, div').slideToggle();
-    });
+    // $('.drop-head').click(function () {
+    //     $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+    //     $(this).siblings('li, div').slideToggle();
+    // });
     $('.scroll').enscroll({
         propagateWheelEvent: false,
         verticalScrollerSide: 'left',
         easingDuration: 300,
+    });
+    </script>
+
+    <!-- Cookie compliance  -->
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $.cookieBar({
+            message: 'We use cookies to remember your preferences',
+            acceptText: 'Cool! On with the show!',
+            autoEnable: false,
+            fixed: true,
+            zindex: '1',
+        });
     });
     </script>
     <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>

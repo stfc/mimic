@@ -1,12 +1,14 @@
 function toggleRollup(c_name) {
     // Check whether user has consented to cookie usage
-    if (jQuery.cookie('cc_cookie_accept') == "cc_cookie_accept") {
-        if ($.cookie("rollup_" + c_name) == "hidden") {
+    if (Cookies.get('cb-enabled') == "accepted") {
+        if (Cookies.get("rollup_" + c_name) == "hidden") {
 		    $(c_name).show("blind");
-            $.cookie("rollup_" + c_name, "shown");
+            Cookies.get("rollup_" + c_name, "shown");
         } else {
 		    $(c_name).hide("blind");
-            $.cookie("rollup_" + c_name, "hidden");
+            Cookies.get("rollup_" + c_name, "hidden");
         }
+    } else {
+        $(c_name).toggle("blind");
     }
 }
