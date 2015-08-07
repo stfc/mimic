@@ -5,7 +5,7 @@ $plugins = Array(
   'batchsystem',
   'notes',
   'requesttracker',
-  'magdb',
+  #'magdb',
   'aquilon',
   'pakiti2-json',
   'scd-cloud'

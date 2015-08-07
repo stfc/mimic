@@ -32,50 +32,61 @@ global $SHORT;
     set_error_handler("fPluginFail");
 
     include('config/plugins.inc.php');
-
-    foreach ($plugins as $p) {
-        $plugfile = "node/node-$p.inc.php";
+    echo "<div class='wrapper'>";
+    foreach ($plugins as $plugin) {
+        $plugfile = "node/node-$plugin.inc.php";
         if (file_exists($plugfile)) {
             $plug = include($plugfile);
             if (is_object($plug)) {
-                echo "<div class=\"sub\">\n";
-                echo "<h2>\n";
+
+                echo "<section>";
+
+                // HEADER START
+                echo "<h2>";
 
                 $header = $plug -> header($NODE, $SHORT);
-                if (!is_array($header)) {
-                    $header = Array($header);
+                // if (!is_array($header)) {
+                //     $header = Array($header);
+                // }
+                header();
+                echo "<span ";
+                if ($test === true) {
+                    echo "class=\"rollup\" onclick=\"toggleRollup('#$plugin');\"";
+                }
+                echo "title=\"Rollup Section\">&#x25BE;&nbsp;";
+                echo array_shift($header)."";
+                echo "</span>";
+
+
+                foreach ($header as $headerInfo) {
+                    echo "$headerInfo";
                 }
 
-                echo "<span class=\"rollup\" onclick=\"toggleRollup('#$p');\" title=\"Rollup Section\">&#x25BE;&nbsp;";
-                echo array_shift($header)."\n";
-                echo "</span>\n";
+                echo "</h2>";
 
-                foreach ($header as $h) {
-                    echo "$h\n";
-                }
+                // HEADER END
 
-                echo "</h2>\n";
 
-                echo "<div id=\"$p\"";
-                if (filter_input(INPUT_COOKIE, 'rollup_#'.$p.'', FILTER_SANITIZE_STRING) == "hidden") {
+                echo "<div id=\"$plugin\"";
+                if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
                     echo " style=\"display: none\"";
                 }
-                echo ">\n";
+                echo ">";
                 $plug -> detail($NODE, $SHORT);
-                echo "</div>\n";
-                echo "</div>\n";
+                echo "</div>";
+                echo "</section>";
             } else {
-                echo '<div class="sub" id="'.$p.'">';
-                echo '<p class="warning">Plugin file for plugin "'.$p.'" does not contain a valid plugin.</p>';
-                echo "</div>\n";
+                echo '<div class="content" id="'.$plugin.'">';
+                echo '<p class="warning">Plugin file for plugin "'.$plugin.'" does not contain a valid plugin.</p>';
+                echo "</div>";
             }
         } else {
-            echo '<div class="sub" id="'.$p.'">';
-            echo '<p class="warning">Could not find plugin file for plugin "'.$p.'".</p>';
-            echo "</div>\n";
+            echo '<div class="sub" id="'.$plugin.'">';
+            echo '<p class="warning">Could not find plugin file for plugin "'.$plugin.'".</p>';
+            echo "</div>";
         }
     }
-
+    echo "</div>";
     //Put error handler back
     restore_error_handler();
 
