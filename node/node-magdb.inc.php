@@ -204,7 +204,7 @@ class pMagdb
             $previous_row = False;
 
             //Display history
-            render_history_rows();
+            $this->render_history_rows();
             echo "</table>";
             echo "</div>\n";
         }
@@ -284,9 +284,9 @@ class pMagdb
 
 
                 $room_pdus = $this->get_room_pdus($system_info["rackId"]);
-                render_pdu_list($room_pdus);
+                $this->render_pdu_list($room_pdus);
 
-                render_networking($magdb_info);
+                $this->render_networking($magdb_info);
             } else {
                 echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
             }
@@ -296,7 +296,7 @@ class pMagdb
 
         $overwatch_info = $this->get_db_info($SHORT);
         if ($overwatch_info !== null) {
-            render_overwatch_info($overwatch_info);
+            $this->render_overwatch_info($overwatch_info);
         }
     }
 }
