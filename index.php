@@ -36,6 +36,7 @@ include('config/plugins.inc.php');
     <script type="text/javascript" src="js/js.cookie-2.0.0.min.js"></script>
 
     <script type="text/javascript" src="js/plugins.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Emilys+Candy' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <?php
@@ -43,7 +44,13 @@ include('config/plugins.inc.php');
 
     function loadMenu($menu) {
         foreach($menu as $section => $item) {
-            echo "<ul><div class='drop-head' onclick=\"toggleRollup('#$section');\"><h4>$section</h4><span class='arrow glyphicon glyphicon-circle-arrow-down'></span></div>";
+            echo "<ul><div class='drop-head' onclick=\"toggleRollup('#$section');\"><h4>$section</h4>";
+            if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
+                echo "<span class='arrow glyphicon glyphicon-circle-arrow-right'></span>";
+            } else {
+                echo "<span class='arrow glyphicon glyphicon-circle-arrow-down'></span>";
+            }
+            echo "</div>";
 
             echo "<div id='$section' class='menu-items'";
             if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
@@ -66,15 +73,19 @@ include('config/plugins.inc.php');
     <aside>
         <!-- Header -->
         <header>
-            <img src="images/mimic-logo.png" width="170">
+            <div class="logo">Mimic</div>
             <input type="text" id="inLocate" placeholder="Search current view ..." title="Names to search for (space or comma seperated)"/>
         </header>
 
         <!-- Menu -->
-        <div class="scroll"><nav><?php loadMenu($menu);?></nav></div>
-
-        <!-- Footer -->
-        <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">Issues</a></footer>
+        <div class="scroll">
+            <nav>
+                <!-- Menu -->
+                <?php loadMenu($menu);?>
+                <!-- Footer -->
+                <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">GitHub</a></footer>
+            </nav>
+        </div>
     </aside>
 
     <!-- Main content -->
@@ -139,15 +150,16 @@ include('config/plugins.inc.php');
         update();
     });
     // Shows and hides key
-    // $('.drop-head').click(function () {
-    //     $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
-    //     $(this).siblings('li, div').slideToggle();
-    // });
+    $('.drop-head').click(function () {
+        $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+    });
     $('.scroll').enscroll({
         propagateWheelEvent: false,
         verticalScrollerSide: 'left',
         easingDuration: 300,
+        addPaddingToPane: false,
     });
+
     </script>
 
     <!-- Cookie compliance  -->
