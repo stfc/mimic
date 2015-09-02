@@ -4,11 +4,6 @@ class vminfomation {
 
     function header($node) {
         $header = Array("SCD Cloud");
-
-        if (strpos($node, 'vm') === false and strpos($node, 'hv') === false) {
-            $items[] = "<p class='header-info info'>No info for host.</p>";
-        }
-        $items['thing'][] $test = true;
         return($header);
     }
 
@@ -124,6 +119,8 @@ class vminfomation {
                 }
             }
             echo "</ul>";
+        } else {
+            echo "<p class='info'>No info for host.</p>";
         }
     }
 }

@@ -16,12 +16,18 @@ global $SHORT;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="300" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js
+"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/info.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/jquery.cookiebar.css" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery.cookiebar.js"></script>
     <script type="text/javascript" src="js/js.cookie-2.0.0.min.js"></script>
     <script type="text/javascript" src="js/plugins.js"></script>
+
 </head>
 <body>
 <?php
@@ -42,36 +48,33 @@ global $SHORT;
                 echo "<section>";
 
                 // HEADER START
-                echo "<h2>";
+                echo "<div class='header' onclick=\"toggleRollup('#$plugin');\" title='Show/Hide'>";
 
                 $header = $plug -> header($NODE, $SHORT);
-                // if (!is_array($header)) {
-                //     $header = Array($header);
-                // }
-                header();
-                echo "<span ";
-                if ($test === true) {
-                    echo "class=\"rollup\" onclick=\"toggleRollup('#$plugin');\"";
+                if (!is_array($header)) {
+                    $header = Array($header);
                 }
-                echo "title=\"Rollup Section\">&#x25BE;&nbsp;";
-                echo array_shift($header)."";
-                echo "</span>";
-
-
+                echo "<h2>";
+                if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
+                    echo "<span class='glyphicon glyphicon-circle-arrow-right'></span> ";
+                } else {
+                    echo "<span class='glyphicon glyphicon-circle-arrow-down'></span> ";
+                }
+                echo array_shift($header)."</h2>";
                 foreach ($header as $headerInfo) {
-                    echo "$headerInfo";
+                    echo " $headerInfo";
                 }
 
-                echo "</h2>";
+                echo "</div>";
 
                 // HEADER END
 
-
-                echo "<div id=\"$plugin\"";
+                echo "<div class='plugin' id='$plugin'";
                 if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
-                    echo " style=\"display: none\"";
+                    echo " style='display: none'";
                 }
                 echo ">";
+
                 $plug -> detail($NODE, $SHORT);
                 echo "</div>";
                 echo "</section>";
@@ -92,6 +95,10 @@ global $SHORT;
 
 ?>
 <script type="text/javascript">
+// Shows and hides key
+$('.header').click(function () {
+    $(this).children('h2').children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+});
 $(document).ready(function(){
     $.cookieBar({
         message: 'We use cookies to remember your preferences',
@@ -101,6 +108,7 @@ $(document).ready(function(){
         zindex: '100',
     });
 });
+
 </script>
 </body>
 </html>
