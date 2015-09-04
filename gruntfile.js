@@ -13,15 +13,27 @@ module.exports = function(grunt) {
           compress: true
         },
         files: {
-          'js/bower.min.js': 'js/bower.js'
+          'min/js/bower.min.js': 'js/bower.js'
         }
+      }
+    },
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'min/css',
+          ext: '.min.css'
+        }]
       }
     }
 
   });
   grunt.registerTask('buildbower', [
     'bower_concat',
-    'uglify:bower'
+    'uglify:bower',
+    'cssmin:target'
   ]);
   require('load-grunt-tasks')(grunt);
 };
