@@ -1,7 +1,7 @@
 ![mimic](http://i.imgur.com/fCSbo0m.png)
 Mimic (1.3) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
 =====
-Mimic is a monitoring tool capable of pulling data from other monitoring systems and aggregating it into a simple and very visual webapp. It is currently being used and developed by the Tier 1 group at STFC RAL.
+Mimic is a monitoring tool capable of aggregating data from many different monitoring systems and displaying it in a simple and very visual webapp. It is currently being used and developed by the Tier 1 group at STFC RAL.
 
 
 Dependences
