@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
   grunt.initConfig({
     bower_concat: {
       all: {
@@ -7,33 +6,34 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      bower: {
+      js: {
         options: {
           mangle: true,
           compress: true
         },
-        files: {
-          'min/js/bower.min.js': 'js/bower.js'
-        }
+        files: [{
+          expand: true,
+          cwd: 'src/js',
+          src: ['*.js', '!*.min.js'],
+          dest: 'js'
+        }]
       }
     },
     cssmin: {
-      target: {
+      css: {
         files: [{
           expand: true,
-          cwd: 'css',
+          cwd: 'src/css',
           src: ['*.css', '!*.min.css'],
-          dest: 'min/css',
-          ext: '.min.css'
+          dest: 'css'
         }]
       }
     }
-
   });
   grunt.registerTask('buildbower', [
     'bower_concat',
-    'uglify:bower',
-    'cssmin:target'
+    'uglify:js',
+    'cssmin:css'
   ]);
   require('load-grunt-tasks')(grunt);
 };
