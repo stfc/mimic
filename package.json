@@ -1,6 +1,6 @@
 {
   "name": "mimic",
-  "version": "1.3.0",
+  "version": "1.1.5",
   "description": "mimic =====",
   "main": "index.php",
   "dependencies": {
@@ -21,7 +21,7 @@
     "url": "https://github.com/stfc/mimic"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/stfc/mimic/issues"
   }
