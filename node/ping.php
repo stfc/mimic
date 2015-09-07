@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-  if (isset($_REQUEST["node"])) {
-    $node = $_REQUEST["node"];
+  $node = filter_input(INPUT_GET, 'node', FILTER_SANITIZE_STRING);
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
