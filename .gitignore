@@ -37,3 +37,7 @@ nosetests.xml
 # Keeping custom project files safe
 user-config.ini
 xmlrpc.config
+
+# Build systems
+bower_components
+node_modules

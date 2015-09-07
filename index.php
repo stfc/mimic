@@ -18,23 +18,15 @@ include('config/plugins.inc.php');
 ?>
 <html>
 <head>
-    <title>Tier1 Mimic</title>
+    <title>Mimic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/jquery.cookiebar.css" />
 
+    <script type="text/javascript" src="js/bower.js"></script>
     <script type="text/javascript" src="js/monitor.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
-    <script type="text/javascript" src="//enscrollplugin.com/releases/enscroll-0.6.1.min.js"></script>
-
-    <script type="text/javascript" src="//code.jquery.com/jquery.cookiebar/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery.cookiebar.js"></script>
-    <script type="text/javascript" src="js/js.cookie-2.0.0.min.js"></script>
-
     <script type="text/javascript" src="js/plugins.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Emilys+Candy' rel='stylesheet' type='text/css'>
 </head>
