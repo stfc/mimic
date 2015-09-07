@@ -76,7 +76,7 @@ li {
 .header h2 {
   float: left;
   margin: 0 10px 0 0;
-  font-size: 16pt;
+  font-size: 14pt;
 }
 
 
@@ -102,7 +102,9 @@ a.tab-dark:hover {
   width: 100%;
 }
 
-
+h3 {
+  font-size: 12pt;
+}
 
 div.box {
   border: dotted rgb(211, 215, 207) 1px;
