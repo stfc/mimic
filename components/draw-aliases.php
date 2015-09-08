@@ -2,11 +2,7 @@
 
 require("inc/db-magdb-open.inc.php");
 
-$host = "";
-
-if (isset($_REQUEST["host"])) {
-  $host = $_REQUEST["host"];
-}
+$host = filter_input(INPUT_GET, 'host', FILTER_SANITIZE_STRING);
 
 $graph_text = "";
 
