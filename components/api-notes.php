@@ -7,8 +7,8 @@ require('inc/db-open.inc.php');
 
 
 $redo = 0;
-$NOTE = (isset($_REQUEST["note"])) ? $_REQUEST["note"] : Null;
-$NODE = (isset($_REQUEST["node"])) ? $_REQUEST["node"] : "";
+$NOTE = filter_input(INPUT_GET, 'note', FILTER_SANITIZE_STRING);
+$NODE = filter_input(INPUT_GET, 'node', FILTER_SANITIZE_STRING);
 
 $result = Array(
     "status" => "fail",
@@ -44,9 +44,9 @@ if ($NODE) {
     else {
         $got = mysql_query("select note, unix_timestamp() - unix_timestamp(time) from notes where name='".mysql_escape_string($NODE)."'");
         if ($got and mysql_num_rows($got)) {
-            $r = mysql_fetch_row($got);
-            $result["note"] = htmlspecialchars($r[0]);
-            $result["time"] = prettytime($r[1]);
+            $row = mysql_fetch_row($got);
+            $result["note"] = htmlspecialchars($row[0]);
+            $result["time"] = prettytime($row[1]);
         }
         $result["status"] = "ok";
     }
