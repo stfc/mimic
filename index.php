@@ -9,7 +9,7 @@ $NODES = array (); # For names from csf_monitor
 $SHORT = array (); # For names from nagios
 
 // Which page are we viewing?
-if (isset($_REQUEST['page']))
+if (filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING))
 $page = mysql_escape_string($_REQUEST['page']);
 else
 $page = 1;
