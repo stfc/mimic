@@ -1,7 +1,7 @@
 {
   "name": "mimic",
   "version": "1.1.5",
-  "description": "mimic =====",
+  "description": "Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.",
   "main": "index.php",
   "dependencies": {},
   "devDependencies": {
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/stfc/mimic"
   },
-  "author": "",
+  "author": "James Adams, Callum Williams",
   "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/stfc/mimic/issues"

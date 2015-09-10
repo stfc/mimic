@@ -37,6 +37,7 @@ nosetests.xml
 # Keeping custom project files safe
 user-config.ini
 xmlrpc.config
+config/oui-list.php
 
 # Build systems
 bower_components
