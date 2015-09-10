@@ -1,0 +1,25 @@
+{
+  "name": "mimic",
+  "version": "1.1.5",
+  "homepage": "https://github.com/stfc/mimic",
+  "authors": [
+    "Callum Williams",
+    "James Adams"
+  ],
+  "main": "index.php",
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "https://github.com/twbs/bootstrap.git#~3.3.5",
+    "enscroll": "https://github.com/jstoudt/enscroll.git#~0.6.0",
+    "jquery.cookiebar": "https://github.com/delboy1978uk/jquery.cookiebar.git#~1.1.0",
+    "js-cookie": "https://github.com/js-cookie/js-cookie.git#~2.0.3",
+    "masonry.pkgd.min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js"
+  }
+}
