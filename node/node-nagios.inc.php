@@ -29,9 +29,9 @@ class pNagios
         $items = Array("Nagios");
 
         foreach ($n_state as $server => $state) {
-            $items[] = "<span class=\"text-muted\">$server: </span>";
-            $items[] = "<a class=\"btn\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/status.cgi?host=".htmlspecialchars($objectname)."\">Status Details</a>";
-            $items[] = "<a class=\"btn\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/cmd.cgi?cmd_typ=55&amp;host=".htmlspecialchars($objectname)."\">Schedule Downtime</a>";
+            // $items[] = "<span class=\"text-muted\">$server: </span>"; does this need to be shown?
+            $items[] = "<a class=\"tab-dark\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/status.cgi?host=".htmlspecialchars($objectname)."\">Status Details</a>";
+            $items[] = "<a class=\"tab-dark\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/cmd.cgi?cmd_typ=55&amp;host=".htmlspecialchars($objectname)."\">Schedule Downtime</a>";
         }
 
         return($items);

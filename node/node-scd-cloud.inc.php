@@ -2,8 +2,9 @@
 
 class vminfomation {
 
-    function header() {
-        return("SCD Cloud");
+    function header($node) {
+        $header = Array("SCD Cloud");
+        return($header);
     }
 
     function detail($node) {

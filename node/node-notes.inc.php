@@ -5,7 +5,8 @@ class pNotes
 
     function header()
     {
-        return("Notes");
+        $header = Array("Notes");
+        return($header);
     }
 
     function detail($NODE, $SHORT)
