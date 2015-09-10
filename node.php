@@ -22,6 +22,7 @@ global $SHORT;
 
     <script type="text/javascript" src="js/bower.js"></script>
     <script type="text/javascript" src="js/plugins.js"></script>
+
 </head>
 <body>
 <?php
@@ -32,55 +33,67 @@ global $SHORT;
     set_error_handler("fPluginFail");
 
     include('config/plugins.inc.php');
-
-    foreach ($plugins as $p) {
-        $plugfile = "node/node-$p.inc.php";
+    echo "<div class='wrapper'>";
+    foreach ($plugins as $plugin) {
+        $plugfile = "node/node-$plugin.inc.php";
         if (file_exists($plugfile)) {
             $plug = include($plugfile);
             if (is_object($plug)) {
-                echo "<div class=\"sub\">\n";
-                echo "<h2>\n";
+
+                echo "<section>";
+
+                // HEADER START
+                echo "<div class='header' onclick=\"toggleRollup('#$plugin');\" title='Show/Hide'>";
 
                 $header = $plug -> header($NODE, $SHORT);
                 if (!is_array($header)) {
                     $header = Array($header);
                 }
-
-                echo "<span class=\"rollup\" onclick=\"toggleRollup('#$p');\" title=\"Rollup Section\">&#x25BE;&nbsp;";
-                echo array_shift($header)."\n";
-                echo "</span>\n";
-
-                foreach ($header as $h) {
-                    echo "$h\n";
+                echo "<h2>";
+                if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
+                    echo "<span class='glyphicon glyphicon-circle-arrow-right'></span> ";
+                } else {
+                    echo "<span class='glyphicon glyphicon-circle-arrow-down'></span> ";
+                }
+                echo array_shift($header)."</h2>";
+                foreach ($header as $headerInfo) {
+                    echo " $headerInfo";
                 }
 
-                echo "</h2>\n";
+                echo "</div>";
 
-                echo "<div id=\"$p\"";
-                if (filter_input(INPUT_COOKIE, 'rollup_#'.$p.'', FILTER_SANITIZE_STRING) == "hidden") {
-                    echo " style=\"display: none\"";
+                // HEADER END
+
+                echo "<div class='plugin' id='$plugin'";
+                if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
+                    echo " style='display: none'";
                 }
-                echo ">\n";
+                echo ">";
+
                 $plug -> detail($NODE, $SHORT);
-                echo "</div>\n";
-                echo "</div>\n";
+                echo "</div>";
+                echo "</section>";
             } else {
-                echo '<div class="sub" id="'.$p.'">';
-                echo '<p class="warning">Plugin file for plugin "'.$p.'" does not contain a valid plugin.</p>';
-                echo "</div>\n";
+                echo '<div class="content" id="'.$plugin.'">';
+                echo '<p class="warning">Plugin file for plugin "'.$plugin.'" does not contain a valid plugin.</p>';
+                echo "</div>";
             }
         } else {
-            echo '<div class="sub" id="'.$p.'">';
-            echo '<p class="warning">Could not find plugin file for plugin "'.$p.'".</p>';
-            echo "</div>\n";
+            echo '<div class="sub" id="'.$plugin.'">';
+            echo '<p class="warning">Could not find plugin file for plugin "'.$plugin.'".</p>';
+            echo "</div>";
         }
     }
-
+    echo "</div>";
     //Put error handler back
     restore_error_handler();
 
 ?>
 <script type="text/javascript">
+// Shows and hides key
+$('.header').click(function () {
+    $(this).children('h2').children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+});
 $(document).ready(function(){
     $.cookieBar({
         message: 'We use cookies to remember your preferences',
@@ -90,6 +103,7 @@ $(document).ready(function(){
         zindex: '100',
     });
 });
+
 </script>
 </body>
 </html>
