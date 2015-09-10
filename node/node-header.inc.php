@@ -2,7 +2,6 @@
 <div class="head">
   <h1>
     Node <?php echo htmlspecialchars($NODE) . "\n" ?>
-    <a class="button" href="node/ping.php?node=<?php echo htmlspecialchars($NODE) ?>">Ping</a>
     <a class="button" href="ssh://root@<?php echo $NODE ?>">SSH</a>
     <?php
     //get number from hostname
