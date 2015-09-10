@@ -49,7 +49,7 @@ foreach ($vms as $name => $values) {
 // Generates main array
 $results = Array();
 foreach ($all_clusters as $name => $panels) {
-    if (($panels !== "vm-nubes") or (array_key_exists($name, $personality) == true)) {
+    if (($panels !== "vm-nubes") or (array_key_exists($name, $personality) === true)) {
 
         $group = '';
         $panel = $panels;

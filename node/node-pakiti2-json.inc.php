@@ -1,7 +1,7 @@
 <?php
 global $CONFIG;
 #Config
-$PAKITI_SERVER = $CONFIG['URL']['PAKITI'];
+$PAKITI_SERVER = $CONFIG['PAKITI']['URL'];
 
 class pPakiti2
 {
