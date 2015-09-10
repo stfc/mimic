@@ -9,7 +9,7 @@ function ouilookup($mac)
     // then looks them up in the gigantic array below. Returns a string containing
     // the vendor information. The array is based on nmap-mac-prefixes.
 
-    require("config/oui.inc.php");
+    require("config/oui-list.php");
 
     $oui=strtoupper(substr(preg_replace('`[^a-z0-9]`i','',$mac),0,6));
 	if (array_key_exists($oui, $ouilist)) {
