@@ -25,21 +25,4 @@ if ($notes and mysql_num_rows($notes)) {
 }
 
 // Generates main array
-$results = Array();
-foreach ($all_clusters as $name => $panels) {
-
-    $group = '';
-    $panel = $panels['panel'];
-    $cluster = '';
-
-    $results[$group][$panel][$cluster][$name] = Array();
-    if (array_key_exists($name, $all_notes)) {
-        $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-    };
-    if (array_key_exists($name, $all_clusters)) {
-        $results[$group][$panel][$cluster][$name]['status'] = $all_clusters[$name];
-    };
-}
-
-// Renders page
-display($results);
+generational_results($all_clusters, $all_notes);
