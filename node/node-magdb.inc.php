@@ -10,8 +10,6 @@ require_once('Horde/Text/Diff/Op/Change.php');
 require_once('Horde/Text/Diff/Renderer.php');
 require_once('Horde/Text/Diff/Renderer/Inline.php');
 
-$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 include("inc/config-call.inc.php");
 include("inc/db-magdb-open.inc.php");
 include("inc/ouilookup.inc.php");

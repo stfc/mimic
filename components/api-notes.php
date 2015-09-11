@@ -1,10 +1,8 @@
 <?php
-$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
 require('inc/config-call.inc.php');
 require('inc/functions.inc.php');
 require('inc/db-open.inc.php');
-
 
 $redo = 0;
 $NOTE = filter_input(INPUT_GET, 'note', FILTER_SANITIZE_STRING);

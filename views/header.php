@@ -1,8 +1,5 @@
 <?php
 
-$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-
 require("inc/config-call.inc.php");
 require("inc/db-open.inc.php"); // MySQL Data sources
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
