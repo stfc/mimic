@@ -7,6 +7,9 @@ from sys import argv, exit, exc_info
 import json
 import ConfigParser
 
+def parse_ticket_lines(lines):
+  return dict([[w.replace("'","").replace('"','').strip() for w in l[:-1].split(':', 1)] for l in lines if ":" in l])
+
 # Calling ini file
 config = ConfigParser.ConfigParser()
 config.read("../config/user-config.ini")
@@ -50,13 +53,11 @@ if len(argv) == 2 or len(argv) == 3:
     try:
       response = urlopen(search)
       tickets = response.readlines()
-      tickets = [ [w.replace("'","").replace('"','').strip() for w in l[:-1].split(':', 1)] for l in tickets[2:] ]
-      tickets = dict(tickets)
+      details = parse_ticket_lines(tickets[2:])
 
       for id, subject in tickets.iteritems():
         details = urlopen(Request(uri + "/REST/1.0/ticket/" + id + "/show")).readlines()[2:-1]
-        details = [ [w.replace("'","").replace('"','').strip() for w in l[:-1].split(':', 1)] for l in details if ":" in l]
-        details = dict(details)
+        details = parse_ticket_lines(details)
         tickets[id] = (tickets[id], details["Queue"], details["Created"], details["Status"])
 
       print(json.dumps(tickets))
