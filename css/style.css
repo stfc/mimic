@@ -1,110 +1,173 @@
-/*==================================
+/*================================
 GLOBAL SETTINGS
 ==================================*/
-* {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-html, body {
-  background: #666;
+body {
+  background-color: #666;
   color: #fff;
   font: 8pt 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
 }
 
-/*==================================
-HEADERS
-==================================*/
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-h2 {
-  background-color: #717171;
-  font-size: 22pt;
-  margin: 0px 0px 8px;
-  padding: 8px;
-  width: 100%;
-  float: left;
-}
 
-h3 {
-  margin: 0;
-  padding: 4px 0 0 4px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: default;
-}
-
-h5 {
-  font-size: 9pt;
-  padding: 4px 0 4px 2px;
-  margin: 0;
-  cursor: default;
-}
-
-a {
-  color: #6DD;
-}
 /*==================================
-LOGO, MENU & KEY
+ASIDE, HEADER
 ==================================*/
 aside {
-  background: #333;
+  position: fixed;
+  z-index: 2;
+  display: flex;
   float: left;
   width: 180px;
   height: 100vh;
-  position: fixed;
-  display: flex;
-  flex-flow: column;
-  z-index: 2;
+  background: #333;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  flex-flow: column;
 }
 
 header {
-  float: left;
-  border-bottom: 3px solid #3C6950;
-  height: 90px;
-  background: #333;
   z-index: 20;
+  float: left;
+  height: 90px;
+  border-bottom: 3px solid #3C6950;
+  background: #333;
 }
 
 .logo {
-  font-family: "Emilys Candy",cursive;
-  font-size: 56px;
-  text-align: center;
-  float: left;
-  width: 100%;
   color: #ddd;
+  text-align: center;
   text-shadow: 1px 1px 1px #444;
+  font-size: 56px;
+  font-family: "Emilys Candy",cursive;
 }
 
 #inLocate {
+  margin: 0 6px;
+  padding: 6px 10px;
+  width: 168px;
+  border: 3px solid #3C6950;
+  border-radius: 17px;
   background: #ddd;
   color: #000;
   font-size: 13px;
-  padding: 6px 10px;
-  border: 3px solid #3C6950;
-  margin: 0 6px;
-  width: 168px;
-  border-radius: 17px;
 }
 
-.scroll {
-  width: 180px !important;
-  padding-left: 14px;
+
+/* === Navigation === */
+nav {
   float: left;
+  margin-top: 16px;
+}
+
+.drop-head {
+  width: 100%;
+  height: 30px;
+  cursor: pointer;
+}
+
+.menu-header {
+  float: left;
+  margin: 4px 0;
+  padding-left: 2px;
+  color: #909090;
+}
+
+.drop-head:hover .arrow,
+.drop-head:hover .menu-header {
+  color: #dbdbdb;
+}
+
+.menu-section {
+  float: left;
+  margin: 0;
+  padding: 10px 0;
+  width: 100%;
+  border-top: 1px solid #3B3B3B;
+  border-bottom: 1px solid #2A2A2A;
+}
+
+.menu-section:first-child {
+  border-top: none;
+}
+
+.menu-items {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+
+.tab {
+  float: left;
+  margin: 2px 0;
+  padding: 8px 0 8px 18px;
+  width: 100%;
+  background: #383838;
+  color: #EDEDED;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: #555;
+}
+
+.tab.active {
+  background: #666;
+  color: #fff;
+}
+
+.arrow {
+  float: right;
+  padding: 4px 16px 0px 0px;
+  color: #515151;
+  font-size: 14px;
+}
+
+
+/* === Key === */
+.key {
+  padding: 6px;
+  color: #EDEDED;
+}
+
+.key-item {
+  clear: both;
+  margin: 4px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.key key-item {
+  float: left;
+  margin-right: 4px;
+}
+
+
+/* === Footer === */
+footer {
+  float: left;
+  padding: 16px;
+  width: 100%;
+  border-top: 1px solid #3B3B3B;
+  text-align: center;
+  font-size: 12px;
+}
+
+
+/* === Scroll Bar === */
+.scroll {
+  float: left;
+  padding-left: 14px;
+  width: 180px !important;
 }
 
 .vertical-track {
+  margin: 0 6px;
   width: 2px;
   background: #474747;
-  margin: 0 6px;
   -webkit-transition: background 250ms linear;
   transition: background 250ms linear;
 }
@@ -120,255 +183,144 @@ header {
 }
 
 .vertical-handle {
-  width: 4px;
   left: -1px;
-  background: #356671;
+  width: 4px;
   border-radius: 7px;
+  background: #356671;
   -webkit-transition: background 250ms linear;
   transition: background 250ms linear;
 }
 
-nav {
-  float: left;
-  width: 100%;
-  margin-top: 16px;
-}
-.drop-head {
-  width: 100%;
-  float: left;
-  height: 30px;
 
-  cursor: pointer;
-}
-nav h4 {
-  padding-left: 2px;
-  color: #909090;
-  margin: 4px 0;
-
-  float: left;
-}
-.drop-head:hover span,
-.drop-head:hover h4 {
-  color: #dbdbdb;
-}
-
-nav ul {
-  margin: 0;
-  border-top: 1px solid #3B3B3B;
-  border-bottom: 1px solid #2A2A2A;
-  padding: 10px 0;
-  float: left;
-  width: 100%;
-}
-nav ul:first-child {
-  border-top: none;
-}
-
-.menu-items {
-  float: left;
-  width: 100%;
-}
-.tab {
-  padding: 8px 0 8px 18px;
-  color: #EDEDED;
-  cursor: pointer;
-  list-style-type: none;
-  margin: 2px 0;
-  background: #383838;
-  float: left;
-  width: 100%;
-}
-
-.tab:hover {
-  background: #555;
-}
-
-.tab.active {
-  background: #666;
-  color: #fff;
-}
-
-.arrow {
-  color: #515151;
-  float: right;
-  font-size: 14px;
-  padding: 4px 16px 0px 0px;
-}
-
-footer {
-  border-top: 1px solid #3B3B3B;
-  padding: 16px;
-  text-align: center;
-  font-size: 12px;
-  float: left;
-  width: 100%;
-}
-
-/* === Key === */
-
-.key {
-  width: 100%;
-  color: #EDEDED;
-  padding: 6px;
-  float: left;
-}
-
-.key li {
-  list-style-type: none;
-  padding: 0;
-  clear: both;
-  margin: 4px;
-}
-
-.key span {
-  float: left;
-  margin-right: 4px;
-}
-
-
-
-
-
+/*==================================
+MAIN CONTENT
+==================================*/
 .wrapper {
-  min-height: 100%;
   margin: 0 auto -172px 180px;
+  min-height: 100%;
 }
 
 #farm {
-  margin-top: 16px;
   float: left;
+  margin-top: 16px;
   width: 100%;
 }
 
-/*==================================
-LAYOUT
-==================================*/
+.loading {
+  margin-top: 5%;
+  width: 100%;
+  text-align: center;
+}
+
+
+/* === Node Container Headers === */
+.group-name {
+  float: left;
+  margin: 0 0 8px;
+  padding: 8px;
+  width: 100%;
+  background-color: #717171;
+  font-size: 22pt;
+}
+
+.panel-name {
+  margin: 0;
+  padding: 4px 0 0 4px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: default;
+}
+
+.cluster-name {
+  margin: 0;
+  padding: 4px 0 4px 2px;
+  font-size: 9pt;
+  cursor: default;
+}
+
+
 /* === Node Containers === */
 .node-group {
   clear: both;
-  float: left;
-  width: 100%;
   margin-bottom: 20px;
   padding: 0 16px;
 }
+
 .node-panel {
-  background-color: #717171;
-  float: left;
   padding: 10px;
+  background-color: #717171;
+}
+
+.node-cluster {
+  clear: both;
+  float: left;
+  padding: 4px;
 }
 
 .grid-item {
   margin-bottom: 16px;
   width: 228px;
 }
+
 .grid-item-big {
   width: 960px;
 }
-.node-cluster {
-  padding: 4px;
-  float: left;
-}
 
 
-
-
-/* === Define nodes === */
+/* === Nodes === */
 .node {
-  color: #000;
+  float: left;
+  box-sizing: content-box;
+  margin: 1px;
   width: 16px;
   height: 11px;
   border: 1px solid #000;
-  padding: 0;
-  display: block;
-  cursor: pointer;
-  text-align: center;
-  font-size: 7px;
   background-position: center center;
-  float: left;
-  margin: 1px;
-  box-sizing: content-box;
+  cursor: pointer;
 }
 
 .node:hover {
-  outline: 2px solid #FFF;
   z-index: 10000;
+  outline: 2px solid #FFF;
 }
 
 
-
-/* === ES only (to be removed soon) === */
-div.instance, div.cluster {
-  position: relative;
-  margin: 0 0 4px 4px;
-  padding: 0 0 1px 0;
-  width: 16%;
-  float: left;
-  outline: 1px dotted #555;
-  min-width: 160px;
-  min-height: 48px;
-}
-
+/* === ES only === */
 .rack {
-  padding: 0;
-  width: 22px;
   float: left;
-  overflow: auto;
+  width: 20px;
 }
 
 p.rack {
-  padding: 0;
   margin: 0;
-  font-size: 6pt;
-  width: 22px;
   text-align: center;
+  font-size: 6pt;
 }
 
 /*==================================
-COLOURS
+NODE INFO POPUPS
 ==================================*/
-/* === Elastic Search Statuses === */
-.red            {outline: 1px solid #D00;}
-.yellow         {outline: 1px solid #FC0;}
-.red            {background-color: #D00;}
-.yellow         {background-color: #FC0;}
-.green          {background-color: #0D0;}
-.replica        {opacity: 0.33;}
+.tooltip-inner {
+  max-width: 300px;
+  text-align: left;
+}
+.tooltip-inner .info-type {
+  text-transform: capitalize;
+}
 
+
+/*==================================
+NODE STATE COLOURS/IMAGES
+==================================*/
+
+/* === General === */
+.unknown        {background-color: #999;}
 .free           {background-color: #0D0;}
 .inuse          {background-color: #6DD;}
 .full           {background-color: #09D;}
 .batchdown      {background-color: #500;}
 .offline        {background-color: #FC0;}
-.unknown        {background-color: #999;}
-
-.note {
-  background-image: url("../images/icons/multi_note.gif");
-  background-position: center 0;
-  background-repeat: no-repeat;
-}
-
-.note.critical {
-  background-image: url("../images/icons/multi_note.gif");
-  background-position: center -22px;
-}
-
-.note.warning {
-  background-image: url("../images/icons/multi_note.gif");
-  background-position: center -11px;
-}
-
-.warning, .critical {
-  background-image: url("../images/icons/multi_plain.gif");
-}
-
-.warning        {background-position: center -11px;}
-.critical       {background-position: center -22px;}
-.downtime       {background-image: url("../images/icons/downtime.png");}
-.down           {background-image: url("../images/icons/dead.png");}
-.uninstantiated {background-color: #666;}
-.instantiated   {background-color: #6DD;}
 .Test           {background-color: #999;}
-.cloud-bad      {background-color: #f57900;}
 .Production     {background-color: #73d216;}
 .Ready          {background-color: #caeb16;}
 .Holding        {background-color: #2e3436;}
@@ -378,32 +330,59 @@ COLOURS
 .Intervention   {background-color: #c17d11;}
 .Decomissioned  {background-color: #000000;}
 
-/*==================================
-LABELS & POPUPS
-==================================*/
-.label, .label-bold {
-  position: absolute;
-  font-size: 7pt;
-  width: 180px;
-  height: 12px;
-  text-align: center;
-  color: #EEE;
+
+/* === Cloud === */
+.uninstantiated {background-color: #666;}
+.instantiated   {background-color: #6DD;}
+
+
+/* === Elastic Search Statuses === */
+.red            {outline: 1px solid #D00;}
+.yellow         {outline: 1px solid #FC0;}
+.red            {background-color: #D00;}
+.yellow         {background-color: #FC0;}
+.green          {background-color: #0D0;}
+.replica        {opacity: 0.33;}
+
+
+/* === Warnings/Downtime/Dead/Critical === */
+.warning, .critical {
+  background-image: url("../images/icons/multi_plain.gif");
 }
 
-.label-bold {
-  font-weight: bold;
+.warning {
+  background-position: center -11px;
 }
 
-.loading {
-  width: 100%;
-  text-align: center;
-  margin-top: 5%;
+.critical {
+  background-position: center -22px;
 }
 
-.tooltip-inner {
-  text-align: left;
-  max-width: 300px;
+.downtime {
+  background-image: url("../images/icons/downtime.png");
 }
-.tooltip-inner .info-type {
-  text-transform: capitalize;
+
+.down {
+  background-image: url("../images/icons/dead.png");
+}
+
+
+/* === Note - Warning/Critical === */
+.note,
+.note.critical,
+.note.warning {
+  background-image: url("../images/icons/multi_note.gif");
+}
+
+.note {
+  background-position: center 0;
+  background-repeat: no-repeat;
+}
+
+.note.critical {
+  background-position: center -22px;
+}
+
+.note.warning {
+  background-position: center -11px;
 }

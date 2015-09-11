@@ -1,6 +1,5 @@
 <?php
-$path = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
 require_once("inc/config-call.inc.php");
 require_once("inc/db-magdb-open.inc.php");
 require_once("inc/ouilookup.inc.php");
