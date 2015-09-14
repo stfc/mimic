@@ -8,7 +8,7 @@ class vminfomation {
     }
 
     function detail($node) {
-        $ip = gethostbyname($node);
+        $ip_addr = gethostbyname($node);
 
         // Gets data about all VMs
         $vmxml = shell_exec('/usr/bin/python xmlrpc/vmpoolinfo.py');
@@ -34,7 +34,7 @@ class vminfomation {
             foreach ($vmpoolinfo as $host) {
                 $vmip = (string) $host->TEMPLATE->NIC->IP;
 
-                if ($ip == $vmip) {
+                if ($ip_addr == $vmip) {
                     $results['VM ID'] = (string) $host->TEMPLATE->CONTEXT->VMID;
                     $results['Date Created'] = date('l dS \o\f F Y h:i:s A', (string) $host->STIME);
                     $results['User'] = (string) $host->UNAME;

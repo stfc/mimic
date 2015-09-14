@@ -11,16 +11,6 @@ $SHARD_STATES = Array(
     'UNASSIGNED' => 'batchdown',
 );
 
-function bool2str($v) {
-  // PHP is pretty bad at representing booleans in a human readable way so we'll do it ourselves
-  if ($v === true) {
-      $v = "true";
-  } elseif ($v === false) {
-      $v = "false";
-  }
-  return($v);
-}
-
 $nodes = file_get_contents("$ES_URL/_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
@@ -56,15 +46,15 @@ foreach ($index_names as $index_name) {
                 $status .= ' replica';
             }
             echo "<span class=\"node $status\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"<h4>Shard {$shard_id} (Replica $replica_id)</h4>";
-            foreach ($shard_data as $k => $v) {
+            foreach ($shard_data as $key => $value) {
                 // If this property looks like a node ID, look it up and replace it with the hostname of the node
-                if (strpos($k, 'node') !== false) {
-                    $v = $nodes[$v]['name'];
+                if (strpos($key, 'node') !== false) {
+                    $value = $nodes[$value]['name'];
                 }
-                $v = bool2str($v);
+                $value = bool2str($value);
                 // Only show properties with a value
-                if (strlen($v) > 0) {
-                    printf("<p><b>%s</b><br>%s</p>", $k, $v);
+                if (strlen($value) > 0) {
+                    printf("<p><b>%s</b><br>%s</p>", $key, $value);
                 }
             }
             echo "\"></span>\n";

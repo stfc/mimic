@@ -51,9 +51,9 @@ foreach ($results as $group => $panel) {
     foreach ($panel as $owner => $nodes) {
         if ($group != "domain") {
             $realname = $owner;
-            $id = $CONFIG['ID']['PATH'];
-            if (file_exists($id)) {
-                $realname = exec("$id $owner");
+            $username_lookup_script = $CONFIG['ID']['PATH'];
+            if (file_exists($username_lookup_script)) {
+                $realname = exec("$username_lookup_script $owner");
                 $realname = explode(',', $realname);
                 $realname = $realname[0];
                 if (! $realname) {

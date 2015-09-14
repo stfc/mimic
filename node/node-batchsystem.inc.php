@@ -13,11 +13,11 @@ class pBatchSystem
     // Look for state sources, and display them
     $got = mysql_query("select source, state, info, unix_timestamp() - unix_timestamp(time) as 'update' from state where name = '$node'"); #, unix_timestamp() - unix_timestamp(time)
     if ($got != null and mysql_num_rows($got)) {
-      while ($r = mysql_fetch_row($got)) {
-        $source = $r[0];
-        $state  = $r[1];
-        $info   = $r[2];
-        $update = $r[3];
+      while ($row = mysql_fetch_row($got)) {
+        $source = $row[0];
+        $state  = $row[1];
+        $info   = $row[2];
+        $update = $row[3];
         $state_visual = "";
 
         //Get first chunk of source, indicating batch system type
@@ -51,8 +51,6 @@ class pBatchSystem
               $sjobs = ''; //< String list of jobs for this node
 
               foreach ($jobs as $job) {
-                $lc = '';
-
                 $sjobs .= $job . '_'; //< Add job to "all" list
 
                 echo "            <li><a class=\"job\" onclick=\"jobInfo('scheduler=$scheduler&amp;n=$node&amp;jobid=$job&amp;level=full');\">$job</a></li>\n";

@@ -95,3 +95,35 @@ function display($results) {
         echo "</div>";
     }
 }
+
+function generational_results($all_clusters, $all_notes) {
+    // Generates main array for view-generational-hosts.php and view-generational-routing.php
+    $results = Array();
+    foreach ($all_clusters as $name => $panels) {
+
+        $group = '';
+        $panel = $panels['panel'];
+        $cluster = '';
+
+        $results[$group][$panel][$cluster][$name] = Array();
+        if (array_key_exists($name, $all_notes)) {
+            $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
+        };
+        if (array_key_exists($name, $all_clusters)) {
+            $results[$group][$panel][$cluster][$name]['status'] = $all_clusters[$name];
+        };
+    }
+
+    // Renders page
+    display($results);
+}
+
+function bool2str($value) {
+  // PHP is pretty bad at representing booleans in a human readable way so we'll do it ourselves
+  if ($value === true) {
+      $value = "true";
+  } elseif ($value === false) {
+      $value = "false";
+  }
+  return($value);
+}
