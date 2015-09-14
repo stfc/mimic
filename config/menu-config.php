@@ -1,26 +1,18 @@
 <?php
 // 'Section name' => array(
 //     'Name (not for display)' => array(
-//         'name' => 'Display name', 
+//         'name' => 'Display name',
 //         'text' => 'HTML title',
 //         'link' => 'File name',
 //     ),
 // ),
 $menu = array(
-    'Logical' => array(
+    'Generational' => array(
         'Workers' => array(
             'name' => 'Workers',
             'text' => 'Logical overview of worker nodes',
             'link' => 'logical-workers',
         ),
-        'Storage' => array(
-            'name' => 'Storage',
-            'text' => 'Logical overview of storage nodes',
-            'link' => 'logical-storage',
-        ),
-    ),
-
-    'Generational' => array(
         'Storage' => array(
             'name' => 'Storage',
             'text' => 'Generational overview of storage nodes',
@@ -30,6 +22,14 @@ $menu = array(
             'name' => 'Overview',
             'text' => 'Generational overview of all nodes',
             'link' => 'generational-all'
+        ),
+    ),
+
+    'Logical' => array(
+        'Storage' => array(
+            'name' => 'Storage',
+            'text' => 'Logical overview of storage nodes',
+            'link' => 'logical-storage',
         ),
     ),
 
