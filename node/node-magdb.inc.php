@@ -193,11 +193,11 @@ class pMagdb
             $previous_row = array_merge(Array("lastUpdatedBy" => "Nobody", "lastUpdateDate" => "Current"), $overwatch_info); # Previous row
 
             //Copy relevant parts of current state to history for comparison
-            $fr = Array();
+            $history_data = Array();
             foreach (array_keys($history[0]) as $column) {
-                $fr[$column] = $previous_row[$column];
+                $history_data[$column] = $previous_row[$column];
             }
-            $history[] = $fr;
+            $history[] = $history_data;
 
             $previous_row = False;
 

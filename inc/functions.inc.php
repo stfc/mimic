@@ -1,22 +1,22 @@
 <?php
 
 // Routine for displaying the timestamps
-function prettytime ($t) {
+function prettytime ($timedelta) {
   $prefix = "";
   $suffix = " ago";
 
-  if ($t < 0) {
+  if ($timedelta < 0) {
     $prefix = "In ";
     $suffix = "";
-    $t = $t * -1;
+    $timedelta = $timedelta * -1;
   }
 
-  if ($t < 120) { return sprintf("$prefix%.1f seconds$suffix", $t); }
-  elseif ($t < 120*60) { return sprintf("$prefix%.1f minutes$suffix", $t/60); }
-  elseif ($t < 24*60*60) { return sprintf("$prefix%.1f hours$suffix", $t/(60*60)); }
-  elseif ($t < 24*60*60*7) { return sprintf("$prefix%.1f days$suffix", $t/(24*60*60)); }
-  elseif ($t < 24*60*60*365) { return sprintf("$prefix%.1f weeks$suffix", $t/(24*60*60*7)); }
-  else { return sprintf("$prefix%.1f years$suffix", $t/(24*60*60*365)); }
+  if ($timedelta < 120) { return sprintf("$prefix%.1f seconds$suffix", $timedelta); }
+  elseif ($timedelta < 120*60) { return sprintf("$prefix%.1f minutes$suffix", $timedelta/60); }
+  elseif ($timedelta < 24*60*60) { return sprintf("$prefix%.1f hours$suffix", $timedelta/(60*60)); }
+  elseif ($timedelta < 24*60*60*7) { return sprintf("$prefix%.1f days$suffix", $timedelta/(24*60*60)); }
+  elseif ($timedelta < 24*60*60*365) { return sprintf("$prefix%.1f weeks$suffix", $timedelta/(24*60*60*7)); }
+  else { return sprintf("$prefix%.1f years$suffix", $timedelta/(24*60*60*365)); }
 }
 
 function fPluginFail($errno, $errstr, $errfile, $errline) {

@@ -93,8 +93,8 @@ class nagiosLiveStatus {
         # Split rows into columns and munge into new array
         $hosts = Array();
         foreach($data as $d) {
-            $e = explode("`", $d);
-            $hosts[$e[$cols["display_name"]]] = $e;
+            $exploded = explode("`", $d);
+            $hosts[$exploded[$cols["display_name"]]] = $exploded;
         }
         return(Array($cols, $hosts));
     }

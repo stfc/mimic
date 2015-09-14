@@ -11,16 +11,6 @@ $SHARD_STATES = Array(
     'UNASSIGNED' => 'batchdown',
 );
 
-function bool2str($v) {
-  // PHP is pretty bad at representing booleans in a human readable way so we'll do it ourselves
-  if ($v === true) {
-      $v = "true";
-  } elseif ($v === false) {
-      $v = "false";
-  }
-  return($v);
-}
-
 $nodes = file_get_contents("$ES_URL/_cluster/state/nodes");
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
@@ -74,13 +64,13 @@ foreach ($nodes as $node_id => $node) {
             if ($shard['state'] != 'RELOCATING') {
                 unset($shard['relocating_node']);
             }
-            foreach ($shard as $k => $v) {
+            foreach ($shard as $key => $value) {
                 // If this property looks like a node ID, look it up and replace it with the hostname of the node
-                if (strpos($k, 'node') !== false) {
-                    $v = $nodes[$v]['name'];
+                if (strpos($key, 'node') !== false) {
+                    $value = $nodes[$value]['name'];
                 }
-                $v = bool2str($v);
-                $shard_info .= sprintf("<p><b>%s</b><br>%s</p>", $k, $v);
+                $value = bool2str($value);
+                $shard_info .= sprintf("<p><b>%s</b><br>%s</p>", $key, $value);
             }
             echo "<span id='n_{$shard['index']}_{$shard['shard']}' class='node $shard_class' title='$shard_info'></span>";
         }

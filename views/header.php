@@ -117,3 +117,13 @@ function generational_results($all_clusters, $all_notes) {
     // Renders page
     display($results);
 }
+
+function bool2str($value) {
+  // PHP is pretty bad at representing booleans in a human readable way so we'll do it ourselves
+  if ($value === true) {
+      $value = "true";
+  } elseif ($value === false) {
+      $value = "false";
+  }
+  return($value);
+}

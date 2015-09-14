@@ -11,32 +11,32 @@ class pAquilon {
     $info = False;
     $url = $CONFIG['URL']['AQUILON'] . ":6901/host/".urlencode($NODE);
 
-    $h = get_headers($url);
-    $h = substr($h[0], 9, 3);
-    if ($h == 200) {
+    $headers = get_headers($url);
+    $status_code = substr($headers[0], 9, 3);
+    if ($status_code == 200) {
       $info = explode("\n", file_get_contents($url));
       array_push($info, "");
       $p_in = -1;
-      foreach ($info as $i) {
-        $in = strlen($i) - strlen(ltrim($i));
-        $i = explode(":", $i, 2);
-        if ($in == $p_in) {
+      foreach ($info as $info_item) {
+        $info_data = strlen($info_item) - strlen(ltrim($info_item));
+        $info_item = explode(":", $info_item, 2);
+        if ($info_data == $p_in) {
           echo "</li>\n";
         }
-        if ($in > $p_in) {
+        if ($info_data > $p_in) {
           echo "\n<ul>\n";
         }
-        elseif ($in < $p_in) {
+        elseif ($info_data < $p_in) {
           echo "\n</ul>\n";
         }
-        if (sizeof($i) == 2) {
-          $key = $i[0];
-          $val = $i[1];
+        if (sizeof($info_item) == 2) {
+          $key = $info_item[0];
+          $val = $info_item[1];
           $val = str_replace("[", "<em>[", $val);
           $val = str_replace("]", "]</em>", $val);
           echo "<li><strong>$key</strong> &ndash; $val";
         }
-        $p_in = $in;
+        $p_in = $info_data;
       }
       echo "</ul>\n";
     }
