@@ -1,4 +1,5 @@
-/*global $:Cookies */
+/*jshint unused:false */
+/*global Cookies */
 function toggleRollup(c_name) {
     // Check whether user has consented to cookie usage
     if (Cookies.get('cb-enabled') === "accepted") {
