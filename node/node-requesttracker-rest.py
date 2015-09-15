@@ -53,7 +53,7 @@ if len(argv) == 2 or len(argv) == 3:
         try:
             response = urlopen(search)
             tickets = response.readlines()
-            details = parse_ticket_lines(tickets[2:])
+            tickets = parse_ticket_lines(tickets[2:])
 
             for id, subject in tickets.iteritems():
                 details = urlopen(Request(uri + "/REST/1.0/ticket/" + id + "/show")).readlines()[2:-1]
