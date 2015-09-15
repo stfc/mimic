@@ -156,6 +156,11 @@ footer {
   font-size: 12px;
 }
 
+.time {
+  float: left;
+  width: 100%;
+  text-align: center;
+}
 
 /* === Scroll Bar === */
 .scroll {

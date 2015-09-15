@@ -76,6 +76,7 @@ include('config/plugins.inc.php');
                 <?php loadMenu($menu);?>
                 <!-- Footer -->
                 <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">GitHub</a></footer>
+                <div class="time"></div>
             </nav>
         </div>
     </aside>
@@ -86,6 +87,11 @@ include('config/plugins.inc.php');
     </div>
 
     <script type="text/javascript">
+    var counter = 0;
+    setInterval(function () {
+        ++counter;
+        $('.time').html('<p>Updated '+counter+' seconds ago');
+    }, 1000);
     var view = 'logical-workers';
     $('#' + view).addClass('active');
     $loading = '<div class="loading"><img src="images/loading.svg" alt="loading" /></div>';
@@ -93,6 +99,7 @@ include('config/plugins.inc.php');
     function update() {
         var requested_view = view;
         $.get('views/view-' + view + '.php').done(function (d) {
+            counter = 0;
             if (view !== requested_view) {
                 console.log('Ignoring callback for ' + requested_view + ', current view is ' + view);
                 return;
