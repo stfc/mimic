@@ -1,3 +1,4 @@
+/*jshint unused:false */
 // Pops open the info box for a specific node
 var node_window = null;
 
