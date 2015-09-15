@@ -156,6 +156,11 @@ footer {
   font-size: 12px;
 }
 
+.time {
+  float: left;
+  width: 100%;
+  text-align: center;
+}
 
 /* === Scroll Bar === */
 .scroll {
@@ -265,7 +270,21 @@ MAIN CONTENT
 .grid-item-big {
   width: 960px;
 }
-
+@media (max-width: 1171px) {
+    .grid-item-big {
+      width: 716px;
+    }
+}
+@media (max-width: 927px) {
+    .grid-item-big {
+      width: 472px;
+    }
+}
+@media (max-width: 683px) {
+    .grid-item-big {
+      width: 228px;
+    }
+}
 
 /* === Nodes === */
 .node {
