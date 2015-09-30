@@ -7,6 +7,7 @@ $AQUILON_URL = $CONFIG['URL']['AQUILON'];
 // Gets node data and formats it
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch");
 $all_nodes = json_decode($jsondata, true);
+uksort($all_nodes, "strnatcmp");
 
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/branch_type_owner");
 $branches = json_decode($jsondata, true);
