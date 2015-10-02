@@ -1,39 +1,58 @@
 module.exports = function(grunt) {
-  grunt.initConfig({
-    bower_concat: {
-      all: {
-        dest: 'js/bower.js'
-      }
-    },
-    uglify: {
-      js: {
-        options: {
-          mangle: true,
-          compress: true
+    grunt.initConfig({
+        bower_concat: {
+            all: {
+                dest: 'assets/dist/js/bower.js',
+                exclude: [
+                    'jquery-ui',
+                    'masonry'
+                ],
+                mainFiles: {
+                    'outlayer': [
+                        'bower_components/outlayer/item.js',
+                        'bower_components/outlayer/outlayer.js'
+                    ]
+                }
+            }
         },
-        files: [{
-          expand: true,
-          cwd: 'src/js',
-          src: ['*.js', '!*.min.js'],
-          dest: 'js'
-        }]
-      }
-    },
-    cssmin: {
-      css: {
-        files: [{
-          expand: true,
-          cwd: 'src/css',
-          src: ['*.css', '!*.min.css'],
-          dest: 'css'
-        }]
-      }
-    }
-  });
-  grunt.registerTask('buildbower', [
-    'bower_concat',
-    'uglify:js',
-    'cssmin:css'
-  ]);
-  require('load-grunt-tasks')(grunt);
+        concat: {
+            js: {
+                options: {
+                    separator: ';',
+                },
+                src: ['assets/js/bower.js', 'assets/js/key.js', 'assets/js/monitor.js', 'assets/js/plugins.js', 'assets/js/tooltip.js'],
+                dest: 'assets/dist/js/script.js'
+            },
+            css: {
+                src: ['assets/css/style.css', 'assets/css/tooltip.css', 'bower_components/jquery.cookiebar/jquery.cookiebar.css'],
+                dest: 'assets/dist/css/style.css'
+            }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            js: {
+                files: {
+                    'assets/dist/js/script.min.js': ['assets/dist/js/script.js']
+                }
+            }
+        },
+        cssmin: {
+            target: {
+                files: [{
+                    src: 'assets/dist/css/style.css',
+                    dest: 'assets/dist/css/style.min.css'
+                }]
+            }
+        }
+    });
+    grunt.registerTask('buildbower', [
+        'bower_concat',
+        'concat',
+        'uglify',
+        'cssmin'
+    ]);
+    require('load-grunt-tasks')(grunt);
 };
+//
