@@ -1,15 +1,54 @@
 /*================================
 GLOBAL SETTINGS
 ==================================*/
+* {
+    box-sizing: border-box;
+}
+
 body {
   background-color: #666;
   color: #fff;
   font: 8pt 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
+  margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-circle-arrow-right:before {
+  content: "\e131";
+}
+
+.glyphicon-circle-arrow-left:before {
+  content: "\e132";
+}
+
+.glyphicon-circle-arrow-up:before {
+  content: "\e133";
+}
+
+.glyphicon-circle-arrow-down:before {
+  content: "\e134";
 }
 
 
@@ -73,6 +112,8 @@ nav {
   margin: 4px 0;
   padding-left: 2px;
   color: #909090;
+  font-size: 14pt;
+  font-weight: normal;
 }
 
 .drop-head:hover .arrow,
@@ -162,6 +203,7 @@ footer {
   text-align: center;
 }
 
+
 /* === Scroll Bar === */
 .scroll {
   float: left;
@@ -226,6 +268,7 @@ MAIN CONTENT
   width: 100%;
   background-color: #717171;
   font-size: 22pt;
+  font-weight: normal;
 }
 
 .panel-name {
@@ -241,6 +284,7 @@ MAIN CONTENT
   padding: 4px 0 4px 2px;
   font-size: 9pt;
   cursor: default;
+  font-weight: normal;
 }
 
 
@@ -271,20 +315,21 @@ MAIN CONTENT
   width: 960px;
 }
 @media (max-width: 1171px) {
-    .grid-item-big {
-      width: 716px;
-    }
+  .grid-item-big {
+    width: 716px;
+  }
 }
 @media (max-width: 927px) {
-    .grid-item-big {
-      width: 472px;
-    }
+  .grid-item-big {
+    width: 472px;
+  }
 }
 @media (max-width: 683px) {
-    .grid-item-big {
-      width: 228px;
-    }
+  .grid-item-big {
+    width: 228px;
+  }
 }
+
 
 /* === Nodes === */
 .node {
@@ -314,17 +359,6 @@ p.rack {
   margin: 0;
   text-align: center;
   font-size: 6pt;
-}
-
-/*==================================
-NODE INFO POPUPS
-==================================*/
-.tooltip-inner {
-  max-width: 300px;
-  text-align: left;
-}
-.tooltip-inner .info-type {
-  text-transform: capitalize;
 }
 
 
