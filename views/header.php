@@ -63,7 +63,7 @@ function nodes($cluster, $group_name) {
                 if (!empty($node['note'])) {
                     $nodeNote = $node['note'];
                     $nodeStatus .= ' note';
-                    $nodeInfo .= "<p><b>Note:</b> ".$node['note']."</p>";
+                    $nodeInfo .= "<p><b>Note:</b> &quot;".$node['note']."&quot;</p>";
                 }
             }
             $short = explode(".", $node_name);

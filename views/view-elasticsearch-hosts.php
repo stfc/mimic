@@ -52,7 +52,7 @@ foreach ($nodes as $node_id => $node) {
     if (!$node['attributes']['client']) {
         $node_name = $node['name'];
         echo "<div class=\"node-panel grid-item\">\n";
-        echo "<h5 class=\"node-name\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
+        echo "<h5 class=\"cluster-name\" style=\"text-shadow: 1px 1px 4px black;\" title=\"$node_name\">$node_name</h5>\n";
         foreach ($host_shards[$node_id] as $shard) {
             $shard_class = $SHARD_STATES[$shard['state']];
             if (! $shard['primary']) {
