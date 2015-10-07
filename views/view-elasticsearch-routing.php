@@ -31,7 +31,7 @@ echo "<div class='node-group'>\n";
 foreach ($index_names as $index_name) {
     $index_data = $indices[$index_name];
     echo "<div class=\"node-panel grid-item\">\n";
-    echo "<h5 class=\"cluster\" style=\"text-shadow: 1px 1px 4px {$health['indices'][$index_name]['status']};\" title=\"Index: $index_name\">$index_name</h5>\n";
+    echo "<h5 class=\"cluster-name\" style=\"text-shadow: 1px 1px 4px {$health['indices'][$index_name]['status']};\" title=\"Index: $index_name\">$index_name</h5>\n";
     $shard_ids = array_keys($index_data['shards']);
     sort($shard_ids);
     foreach ($shard_ids as $shard_id) {
