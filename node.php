@@ -14,13 +14,8 @@ global $SHORT;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="300" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/info.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/jquery.cookiebar.css" />
-
-    <script type="text/javascript" src="js/bower.js"></script>
-    <script type="text/javascript" src="js/plugins.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="assets/css/info.css" />
+    <script type="text/javascript" src="assets/dist/js/script.min.js"></script>
 </head>
 <body>
 <?php
