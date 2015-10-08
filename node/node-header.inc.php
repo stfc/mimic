@@ -1,6 +1,6 @@
 <?php global $NODE; ?>
 <div class="head">
-    <h1>Node <?php echo htmlspecialchars($NODE) . "\n" ?></h1>
+    <h1>Host: <span class="node-name"><?php echo htmlspecialchars($NODE) . "\n" ?></span></h1>
     <a class="tab" href="ssh://root@<?php echo $NODE ?>">SSH</a>
     <?php
     //get number from hostname

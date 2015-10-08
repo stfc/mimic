@@ -10,6 +10,40 @@ body {
   margin: 0px;
 }
 
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-circle-arrow-right:before {
+  content: "\e131";
+}
+
+.glyphicon-circle-arrow-left:before {
+  content: "\e132";
+}
+
+.glyphicon-circle-arrow-up:before {
+  content: "\e133";
+}
+
+.glyphicon-circle-arrow-down:before {
+  content: "\e134";
+}
+
 .head {
   color: #FFF;
   background: #333;
@@ -24,6 +58,13 @@ body {
   float: left;
   padding: 10px;
   margin: 0 6px;
+  color: #bbb;
+}
+
+.node-name {
+  font-family: monospace;
+  font-weight: normal;
+  color: #fff;
 }
 
 a.tab {
@@ -34,6 +75,7 @@ a.tab {
   float: left;
   border-radius: 0 0 4px 4px;
   font-weight: normal;
+  text-decoration: none;
 }
 
 a.tab:hover {
@@ -89,6 +131,7 @@ a.tab-dark {
   float: left;
   border-radius: 0 0 4px 4px;
   font-weight: normal;
+  text-decoration: none;
 }
 
 a.tab-dark:hover {
@@ -183,6 +226,28 @@ dd.large {
 SPAN.time {
   color: rgb(136, 138, 133);
   text-align: right;
+}
+
+.ui-dialog {
+    float: left;
+    background: #333;
+    padding: 8px;
+    width: 400px !important;
+    color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+}
+.ui-button {
+    float: right;
+    background: #eee;
+    border: none;
+    margin: 4px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+#node-inputnote {
+    width: 100%;
 }
 
 /**
