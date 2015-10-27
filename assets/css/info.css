@@ -1,3 +1,6 @@
+/*================================
+GLOBAL SETTINGS
+==================================*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,11 +13,48 @@ body {
   margin: 0px;
 }
 
+
+/* Icon Fonts */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-circle-arrow-right:before {
+  content: "\e131";
+}
+
+.glyphicon-circle-arrow-left:before {
+  content: "\e132";
+}
+
+.glyphicon-circle-arrow-up:before {
+  content: "\e133";
+}
+
+.glyphicon-circle-arrow-down:before {
+  content: "\e134";
+}
+
+/*================================
+HEADER
+==================================*/
 .head {
-  color: #FFF;
   background: #333;
   font-size: 14pt;
-  font-weight: bold;
   float: left;
   width: 100%;
 }
@@ -24,29 +64,27 @@ body {
   float: left;
   padding: 10px;
   margin: 0 6px;
+  color: #bbb;
 }
 
-a.tab {
-  background: #eee;
-  padding: 6px;
-  margin: 0 3px;
-  color: #555;
-  float: left;
-  border-radius: 0 0 4px 4px;
+.host-name {
+  font-family: monospace;
   font-weight: normal;
+  color: #fff;
 }
 
-a.tab:hover {
-  color: #eee;
-  background: #bbb;
-  text-decoration: none;
-}
-
+/*================================
+SECTION
+==================================*/
 .wrapper {
   padding: 6px 12px;
   float: left;
 }
 
+
+/*================================
+PLUGIN
+==================================*/
 section {
   padding: 6px;
   margin: 6px 0;
@@ -55,14 +93,8 @@ section {
   background: #eee;
 }
 
-.content {
-  float: left;
-}
 
-li {
-  margin-bottom: 4px;
-}
-
+/* Plugin Header*/
 .header {
   margin: 6px;
   cursor: pointer;
@@ -70,15 +102,34 @@ li {
   float: left;
   width: 100%;
 }
-.header:hover {
-  color: #000;
-}
+
 .header h2 {
   float: left;
   margin: 0 10px 0 0;
   font-size: 13pt;
 }
 
+.header:hover h2 {
+  color: #000;
+}
+
+
+/* Tabs */
+a.tab {
+  background: #eee;
+  padding: 6px;
+  margin: 0 3px;
+  color: #555;
+  float: left;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+}
+
+a.tab:hover {
+  color: #eee;
+  background: #bbb;
+  text-decoration: none;
+}
 
 a.tab-dark {
   background: #555;
@@ -89,6 +140,7 @@ a.tab-dark {
   float: left;
   border-radius: 0 0 4px 4px;
   font-weight: normal;
+  text-decoration: none;
 }
 
 a.tab-dark:hover {
@@ -97,10 +149,18 @@ a.tab-dark:hover {
   text-decoration: none;
 }
 
+
+/* Plugin Body */
 .plugin {
   float: left;
   width: 100%;
   padding: 0 7px;
+}
+
+
+
+li {
+  margin-bottom: 4px;
 }
 
 h3 {
@@ -126,10 +186,10 @@ textarea {
 }
 
 /**
- * List Styles
- */
+* List Styles
+*/
 ul {
-/*  padding-left: 0;*/
+  /*  padding-left: 0;*/
 }
 
 ul.state-jobs li {
@@ -178,16 +238,18 @@ dd.large {
 }
 
 /**
- * Misc Styles
- */
+* Misc Styles
+*/
 SPAN.time {
   color: rgb(136, 138, 133);
   text-align: right;
 }
 
+
+
 /**
- * Alarm Styles
- */
+* Alarm Styles
+*/
 .crit, .unkn, .warn {
   width: 72px;
   padding: 0px 1px 0px 1px;
@@ -398,4 +460,28 @@ ins {
 }
 del {
   color: rgb(204, 0, 0);
+}
+
+
+/* Notes */
+.ui-dialog {
+  float: left;
+  background: #333;
+  padding: 8px;
+  width: 400px !important;
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+}
+.ui-button {
+  float: right;
+  background: #eee;
+  border: none;
+  margin: 4px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+#node-inputnote {
+  width: 100%;
 }

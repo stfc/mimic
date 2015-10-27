@@ -16,6 +16,7 @@ global $SHORT;
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
     <link rel="stylesheet" type="text/css" href="assets/css/info.css" />
     <script type="text/javascript" src="assets/dist/js/script.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 </head>
 <body>
 <?php
