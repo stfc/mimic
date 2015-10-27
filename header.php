@@ -20,7 +20,7 @@ include('config/plugins.inc.php');
 <head>
     <title>Mimic</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="icon" href="images/mimic-icon.png" type="image/png" />
+    <link rel="icon" href="assets/dist/images/icon.png" type="image/png" />
     <link rel="stylesheet" href="assets/dist/css/style.min.css">
     <link href='https://fonts.googleapis.com/css?family=Emilys+Candy' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="assets/dist/js/script.min.js"></script>
