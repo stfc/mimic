@@ -96,8 +96,11 @@ $(document).ready(function(){
         fixed: true,
         zindex: '100',
     });
+    $('.magdb-ipAddress').each(function() {
+        $(this).attr('title', Hipku.encode($( this ).text()));
+    });
 });
-
 </script>
+<script type="text/javascript" src="components/hipku.min.js"></script>
 </body>
 </html>
