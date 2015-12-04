@@ -258,7 +258,7 @@ class pMagdb
                     if ($col == "systemId" && $val != "&nbsp;") {
                         $val = "&#x2116;&nbsp;<a href=\"$HARDTRACK_URL/?section=system&amp;a=$val\" title=\"View platform $val in HardTrack\">$val</a>\n";
                     }
-                    echo "<dt>$col</dt><dd>$val</dd>\n";
+                   echo "<dt>$col</dt><dd class=\"magdb-$col\">$val</dd>\n";
                 }
             }
             echo "</dl>\n";
@@ -274,7 +274,7 @@ class pMagdb
                         }
                         if ($col != 'lifestageName') {
                             # Hide lifestageName because we've been really bad at keeping it correct and it scares people.
-                            echo "<dt>$col</dt><dd>$val</dd>\n";
+                            echo "<dt>$col</dt><dd class=\"magdb-$col\">$val</dd>\n";
                         }
                     }
                 }
