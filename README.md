@@ -6,6 +6,12 @@ It allows administrators to build custom overviews of physical and virtual infra
 
 It is currently being used and developed by the Tier 1 group at STFC RAL.
 
+License
+-------
+
+* Mimic is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+* Mimic includes [Hipku](http://gabrielmartin.net/projects/hipku/) which is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
 Dependences
 -----------
 
