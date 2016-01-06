@@ -75,7 +75,7 @@ function layout() {
     locateNode($('#inLocate').val());
 
     // Node tooltip
-    $('.node').tooltip({
+    $('.node, .page-error').tooltip({
         html: true,
         container: '#farm',
         placement: 'auto',
