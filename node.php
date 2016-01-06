@@ -26,7 +26,7 @@ global $SHORT;
     //Set custom error handler so plugins stand less chance of killing everything
     set_error_handler("fPluginFail");
 
-    include('config/plugins.inc.php');
+    $plugins = $CONFIG['NODE_PLUGINS'];
     echo "<div class='wrapper'>";
     foreach ($plugins as $plugin) {
         $plugfile = "node/node-$plugin.inc.php";
