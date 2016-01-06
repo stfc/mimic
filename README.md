@@ -1,5 +1,5 @@
 ![mimic](http://i.imgur.com/fCSbo0m.png)
-Mimic (1.2.0) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
+Mimic (1.3.0) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
 =====
 Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.
 It allows administrators to build custom overviews of physical and virtual infrastructures which provide a intuitive way to quickly drill down into detailed information from each data source.
@@ -15,7 +15,7 @@ License
 Dependences
 -----------
 
-For Scientific Linux release 6.4 (Carbon)
+Tested on Scientific Linux release 6.4 (Carbon)
 
 | Package                               | Description                                         |
 | ------------------------------------- | --------------------------------------------------- |
@@ -30,57 +30,70 @@ For Scientific Linux release 6.4 (Carbon)
 | python-ldap                           | LDAP interface module for Python.                   |
 | graphviz                              | Graph drawing tools.                                |
 
+If you wish to build Mimic from this repository, you will also need [npm](https://www.npmjs.com/).
+
+Build
+-----------
+With npm installed, navigate to mimic's root directory (the one with `package.json` in) and run `npm install` once that has completed you can run `bower install`. The final step is simply to run `grunt buildmimic`.
 
 Configuration
 ---------
-
 Mimic pulls data from many different sources. The URLs, database names and passwords to these sources should be stored in a file called `user-config.ini` and placed in `/config`. If `user-config.ini` is not found, `default-config.ini` is called.
 
+This file also includes the list of 'plugins' at the top to show on the node/host window.
 
-The `default-config.ini` below contains the basic structure you should follow.
+
+Here is an example of the basic structure you should follow.
 
 ```
-[HOSTS] ; All hosts and their names needed go here.
-HOST[server1] = server.example.com
-NAME[server1] = example_server1
+[NODE_PLUGINS]
+0 = nagios
+1 = batchsystem
+2 = notes
+3 = requesttracker
+4 = magdb
+5 = aquilon
+6 = pakiti2-json
+7 = scd-cloud
 
+[URL] ; All URLS needed go here
+AQUILON     = URL
+ES          = URL
+HARDTRACK   = URL
+HELPDESK    = URL
+NAGIOS      = URL
+NUBES_RL    = URL
+NUBES_STFC  = URL
+OBSERVIUM   = URL
+OVERWATCH   = URL
+PAKITI      = URL
+STFC        = URL
+NAGIOS1     = URL
+NAGGER      = URL
 
-[LOGIN] ; All User-names and Passwords needed go here.
-USER[server1] = userover9000
-PASS[server1] = pass123
+[PORT]
+ES_PORT = :PORT
 
-
-[URL] ; All URLS needed go here.
-GOOGLE  = http://google.co.uk
-EXAMPLE = http://example.test.com
-
-
-[OTHER] ; Any other config options.
-LOOKUP[KEY] = /etc/keys/key.py
+[DB_GEN]
+HOST = URL
+USER = USERNAME
+PASS = PASSWORD
+BATCH_NAME = NAME
 ```
+
+The main menu is configured separately in `config/menu-config.php`.
+
+If you are using any of the files to do with cloud data, the xmlrpc login details should be stored in `config/xmlrpc.config`.
 
 Views
 ---------
 
-Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. It can then be added to the menu section in `index.php`. The view files should only be used to get the data and arrange it into the correct structure - the code that renders the page is located in `/views/header.php`
+Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. It can then be added to the menu section in `index.php`. The view files should only be used to get the data and arrange it into the correct structure - the code that renders the page is located in `/views/header.php`.
+
+You can then customise it's link in the main menu by editing `config/menu-config.php`.
 
 
 Node page
 ---------
 
-The node page is constructed of the following files called by `node.php` and are stored in `/node`
-
-```
-node-getName.inc.php                      # Gets and formats the name of the node.
-node-header.inc.php                       # Displays header info and links.
-node-nagios.inc.php                       # Calls and displays Nagios information.
-node-batchsystem.inc.php                  # Displays system state.
-node-notes.inc.php                        # Displays and allows users to add notes.
-node-requesttracker.inc.php               # Displays tickets.
-  |_ node-requesttracker-rest.inc.php       # PHP wrapper for node-requesttracker-rest.py.
-      |_ node-requesttracker-rest.py          # Logic for the request tracker.
-node-magdb.inc.php                        # Calls and shows System, Rack Power, and Networking flowchart.
-node-aquilon.inc.php                      # Displays Aquilon data.
-node-pakiti2-json.inc.php                 # Displays Pakiti data.
-  |_ node-pakiti2-json.py                   # Connects to WEBHOST.
-```
+The node page offers a way to display detailed information about a node/host. This information is delivered via multiple files stored in `/node` and then called by `node.php`.
