@@ -65,8 +65,13 @@ class nagiosLiveStatus {
                     }
                 }
             }
-
-            return($results);
+            if (!empty($results)) {
+                return($results);
+            }
+            else {
+                error("No data returned from", "nagios livestatus");
+                return(array());
+            }
         }
         else {
             return(Null);

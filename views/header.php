@@ -1,5 +1,12 @@
 <?php
 
+$errors = ""; // Container for text containing errors encountered when looking for data
+
+function error($text, $name) {
+    global $errors;
+    $errors .= "<div class='page-error' title='<h4>Error!</h4><p><b>".$text."</b> ".$name."</p>'>!</div>";
+}
+
 require("inc/config-call.inc.php");
 require("inc/db-open.inc.php"); // MySQL Data sources
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
