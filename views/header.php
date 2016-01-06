@@ -4,13 +4,10 @@ $errors = ""; // Container for text containing errors encountered when looking f
 
 function error($text, $name) {
     global $errors;
-    $errors .= "<div class='page-error' title='<h4>Error!</h4><p><b>".$text."</b> ".$name."</p>'>!</div>";
+    $errors .= "<div class='page-error' title='<h4 style=\"width:300px\">Error!</h4><p>".$text." <b>".$name."</b></p>'>!</div>";
 }
 
 require("inc/config-call.inc.php");
-require("inc/db-open.inc.php"); // MySQL Data sources
-require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
-require("inc/main-nagios.inc.php"); // Nagios library
 
 function display($results) {
     foreach ($results as $group_name => $group) {

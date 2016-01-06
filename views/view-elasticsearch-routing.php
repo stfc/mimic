@@ -12,6 +12,9 @@ $SHARD_STATES = Array(
 );
 
 $nodes = file_get_contents("$ES_URL/_cluster/state/nodes");
+if ($nodes === false) {
+    error("No data returned from", "elasticsearch");
+}
 $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
 

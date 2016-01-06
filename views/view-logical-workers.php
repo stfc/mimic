@@ -1,5 +1,8 @@
 <?php
 require("header.php"); // Important includes
+require("inc/db-open.inc.php"); // MySQL Data sources
+require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
+require("inc/main-nagios.inc.php"); // Nagios library
 
 // Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];

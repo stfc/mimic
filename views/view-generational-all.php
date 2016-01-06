@@ -1,5 +1,7 @@
 <?php
 require("header.php"); // Important includes
+require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
+require("inc/main-nagios.inc.php"); // Nagios library
 
 // Gathers clusters
 $all_clusters = Array();
