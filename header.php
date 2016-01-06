@@ -14,7 +14,6 @@ $page = mysql_escape_string($_REQUEST['page']);
 else
 $page = 1;
 require("inc/config-call.inc.php");
-include('config/plugins.inc.php');
 ?>
 <html>
 <head>
