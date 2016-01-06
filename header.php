@@ -24,7 +24,6 @@ include('config/plugins.inc.php');
     <link rel="stylesheet" href="assets/dist/css/style.min.css">
     <link href='https://fonts.googleapis.com/css?family=Emilys+Candy' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="assets/dist/js/script.min.js"></script>
-    <script type="text/javascript" src="bower_components/masonry/dist/masonry.pkgd.js"></script>
 </head>
 <body>
     <?php
