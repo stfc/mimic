@@ -48,3 +48,4 @@ foreach ($all_clusters as $name => $panels) {
 echo "<div class='size-auto'>";
 display($results);
 echo "</div>";
+include_once("inc/error.inc.php");

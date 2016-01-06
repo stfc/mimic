@@ -75,3 +75,4 @@ foreach ($all_nodes as $name => $panels) {
 
 // Renders page
 display($results);
+include_once("inc/error.inc.php");

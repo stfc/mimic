@@ -26,3 +26,4 @@ if ($notes and mysql_num_rows($notes)) {
 
 // Generates main array
 generational_results($all_clusters, $all_notes);
+include_once("inc/error.inc.php");
