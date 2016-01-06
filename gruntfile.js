@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                 options: {
                     separator: ';',
                 },
-                src: ['assets/js/bower.js', 'assets/js/key.js', 'assets/js/monitor.js', 'assets/js/plugins.js', 'assets/js/tooltip.js'],
+                src: ['assets/dist/js/bower.js', 'assets/js/key.js', 'assets/js/monitor.js', 'assets/js/plugins.js', 'assets/js/tooltip.js'],
                 dest: 'assets/dist/js/script.js'
             },
             css: {
