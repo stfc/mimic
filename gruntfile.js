@@ -20,11 +20,22 @@ module.exports = function(grunt) {
                 options: {
                     separator: ';',
                 },
-                src: ['assets/dist/js/bower.js', 'assets/js/key.js', 'assets/js/monitor.js', 'assets/js/plugins.js', 'assets/js/tooltip.js'],
+                src: [
+                    'assets/dist/js/bower.js',
+                    'assets/js/key.js',
+                    'assets/js/monitor.js',
+                    'assets/js/plugins.js',
+                    'assets/js/tooltip.js',
+                    'bower_components/masonry/dist/masonry.pkgd.js'
+                ],
                 dest: 'assets/dist/js/script.js'
             },
             css: {
-                src: ['assets/css/style.css', 'assets/css/tooltip.css', 'bower_components/jquery.cookiebar/jquery.cookiebar.css'],
+                src: [
+                    'assets/css/style.css',
+                    'assets/css/tooltip.css',
+                    'bower_components/jquery.cookiebar/jquery.cookiebar.css'
+                ],
                 dest: 'assets/dist/css/style.css'
             }
         },
