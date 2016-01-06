@@ -32,12 +32,16 @@ Tested on Scientific Linux release 6.4 (Carbon)
 
 If you wish to build Mimic from this repository, you will also need [npm](https://www.npmjs.com/).
 
+Downloads
+-----------
+
+
 Build
 -----------
 With npm installed, navigate to mimic's root directory (the one with `package.json` in) and run `npm install` once that has completed you can run `bower install`. The final step is simply to run `grunt buildmimic`.
 
 Configuration
----------
+-----------
 Mimic pulls data from many different sources. The URLs, database names and passwords to these sources should be stored in a file called `user-config.ini` and placed in `/config`. If `user-config.ini` is not found, `default-config.ini` is called.
 
 This file also includes the list of 'plugins' at the top to show on the node/host window.
@@ -84,6 +88,8 @@ BATCH_NAME = NAME
 The main menu is configured separately in `config/menu-config.php`.
 
 If you are using any of the files to do with cloud data, the xmlrpc login details should be stored in `config/xmlrpc.config`.
+
+Because of to how PHP's include paths work, all your mimic files and folders will need to be in your server root directory. 
 
 Views
 ---------
