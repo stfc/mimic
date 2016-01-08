@@ -81,4 +81,4 @@ foreach ($nodes as $node_id => $node) {
     }
 }
 echo "</div>\n";
-include_once("inc/error.inc.php");
+include_once("inc/render-errors.inc.php");

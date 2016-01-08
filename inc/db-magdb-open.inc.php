@@ -7,6 +7,6 @@ $PG_NAME = $CONFIG['DB_PG']['NAME'];
 
 #Connect to DB
 $PGLINK = pg_connect("host=$PG_HOST user=$PG_USER password=$PG_PASS dbname=$PG_NAME")
-or error("Unable to conect to:", $PG_HOST);
+or error("Unable to connect to", "magDB host");
 
 pg_query("SET application_name = 'mimic-web';");

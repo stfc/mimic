@@ -67,4 +67,4 @@ foreach ($index_names as $index_name) {
     echo "</div>\n";
 }
 echo "</div>\n";
-include_once("inc/error.inc.php");
+include_once("inc/render-errors.inc.php");
