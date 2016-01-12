@@ -1,5 +1,7 @@
 <?php
 require("header.php"); // Important includes
+require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
+require("inc/main-nagios.inc.php"); // Nagios library
 
 // Gathers clusters
 $all_clusters = Array();
@@ -48,3 +50,4 @@ foreach ($all_clusters as $name => $panels) {
 echo "<div class='size-auto'>";
 display($results);
 echo "</div>";
+include_once("inc/render-errors.inc.php");

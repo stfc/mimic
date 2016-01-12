@@ -22,3 +22,10 @@ function prettytime ($timedelta) {
 function fPluginFail($errno, $errstr, $errfile, $errline) {
   echo "  <div><p>Parse error while loading plugin. $errstr $errfile $errline</p></div>\n";
 }
+
+$errors = ""; // Container for text containing errors encountered when looking for data
+
+function error($text, $name) {
+    global $errors;
+    $errors .= "<div class='page-error' title='<h4 style=\"width:300px\">Error!</h4><p>".$text." <b>".$name."</b></p>'>!</div>";
+}

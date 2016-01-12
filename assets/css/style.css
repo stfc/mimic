@@ -362,6 +362,29 @@ p.rack {
 }
 
 
+/* === Error === */
+.page-error {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #d50e0e;
+    margin-top: 12px;
+    cursor: help;
+    font-size: 34px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.error-zone {
+    z-index: 100;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    width: 40px;
+    margin: 12px;
+}
+
+
 /*==================================
 NODE STATE COLOURS/IMAGES
 ==================================*/

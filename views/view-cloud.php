@@ -1,11 +1,15 @@
 <?php
 require("header.php"); // Important includes
+require("inc/main-nagios.inc.php"); // Nagios library
 
 // Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
 
 // Gets node data and formats it
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch?filter=nubes");
+if ($jsondata === false) {
+    error("No data returned from", "aquilon");
+}
 $all_nodes = json_decode($jsondata, true);
 uksort($all_nodes, "strnatcmp");
 
@@ -75,3 +79,4 @@ foreach ($all_nodes as $name => $panels) {
 
 // Renders page
 display($results);
+include_once("inc/render-errors.inc.php");
