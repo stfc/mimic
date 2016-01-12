@@ -89,7 +89,7 @@ The main menu is configured separately in `config/menu-config.php`.
 
 If you are using any of the files to do with cloud data, the xmlrpc login details should be stored in `config/xmlrpc.config`.
 
-Because of to how PHP's include paths work, all your mimic files and folders will need to be in your server root directory. 
+Because of to how PHP's include paths work, all your mimic files and folders will need to be in your server root directory. In addition you may need to add a line similar to `include_path = ".:/usr/share/pear/:/var/www/html/"` to `/etc/php.d/mimic.ini` for the include paths to work.
 
 Views
 ---------
