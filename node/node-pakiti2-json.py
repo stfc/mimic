@@ -4,8 +4,8 @@ from sys import argv, exit
 import ConfigParser
 from os.path import exists
 
-USER_CONFIG = "../config/user-config.ini"
-DEFAULT_CONFIG = "../config/default-config.ini"
+USER_CONFIG = "config/user-config.ini"
+DEFAULT_CONFIG = "config/default-config.ini"
 
 # Calling ini file
 config = ConfigParser.ConfigParser()
@@ -14,7 +14,7 @@ if exists(USER_CONFIG):
 else:
     config.read(DEFAULT_CONFIG)
 
-WEBHOST  = config.get("PAKITI", "URL")
+WEBHOST = config.get("PAKITI", "URL")
 KEYFILE = config.get("PAKITI", "KEYFILE")
 CERTFILE = config.get("PAKITI", "CERTFILE")
 
@@ -37,9 +37,9 @@ if len(argv) == 2:
     print(response.read())
 
   except:
-    print('[]')
+    print('Cannot Connect')
 
 else:
   # no search requested
-  print('[]')
+  print('No search requested')
   exit(1)
