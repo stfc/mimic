@@ -15,28 +15,28 @@ class pPakiti2
   {
     $result  = exec("/usr/bin/python node/node-pakiti2-json.py $NODE");
     $result  = str_replace("'", '"', $result);
-    $result = json_decode($result, True);
+    $jsonresult = json_decode($result, True);
 
-    if (is_array($result)) {
+    if (is_array($jsonresult)) {
       # Display host details
       echo "      <dl>\n";
-      if (array_key_exists("os", $result)) {
-        echo "        <dt>Operating System</dt><dd>{$result["os"]}</dd>\n";
+      if (array_key_exists("os", $jsonresult)) {
+        echo "        <dt>Operating System</dt><dd>{$jsonresult["os"]}</dd>\n";
       }
-      if (array_key_exists("kernel", $result)) {
-        echo "        <dt>Running Kernel</dt><dd>{$result["kernel"]}</dd>\n";
+      if (array_key_exists("kernel", $jsonresult)) {
+        echo "        <dt>Running Kernel</dt><dd>{$jsonresult["kernel"]}</dd>\n";
       }
-      if (array_key_exists("arch", $result)) {
-        echo "        <dt>Architecture</dt><dd>{$result["arch"]}</dd>\n";
+      if (array_key_exists("arch", $jsonresult)) {
+        echo "        <dt>Architecture</dt><dd>{$jsonresult["arch"]}</dd>\n";
       }
-      if (array_key_exists("vulnerability", $result)) {
-        echo "        <dt>Vulnerability</dt><dd>{$result["vulnerability"]}</dd>\n";
+      if (array_key_exists("vulnerability", $jsonresult)) {
+        echo "        <dt>Vulnerability</dt><dd>{$jsonresult["vulnerability"]}</dd>\n";
       }
       echo "      </dl>\n";
 
       # Loop over updates and display
-      if (array_key_exists("updates", $result)) {
-        $updates = $result["updates"];
+      if (array_key_exists("updates", $jsonresult)) {
+        $updates = $jsonresult["updates"];
 
         echo "<dl>\n";
 
@@ -64,18 +64,18 @@ class pPakiti2
         }
 
         echo "</dl>\n";
-        echo "<p><span class=\"time\">&#8634; ".prettytime(time() - $result["timestamp"])."</span></p>\n";
+        echo "<p><span class=\"time\">&#8634; ".prettytime(time() - $jsonresult["timestamp"])."</span></p>\n";
       }
 
       # Display any errors that were passed
-      if (array_key_exists("errors", $result)) {
-        $errors = $result["errors"];
+      if (array_key_exists("errors", $jsonresult)) {
+        $errors = $jsonresult["errors"];
         foreach ($errors as $e) {
           echo "<p class=\"warning\">$e</p>";
         }
       }
     } else {
-      echo "<p class=\"warning\">No records found for host</p>";
+      echo "<p class=\"warning\">$result</p>";
     }
   }
 }
