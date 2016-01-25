@@ -16,7 +16,7 @@ module.exports = function(grunt) {
             }
         },
         concat: {
-            js: {
+            main: {
                 options: {
                     separator: ';',
                 },
@@ -29,6 +29,15 @@ module.exports = function(grunt) {
                     'bower_components/masonry/dist/masonry.pkgd.js'
                 ],
                 dest: 'assets/dist/js/script.js'
+            },
+            node: {
+                options: {
+                    separator: ';',
+                },
+                src: [
+                    'bower_components/jquery-ui/jquery-ui.min.js'
+                ],
+                dest: 'assets/dist/js/node-page.js'
             },
             css: {
                 src: [

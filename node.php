@@ -14,9 +14,9 @@ global $SHORT;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="300" />
     <link rel="icon" href="images/mimic-icon.png" type="image/png" />
-    <link rel="stylesheet" type="text/css" href="assets/css/info.css" />
+    <link rel="stylesheet" type="text/css" href="assets/dist/css/info-style.min.css" />
     <script type="text/javascript" src="assets/dist/js/script.min.js"></script>
-    <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/dist/js/node-page.js"></script>
 </head>
 <body>
 <?php
