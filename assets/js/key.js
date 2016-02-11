@@ -1,6 +1,6 @@
 function updateKey() {
 
-    $('.key').html('');
+    $('.key').empty();
 
     var keyArray = {
         "Note" : "note",
