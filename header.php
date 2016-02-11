@@ -68,8 +68,7 @@ require("inc/config-call.inc.php");
                 <!-- Menu -->
                 <?php loadMenu($menu);?>
                 <!-- Footer -->
-                <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">GitHub</a></footer>
-                <div class="time"></div>
+                <footer><a href="https://github.com/STFC/mimic/issues">Report an issue</a></footer>
             </nav>
         </div>
     </aside>
