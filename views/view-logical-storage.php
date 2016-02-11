@@ -46,8 +46,5 @@ foreach ($all_clusters as $name => $panels) {
     };
 }
 
-// Renders page
-echo "<div class='size-auto'>";
-display($results);
-echo "</div>";
-include_once("inc/render-errors.inc.php");
+// Returns built json
+echo json_encode($results);
