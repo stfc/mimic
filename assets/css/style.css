@@ -17,6 +17,11 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
+a {
+  color: #6DD;
+  text-decoration: none;
+}
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
@@ -58,13 +63,12 @@ ASIDE, HEADER
 aside {
   position: fixed;
   z-index: 2;
-  display: flex;
   float: left;
   width: 180px;
   height: 100vh;
   background: #333;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-  flex-flow: column;
+  margin-top: -16px;
 }
 
 header {
@@ -243,37 +247,45 @@ footer {
 MAIN CONTENT
 ==================================*/
 .wrapper {
-  margin: 0 auto -172px 180px;
+  margin: 16px 0 0 196px;
   min-height: 100%;
 }
 
 #farm {
   float: left;
-  margin-top: 16px;
   width: 100%;
 }
 
 .loading {
-  margin-top: 5%;
   width: 100%;
+  z-index: 1;
+  background: rgba(102, 102, 102, 0.6);
+  position: fixed;
+  height: 100vh;
   text-align: center;
+  margin-left: -134px;
+  padding-top: 10%;
 }
 
 
 /* === Node Container Headers === */
 .group-name {
   float: left;
-  margin: 0 0 8px;
+  margin-top: 20px;
   padding: 8px;
-  width: 100%;
+  width: 100% !important;
   background-color: #717171;
   font-size: 22pt;
   font-weight: normal;
 }
 
+h2:first-of-type {
+  margin-top: 0px;
+}
+
 .panel-name {
   margin: 0;
-  padding: 4px 0 0 4px;
+  padding: 4px 0 6px 4px;
   font-weight: bold;
   font-size: 14px;
   cursor: default;
@@ -285,6 +297,7 @@ MAIN CONTENT
   font-size: 9pt;
   cursor: default;
   font-weight: normal;
+  clear: both;
 }
 
 
