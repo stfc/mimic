@@ -73,7 +73,8 @@ function gotData(data) {
 
                     // Status
                     if (('status' in node_data) && ('state' in node_data.status)) {
-                        node_info += '<p><b>State:</b> ' + node_data.status.state + '</p>';
+                        node_status = node_data.status.state;
+                        node_info += '<p><b>State:</b> ' + node_status + '</p>';
                     } else {
                         node_status = 'unknown';
                     }
