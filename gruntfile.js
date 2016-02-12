@@ -63,6 +63,10 @@ module.exports = function(grunt) {
         'uglify',
         'cssmin'
     ]);
+    grunt.registerTask('buildmimiccss', [
+        'concat:css',
+        'cssmin'
+    ]);
     require('load-grunt-tasks')(grunt);
 };
 //
