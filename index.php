@@ -38,11 +38,18 @@ function view(requested_view) {
 }
 
 function getData(current_view) {
+    requested_view = current_view;
     $.ajax({
         dataType: 'json',
         url: 'views/view-' + current_view + '.php',
         cache: false
-    }).done(gotData);
+    }).done(function(d) {
+        if (current_view != requested_view) {
+            console.log("Ignoring callback for "+requested_view+", current view is "+current_view);
+            return;
+        }
+        gotData(d);
+    });
 }
 
 function gotData(data) {
