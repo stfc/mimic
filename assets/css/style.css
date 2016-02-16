@@ -22,6 +22,10 @@ a {
   text-decoration: none;
 }
 
+ul {
+  padding-left: 10px;
+}
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
@@ -201,45 +205,12 @@ footer {
   font-size: 12px;
 }
 
-.time {
-  float: left;
-  width: 100%;
-  text-align: center;
-}
-
 
 /* === Scroll Bar === */
 .scroll {
   float: left;
   padding-left: 14px;
   width: 180px !important;
-}
-
-.vertical-track {
-  margin: 0 6px;
-  width: 2px;
-  background: #474747;
-  -webkit-transition: background 250ms linear;
-  transition: background 250ms linear;
-}
-
-.vertical-track:hover,
-.vertical-track.dragging {
-  background: #929292;
-}
-
-.vertical-track:hover .vertical-handle,
-.vertical-track.dragging .vertical-handle {
-  background: #6DD;
-}
-
-.vertical-handle {
-  left: -1px;
-  width: 4px;
-  border-radius: 7px;
-  background: #356671;
-  -webkit-transition: background 250ms linear;
-  transition: background 250ms linear;
 }
 
 
@@ -285,7 +256,7 @@ h2:first-of-type {
 
 .panel-name {
   margin: 0;
-  padding: 4px 0 6px 4px;
+  padding: 4px 0 0 4px;
   font-weight: bold;
   font-size: 14px;
   cursor: default;
@@ -403,21 +374,21 @@ NODE STATE COLOURS/IMAGES
 ==================================*/
 
 /* === General === */
-.unknown        {background-color: #999;}
-.free           {background-color: #0D0;}
-.inuse          {background-color: #6DD;}
-.full           {background-color: #09D;}
-.batchdown      {background-color: #500;}
-.offline        {background-color: #FC0;}
-.Test           {background-color: #999;}
-.Production     {background-color: #73d216;}
-.Ready          {background-color: #caeb16;}
-.Holding        {background-color: #2e3436;}
-.Deployment     {background-color: #edd400;}
-.ReadOnly       {background-color: #729fcf;}
-.Draining       {background-color: #204a87;}
-.Intervention   {background-color: #c17d11;}
-.Decomissioned  {background-color: #000000;}
+.unknown                    {background-color: #999;}
+.free, .STARTED             {background-color: #0D0;}
+.inuse                      {background-color: #6DD;}
+.full, .RELOCATING          {background-color: #09D;}
+.batchdown, .UNASSIGNED     {background-color: #500;}
+.offline, .INITIALIZING     {background-color: #FC0;}
+.Test                       {background-color: #999;}
+.Production                 {background-color: #73d216;}
+.Ready                      {background-color: #caeb16;}
+.Holding                    {background-color: #2e3436;}
+.Deployment                 {background-color: #edd400;}
+.ReadOnly                   {background-color: #729fcf;}
+.Draining                   {background-color: #204a87;}
+.Intervention               {background-color: #c17d11;}
+.Decomissioned              {background-color: #000000;}
 
 
 /* === Cloud === */
@@ -432,6 +403,27 @@ NODE STATE COLOURS/IMAGES
 .yellow         {background-color: #FC0;}
 .green          {background-color: #0D0;}
 .replica        {opacity: 0.33;}
+
+
+/* === Note - Warning/Critical === */
+.note,
+.note.critical,
+.note.warning {
+  background-image: url("../images/icons/multi_note.gif");
+}
+
+.note {
+  background-position: center 0;
+  background-repeat: no-repeat;
+}
+
+.note.critical {
+  background-position: center -22px;
+}
+
+.note.warning {
+  background-position: center -11px;
+}
 
 
 /* === Warnings/Downtime/Dead/Critical === */
@@ -453,25 +445,4 @@ NODE STATE COLOURS/IMAGES
 
 .down {
   background-image: url("../images/icons/dead.png");
-}
-
-
-/* === Note - Warning/Critical === */
-.note,
-.note.critical,
-.note.warning {
-  background-image: url("../images/icons/multi_note.gif");
-}
-
-.note {
-  background-position: center 0;
-  background-repeat: no-repeat;
-}
-
-.note.critical {
-  background-position: center -22px;
-}
-
-.note.warning {
-  background-position: center -11px;
 }

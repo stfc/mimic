@@ -1,8 +1,6 @@
 <?php
 require("header.php"); // Important includes
-require("inc/db-open.inc.php"); // MySQL Data sources
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
-require("inc/main-nagios.inc.php"); // Nagios library
 
 // Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
@@ -31,9 +29,8 @@ $status = mysql_query("select name, state, source from state");
 if ($status and mysql_num_rows($status)) {
     while ($state = mysql_fetch_assoc($status)) {
         $all_status[$state['name']] = Array(
-            'state' => $state['state'],
-            'source' => $state['source'],
-            );
+            $state['state'] => $state['source'],
+        );
     }
 }
 
@@ -61,6 +58,9 @@ foreach ($all_clusters as $name => $panels) {
         $results[$group][$panel][$cluster][$name] = Array();
         if (array_key_exists($name, $all_notes)) {
             $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
+        };
+        if (nagios($name) !== Null) {
+            $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
         };
         if (array_key_exists($name, $all_status)) {
             $results[$group][$panel][$cluster][$name]['status'] = $all_status[$name];

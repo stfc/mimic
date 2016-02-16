@@ -16,7 +16,7 @@ $grid = $('#farm').masonry({
 });
 
 run_view();   // Get content on page load
-window.setInterval(run_view, 10000);   // Then every 60 seconds
+window.setInterval(run_view, 60000);   // Then every 60 seconds
 
 function run_view() {
     if (Cookies.get('view')) {
@@ -63,6 +63,13 @@ function gotData(data) {
 
             for (cluster_name in panel_data) {
                 cluster_data = panel_data[cluster_name];
+
+                if (current_view === 'elasticsearch-routing') {
+                    finished_node += '<div class="rack">';
+                } else {
+                    finished_node += '<div class="node-cluster">';
+                }
+
                 if (cluster_name !== '') {
                     finished_node += '<h5 class="cluster-name">' + cluster_name + '</h5>';
                 }
@@ -71,28 +78,37 @@ function gotData(data) {
                     node_data = cluster_data[node_name];
                     node_info = '<h4>' + node_name + '</h4>';
 
-                    // Status
-                    if (('status' in node_data) && ('state' in node_data.status)) {
-                        node_status = node_data.status.state;
-                        node_info += '<p><b>State:</b> ' + node_status + '</p>';
-                    } else {
-                        node_status = 'unknown';
-                    }
+                    node_status = 'unknown';
 
-                    // Source
-                    if (('status' in node_data) && ('source' in node_data.status)) {
-                        node_info += '<p><b>Source:</b> ' + node_data.status.source + '</p>';
-                    }
+                    for (info in node_data) {
+                        info_body = '';
 
-                    // Note
-                    if (('note' in node_data)) {
+                        if (info === 'status') {
+                            info = '<h4>Status:</h4>';
+                            node_status = "";
+                            for (status in node_data['status']) {
+                                node_status += status;
+                            }
+                            info_body += '<ul><b>' + node_status.toLowerCase() + '</b> - ' + node_data['status'][status] + '</ul>';
+                        } else {
+                            info_body = node_data[info];
+                            info = '<b>' + info.replace(/_/g, ' ') + '</b>: ';
+                        }
+                        node_info += '<p>' + info + info_body +'</p>';
+                    }
+                    
+                    if (node_data['note']) {
                         node_status += ' note';
-                        node_info += '<p><b>Note:</b> &quot;' + node_data.note + '&quot;</p>';
+                    }
+
+                    if (node_data['nagios']) {
+                        node_status += node_data['nagios'];
                     }
 
                     // Node
                     finished_node += '<span id="' + node_name + '" class="node ' + node_status + '" title="' + node_info + '"></span>';
                 }
+                finished_node += '</div>';
             }
             finished_node += '</div>';
         }

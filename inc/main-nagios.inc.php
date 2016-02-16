@@ -20,11 +20,11 @@ function nagios_state($short, $node, $nodeStatus) {
             }
             if (sizeof($nagios_nodedata) > 0) {
                 if ($nagios_nodedata["scheduled_downtime_depth"] > 0) {
-                    $nodeStatus = "downtime";
+                    $nodeStatus = " downtime";
                     $nagiosInfo .= " ($nodeStatus - $server)";
                 }
                 elseif ($nagios_nodedata["state"] == 1) {
-                    $nodeStatus = "down";
+                    $nodeStatus = " down";
                     $nagiosInfo .= " ($nodeStatus - $server)";
                 }
                 else {
