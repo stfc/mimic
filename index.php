@@ -58,7 +58,18 @@ function gotData(data) {
 
         for (panel_name in group_data) {
             panel_data = group_data[panel_name];
-            finished_node += '<div class="node-panel grid-item" id="' + panel_name + '">';
+            new_box_size = '';
+
+            if (group_name !== "sandbox") {
+                for (cluster_name in panel_data) {
+                    length = Object.keys(panel_data[cluster_name]).length;
+                    if (length > 360) {
+                        new_box_size += ' step1';
+                    }
+                }
+            }
+
+            finished_node += '<div class="node-panel grid-item' + new_box_size + '" id="' + panel_name + '">';
             finished_node += '<h3 class="panel-name">' + panel_name + '</h3>';
 
             for (cluster_name in panel_data) {
@@ -96,7 +107,7 @@ function gotData(data) {
                         }
                         node_info += '<p>' + info + info_body +'</p>';
                     }
-                    
+
                     if (node_data['note']) {
                         node_status += ' note';
                     }

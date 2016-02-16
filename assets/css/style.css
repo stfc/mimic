@@ -297,22 +297,32 @@ h2:first-of-type {
   width: 228px;
 }
 
-.grid-item-big {
-  width: 960px;
+.step1 {
+  width: 228px;
 }
-@media (max-width: 1171px) {
-  .grid-item-big {
-    width: 716px;
-  }
-}
-@media (max-width: 927px) {
-  .grid-item-big {
+@media (min-width: 668px) {
+  .step1 {
     width: 472px;
   }
 }
-@media (max-width: 683px) {
-  .grid-item-big {
-    width: 228px;
+@media (min-width: 912px) {
+  .step1 {
+    width: 716px;
+  }
+}
+@media (min-width: 1156px) {
+  .step1 {
+    width: 960px;
+  }
+}
+@media (min-width: 1400px) {
+  .step1 {
+    width: 1204px;
+  }
+}
+@media (min-width: 1644px) {
+  .step1 {
+    width: 1448px;
   }
 }
 
