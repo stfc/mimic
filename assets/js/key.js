@@ -20,7 +20,11 @@ function updateKey() {
         "Replica" : "replica",
         "Production" : "Production",
         "Draining" : "Draining",
-        "Decomissioned" : "Decomissioned"
+        "Decomissioned" : "Decomissioned",
+        "Started" : "STARTED",
+        "Relocating" : "RELOCATING",
+        "Unassigned" : "UNASSIGNED",
+        "Initializing" : "INITIALIZING",
     };
 
     $.each( keyArray, function( key, value ) {
