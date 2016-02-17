@@ -12,7 +12,10 @@ $nodes = json_decode($nodes, true);
 $nodes = $nodes['nodes'];
 
 // Add a fake node called "unassigned" so that unassigned shards are grouped on the display
-$nodes['unassigned'] = Array('name' => 'unassigned');
+$nodes['unassigned'] = Array(
+    'name' => 'unassigned',
+    'attributes' => Array(),
+);
 
 $health = file_get_contents("$ES_URL/_cluster/health/?level=cluster");
 $health = json_decode($health, true);
@@ -22,8 +25,6 @@ $cluster = file_get_contents("$ES_URL/_cluster/state/routing_table");
 $cluster = json_decode($cluster, true);
 
 $indices = $cluster['routing_table']['indices'];
-$index_names = array_keys($cluster['routing_table']['indices']);
-sort($index_names);
 
 $host_shards = Array();
 foreach ($indices as $index_name => $index) {
@@ -44,39 +45,38 @@ foreach ($indices as $index_name => $index) {
 
 $results = Array();
 foreach ($nodes as $node_id => $node) {
-    if (!array_key_exists('client', $node['attributes'])) {
+    if (array_key_exists('attributes', $node) && !array_key_exists('client', $node['attributes'])) {
+
         $node_name = $node['name'];
         if (!array_key_exists($node_name, $results)) {
             $results[$node_name] = Array();
         }
         foreach ($host_shards[$node_id] as $shard) {
+            if (isset($shard['state']) && $shard['state'] != 'RELOCATING') {
+                unset($shard['relocating_node']);
+            }
+
             $index_name = $shard['index'];
             $shard_info = Array();
 
             $status = Array();
-            $status[$shard['state']] = $cluster['cluster_name'];
+            if ($shard['primary']) {
+                $shard_info['type'] = 'primary';
+                $status[$shard['state']] = $cluster['cluster_name'];
 
+            } else {
+                $shard_info['type'] = 'replica';
+                $status[$shard['state'].' replica'] = $cluster['cluster_name'];
+            }
             unset($shard['state']);
 
             foreach ($shard as $key => $value) {
                 // If this property looks like a node ID, look it up and replace it with the hostname of the node
-                if (strpos($key, 'node') !== false) {
+                if (isset($value) && strpos($key, 'node') !== false) {
                     $value = $nodes[$value]['name'];
                 }
                 $value = bool2str($value);
                 $shard_info[$key] = $value;
-            }
-
-            // if ($status['state'] != 'RELOCATING') {
-            //     unset($shard['relocating_node']);
-            // }
-
-
-            if ($shard['primary']) {
-                $shard_info['type'] = 'primary';
-            } else {
-                $shard_info['type'] = 'replica';
-                $status[$shard['state'].' replica'] = $cluster['cluster_name'];
             }
 
             $shard_id = $shard_info['shard'];
@@ -87,6 +87,8 @@ foreach ($nodes as $node_id => $node) {
         }
     }
 }
+
+ksort($results);
 
 $groups = Array(
     $cluster['cluster_name'] => $results,
