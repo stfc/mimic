@@ -23,18 +23,22 @@ foreach ($vmxml as $host) {
 // Gets list of hypervisor cpu states
 $hvoutput = shell_exec('/usr/bin/python ../xmlrpc/hostpoolinfo.py');
 $hvxml = simplexml_load_string($hvoutput, null, LIBXML_NOCDATA);
+
 $hvstatus = Array();
 foreach ($hvxml as $host) {
+
     $name = (string) $host->NAME;
     $cpu_usage = $host->HOST_SHARE->CPU_USAGE;
     $max_cpu_usage = $host->HOST_SHARE->MAX_CPU;
-    $hvstatus[$name]['status']['state'] = "inuse";
+    $state = " inuse";
     if ($cpu_usage >= $max_cpu_usage * 0.9) {
-        $hvstatus[$name]['status']['state'] = "full";
+        $state = " full";
     }
     if ($cpu_usage <= 0) {
-        $hvstatus[$name]['status']['state'] = "free";
+        $state = " free";
+
     }
+    $hvstatus[$name][$state] = 'OpenNebula';
 }
 
 // Gets notes for nodes
@@ -49,17 +53,19 @@ if ($notes and mysql_num_rows($notes)) {
 // Generates main array
 $results = Array();
 foreach ($all_nodes as $name => $panels) {
-
     $group = "infrastructure";
     $panel = $panels["personality"];
     $cluster = '';
 
+
     if (strpos($name, "vm") !== false) {
-       $group = "vm";
+        $group = "vm";
     }
 
     $results[$group][$panel][$cluster][$name] = Array();
     if (array_key_exists($name, $all_nodes)) {
+        unset($all_nodes[$name]['personality']);
+        ksort($all_nodes[$name]);
         $results[$group][$panel][$cluster][$name] = $all_nodes[$name];
     }
     if (array_key_exists($name, $all_notes)) {
@@ -68,14 +74,20 @@ foreach ($all_nodes as $name => $panels) {
     if (nagios($name) !== Null) {
         $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
     };
-    if ($group == "vm") {
-        $results[$group][$panel][$cluster][$name]['status']['state'] = "instantiated";
-        if (!array_key_exists($all_nodes[$name]['ip'], $instantiated)) {
-            $results[$group][$panel][$cluster][$name]['status']['state'] = "uninstantiated";
-        }
+
+    if ($panel == "opennebula-hypervisor" && array_key_exists($name, $hvstatus)) {
+        $results[$group][$panel][$cluster][$name]['status'] = $hvstatus[$name];
     }
-    if ($panel == "cloud-prod-hypervisor") {
-        $results[$group][$panel][$cluster][$name]['status']['state'] = $hvstatus[$name]['status']['state'];
+
+    if ($group == "vm") {
+        $all_status = Array();
+
+        $state = ' instantiated';
+        if (!array_key_exists($all_nodes[$name]['ip'], $instantiated)) {
+            $state = ' uninstantiated';
+        }
+        $all_status[$state] = 'OpenNebula';
+        $results[$group][$panel][$cluster][$name]['status'] = $all_status;
     }
 }
 
