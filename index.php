@@ -92,39 +92,44 @@ function gotData(data) {
                     finished_node += '<h5 class="cluster-name">' + cluster_name + '</h5>';
                 }
 
-                for (node_name in cluster_data) {
-                    node_data = cluster_data[node_name];
-                    node_info = '<h4>' + node_name + '</h4>';
+                if (cluster_data.length !== 0) {
+                    for (node_name in cluster_data) {
+                        node_data = cluster_data[node_name];
+                        node_info = '<h4>' + node_name + '</h4>';
 
-                    node_status = 'unknown';
+                        node_status = 'unknown';
 
-                    for (info in node_data) {
-                        info_body = '';
+                        for (info in node_data) {
+                            info_body = '';
 
-                        if (info === 'status') {
-                            info = '<h4>Status:</h4>';
-                            node_status = "";
-                            for (status in node_data['status']) {
-                                node_status += status;
+                            if (info === 'status') {
+                                info = '<h4>Status:</h4>';
+                                node_status = "";
+                                for (status in node_data['status']) {
+                                    node_status += status;
+                                }
+                                info_body += '<ul><b>' + node_status.toLowerCase() + '</b> - ' + node_data['status'][status] + '</ul>';
+                            } else {
+                                info_body = node_data[info];
+                                info = '<b>' + info.replace(/_/g, ' ') + '</b>: ';
                             }
-                            info_body += '<ul><b>' + node_status.toLowerCase() + '</b> - ' + node_data['status'][status] + '</ul>';
-                        } else {
-                            info_body = node_data[info];
-                            info = '<b>' + info.replace(/_/g, ' ') + '</b>: ';
+                            node_info += '<p>' + info + info_body +'</p>';
                         }
-                        node_info += '<p>' + info + info_body +'</p>';
-                    }
 
-                    if (node_data['note']) {
-                        node_status += ' note';
-                    }
+                        if (node_data['note']) {
+                            node_status += ' note';
+                        }
 
-                    if (node_data['nagios']) {
-                        node_status += node_data['nagios'];
-                    }
+                        if (node_data['nagios']) {
+                            node_status += node_data['nagios'];
+                        }
 
-                    // Node
-                    finished_node += '<span id="' + node_name + '" class="node ' + node_status + '" title="' + node_info + '"></span>';
+                        // Node
+                        finished_node += '<span id="' + node_name + '" class="node ' + node_status + '" title="' + node_info + '"></span>';
+                    }
+                }
+                else {
+                    finished_node += '<span title="No managed systems">&nbsp;&#x2205;</span>';
                 }
                 finished_node += '</div>';
             }
