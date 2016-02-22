@@ -40,6 +40,12 @@
         view(this.id);
     });
 
+    $('.scroll').mouseenter(function () {
+        $('.scroll').css('overflow-y', 'auto');
+    }).mouseleave(function () {
+        $('.scroll').css('overflow-y', 'hidden');
+    });
+
     // Cookie compliance
     $(document).ready(function(){
         $.cookieBar({

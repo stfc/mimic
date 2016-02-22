@@ -30,13 +30,13 @@ require("inc/config-call.inc.php");
 
     function loadMenu($menu) {
         foreach($menu as $section => $item) {
-            echo "<ul class='menu-section'><div class='drop-head' onclick=\"toggleRollup('#$section');\"><h4 class='menu-header'>$section</h4>";
+            echo "<ul class='menu-section'><div class='drop-head' onclick=\"toggleRollup('#$section');\">";
             if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
                 echo "<span class='arrow glyphicon glyphicon-circle-arrow-right'></span>";
             } else {
                 echo "<span class='arrow glyphicon glyphicon-circle-arrow-down'></span>";
             }
-            echo "</div>";
+            echo "<h4 class='menu-header'>$section</h4></div>";
 
             echo "<div id='$section' class='menu-items'";
             if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
