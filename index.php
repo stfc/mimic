@@ -155,9 +155,11 @@ function gotData(data) {
     });
 
     // Node window
-    $('.node').click(function() {
-        open_node(this.id);
-    });
+    if (current_view !== 'elasticsearch-routing' && current_view !== 'elasticsearch-hosts') {
+        $('.node').click(function() {
+            open_node(this.id);
+        });
+    }
 
     // Runs from js/key.js
     updateKey();
