@@ -30,7 +30,6 @@ if ($notes and mysql_num_rows($notes)) {
 // Generates main array
 $results = Array();
 foreach ($all_clusters as $name => $panels) {
-
     $group = '';
     $panel = $panels['panel'];
     $cluster = '';
