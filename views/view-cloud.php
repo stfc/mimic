@@ -30,12 +30,12 @@ foreach ($hvxml as $host) {
     $name = (string) $host->NAME;
     $cpu_usage = $host->HOST_SHARE->CPU_USAGE;
     $max_cpu_usage = $host->HOST_SHARE->MAX_CPU;
-    $state = " inuse";
+    $state = "inuse";
     if ($cpu_usage >= $max_cpu_usage * 0.9) {
-        $state = " full";
+        $state = "full";
     }
     if ($cpu_usage <= 0) {
-        $state = " free";
+        $state = "free";
 
     }
     $hvstatus[$name][$state] = 'OpenNebula';
@@ -82,9 +82,9 @@ foreach ($all_nodes as $name => $panels) {
     if ($group == "vm") {
         $all_status = Array();
 
-        $state = ' instantiated';
+        $state = 'instantiated';
         if (!array_key_exists($all_nodes[$name]['ip'], $instantiated)) {
-            $state = ' uninstantiated';
+            $state = 'uninstantiated';
         }
         $all_status[$state] = 'OpenNebula';
         $results[$group][$panel][$cluster][$name]['status'] = $all_status;
