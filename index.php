@@ -125,7 +125,7 @@ function gotData(data) {
                         }
 
                         // Node
-                        finished_node += '<span id="' + node_name + '" class="node ' + node_status + '" title="' + node_info + '"></span>';
+                        finished_node += '<span id="' + node_name + '" class="node ' + node_status.toLowerCase() + '" title="' + node_info + '"></span>';
                     }
                 }
                 else {

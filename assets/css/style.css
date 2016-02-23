@@ -384,20 +384,20 @@ NODE STATE COLOURS/IMAGES
 
 /* === General === */
 .unknown                    {background-color: #999;}
-.free, .STARTED             {background-color: #0D0;}
+.free, .started             {background-color: #0D0;}
 .inuse                      {background-color: #6DD;}
-.full, .RELOCATING          {background-color: #09D;}
-.batchdown, .UNASSIGNED     {background-color: #500;}
-.offline, .INITIALIZING     {background-color: #FC0;}
-.Test                       {background-color: #999;}
-.Production                 {background-color: #73d216;}
-.Ready                      {background-color: #caeb16;}
-.Holding                    {background-color: #2e3436;}
-.Deployment                 {background-color: #edd400;}
-.ReadOnly                   {background-color: #729fcf;}
-.Draining                   {background-color: #204a87;}
-.Intervention               {background-color: #c17d11;}
-.Decomissioned              {background-color: #000000;}
+.full, .relocating          {background-color: #09D;}
+.batchdown, .unassigned     {background-color: #500;}
+.offline, .initializing     {background-color: #FC0;}
+.test                       {background-color: #999;}
+.production                 {background-color: #73d216;}
+.ready                      {background-color: #caeb16;}
+.holding                    {background-color: #2e3436;}
+.deployment                 {background-color: #edd400;}
+.readonly                   {background-color: #729fcf;}
+.draining                   {background-color: #204a87;}
+.intervention               {background-color: #c17d11;}
+.decomissioned              {background-color: #000000;}
 
 
 /* === Cloud === */
