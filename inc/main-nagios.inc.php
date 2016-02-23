@@ -20,22 +20,22 @@ function nagios_state($short, $node, $nodeStatus) {
             }
             if (sizeof($nagios_nodedata) > 0) {
                 if ($nagios_nodedata["scheduled_downtime_depth"] > 0) {
-                    $nodeStatus = " downtime";
-                    $nagiosInfo .= " ($nodeStatus - $server)";
+                    $nodeStatus = "downtime";
+                    $nagiosInfo .= "($nodeStatus - $server)";
                 }
                 elseif ($nagios_nodedata["state"] == 1) {
-                    $nodeStatus = " down";
+                    $nodeStatus = "down";
                     $nagiosInfo .= " ($nodeStatus - $server)";
                 }
                 else {
                     // Check for Nagios alarms if system is not down, or in downtime
                     if ($nagios_nodedata["num_services_crit"] > 0) {
-                        $nodeStatus .= " critical";
-                        $nagiosInfo .= " (critical - $server)";
+                        $nodeStatus .= "critical";
+                        $nagiosInfo .= "(critical - $server)";
                     }
                     elseif ($nagios_nodedata["num_services_warn"] > 0) {
-                        $nodeStatus .= " warning";
-                        $nagiosInfo .= " (warning - $server)";
+                        $nodeStatus .= "warning";
+                        $nagiosInfo .= "(warning - $server)";
                     }
                 }
             }

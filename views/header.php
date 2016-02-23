@@ -23,7 +23,7 @@ function nagios($node_name) {
     if (!empty($ntup[1])) {
         $nodeStatus = $ntup[0];
         $test['nagios'] = $ntup[1];
-        return $nodeStatus;
+        return ' '.$nodeStatus; // Must have whitespace prepended
     }
     unset($ntup);
 }
