@@ -1,7 +1,6 @@
 <?php
 require("header.php"); // Important includes
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
-require("inc/main-nagios.inc.php"); // Nagios library
 
 // Gathers clusters
 $all_clusters = Array();
@@ -12,8 +11,10 @@ if ($all_nodes and pg_num_rows($all_nodes)){
     while ($row = pg_fetch_assoc($all_nodes)) {
         $all_clusters[$row['name']] = Array(
             'panel' => $row['hardwareGroup'],
-            'state' => $row['currentStatus'],
-            );
+        );
+        $status[$row['name']] = Array(
+            $row['currentStatus'] => 'Overwatch',
+        );
     }
 }
 
@@ -27,5 +28,23 @@ if ($notes and mysql_num_rows($notes)) {
 }
 
 // Generates main array
-generational_results($all_clusters, $all_notes);
-include_once("inc/render-errors.inc.php");
+$results = Array();
+foreach ($all_clusters as $name => $panels) {
+    $group = '';
+    $panel = $panels['panel'];
+    $cluster = '';
+
+    $results[$group][$panel][$cluster][$name] = Array();
+    if (array_key_exists($name, $all_notes)) {
+        $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
+    };
+    if (nagios($name) !== Null) {
+        $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
+    };
+    if (array_key_exists($name, $status)) {
+        $results[$group][$panel][$cluster][$name]['status'] = $status[$name];
+    };
+}
+
+// Returns built json
+echo json_encode($results);

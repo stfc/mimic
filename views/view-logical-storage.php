@@ -1,7 +1,6 @@
 <?php
 require("header.php"); // Important includes
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
-require("inc/main-nagios.inc.php"); // Nagios library
 
 // Gathers clusters
 $all_clusters = Array();
@@ -14,9 +13,11 @@ if ($all_nodes and pg_num_rows($all_nodes)){
         $all_clusters[$row['name']] = Array(
             'panel' => $row['castorInstance'],
             'cluster' => $row['diskPool'],
-            'state' => $row['currentStatus'],
             'dxtx' => $row['dxtx'],
-            );
+        );
+        $status[$row['name']] = Array(
+            $row['currentStatus'] => 'Overwatch',
+        );
     }
 }
 
@@ -41,13 +42,16 @@ foreach ($all_clusters as $name => $panels) {
     if (array_key_exists($name, $all_notes)) {
         $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
     };
+    if (nagios($name) !== Null) {
+        $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
+    };
     if (array_key_exists($name, $all_clusters)) {
-        $results[$group][$panel][$cluster][$name]['status'] = $all_clusters[$name];
+        $results[$group][$panel][$cluster][$name]['dxtx'] = $all_clusters[$name]['dxtx'];
+    };
+    if (array_key_exists($name, $status)) {
+        $results[$group][$panel][$cluster][$name]['status'] = $status[$name];
     };
 }
 
-// Renders page
-echo "<div class='size-auto'>";
-display($results);
-echo "</div>";
-include_once("inc/render-errors.inc.php");
+// Returns built json
+echo json_encode($results);

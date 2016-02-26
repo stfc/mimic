@@ -30,13 +30,13 @@ require("inc/config-call.inc.php");
 
     function loadMenu($menu) {
         foreach($menu as $section => $item) {
-            echo "<ul class='menu-section'><div class='drop-head' onclick=\"toggleRollup('#$section');\"><h4 class='menu-header'>$section</h4>";
+            echo "<ul class='menu-section'><div class='drop-head' onclick=\"toggleRollup('#$section');\">";
             if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
                 echo "<span class='arrow glyphicon glyphicon-circle-arrow-right'></span>";
             } else {
                 echo "<span class='arrow glyphicon glyphicon-circle-arrow-down'></span>";
             }
-            echo "</div>";
+            echo "<h4 class='menu-header'>$section</h4></div>";
 
             echo "<div id='$section' class='menu-items'";
             if (filter_input(INPUT_COOKIE, 'rollup_#'.$section.'', FILTER_SANITIZE_STRING) == "hidden") {
@@ -68,8 +68,7 @@ require("inc/config-call.inc.php");
                 <!-- Menu -->
                 <?php loadMenu($menu);?>
                 <!-- Footer -->
-                <footer><a aria-label="Issue STFC/mimic on GitHub" data-count-aria-label="# issues on GitHub" data-count-api="/repos/STFC/mimic#open_issues_count" href="https://github.com/STFC/mimic/issues" class="github-button">GitHub</a></footer>
-                <div class="time"></div>
+                <footer><a href="https://github.com/STFC/mimic/issues">Report an issue</a></footer>
             </nav>
         </div>
     </aside>

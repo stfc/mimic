@@ -35,12 +35,13 @@
   font-size: 12pt;
   color: #fff;
 }
-.tooltip-inner b {
-  color: #f0f0f0;
-  font-family: 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
+.tooltip-inner b h4 {
+  font-weight: normal;
 }
-.tooltip-inner .info-type {
+.tooltip-inner b {
+  color: #FBDC61;
   text-transform: capitalize;
+  font-family: 'lucida sans unicode', 'lucida sans', 'dejavu lgc sans', 'sans', 'arial';
 }
 .tooltip-inner p {
   font-family: monospace;

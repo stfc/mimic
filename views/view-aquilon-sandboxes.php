@@ -1,6 +1,5 @@
 <?php
 require("header.php"); // Important includes
-require("inc/main-nagios.inc.php"); // Nagios library
 
 // Config
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
@@ -50,6 +49,9 @@ foreach ($all_nodes as $name => $panels) {
     if (array_key_exists($name, $all_notes)) {
         $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
     };
+    if (nagios($name) !== Null) {
+        $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
+    };
 }
 
 foreach ($results as $group => $panel) {
@@ -82,8 +84,5 @@ foreach ($results as $group => $panel) {
     asort($results[$group]);
 }
 
-// Renders page
-echo "<div class='size-auto'>";
-display($results);
-echo "</div>";
-include_once("inc/render-errors.inc.php");
+// Returns built json
+echo json_encode($results);

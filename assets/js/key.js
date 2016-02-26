@@ -1,6 +1,6 @@
 function updateKey() {
 
-    $('.key').html('');
+    $('.key').empty();
 
     var keyArray = {
         "Note" : "note",
@@ -8,19 +8,23 @@ function updateKey() {
         "Warning" : "warning",
         "Critical" : "critical",
         "Down" : "down",
-        "Unreachable" : "Unreachable",
+        "Unreachable" : "unreachable",
         "Uninstantiated" : "uninstantiated",
         "Full" : "full",
         "Inuse" : "inuse",
         "Offline" : "offline",
         "Free" : "free",
-        "ReadOnly" : "ReadOnly",
-        "Ready" : "Ready",
-        "Holding" : "Holding",
+        "ReadOnly" : "readOnly",
+        "Ready" : "ready",
+        "Holding" : "holding",
         "Replica" : "replica",
-        "Production" : "Production",
-        "Draining" : "Draining",
-        "Decomissioned" : "Decomissioned"
+        "Production" : "production",
+        "Draining" : "draining",
+        "Decomissioned" : "decomissioned",
+        "Started" : "started",
+        "Relocating" : "relocating",
+        "Unassigned" : "unassigned",
+        "Initializing" : "initializing",
     };
 
     $.each( keyArray, function( key, value ) {

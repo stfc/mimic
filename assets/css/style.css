@@ -2,7 +2,7 @@
 GLOBAL SETTINGS
 ==================================*/
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -15,6 +15,15 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+a {
+  color: #6DD;
+  text-decoration: none;
+}
+
+ul {
+  padding-left: 10px;
 }
 
 @font-face {
@@ -58,17 +67,17 @@ ASIDE, HEADER
 aside {
   position: fixed;
   z-index: 2;
-  display: flex;
   float: left;
   width: 180px;
   height: 100vh;
   background: #333;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-  flex-flow: column;
+  margin-top: -16px;
 }
 
 header {
   z-index: 20;
+  position: absolute;
   float: left;
   height: 90px;
   border-bottom: 3px solid #3C6950;
@@ -96,9 +105,15 @@ header {
 
 
 /* === Navigation === */
+.scroll {
+  height: 100vh;
+  width: 180px;
+}
+
 nav {
-  float: left;
-  margin-top: 16px;
+  padding-top: 100px;
+  height: 100%;
+  padding-left: 8px;
 }
 
 .drop-head {
@@ -161,10 +176,10 @@ nav {
 }
 
 .arrow {
-  float: right;
-  padding: 4px 16px 0px 0px;
-  color: #515151;
-  font-size: 14px;
+  float: left;
+  padding: 4px 8px 0px 0px;
+  color: #7a7a7a;
+  font-size: 20px;
 }
 
 
@@ -197,78 +212,45 @@ footer {
   font-size: 12px;
 }
 
-.time {
-  float: left;
-  width: 100%;
-  text-align: center;
-}
-
-
-/* === Scroll Bar === */
-.scroll {
-  float: left;
-  padding-left: 14px;
-  width: 180px !important;
-}
-
-.vertical-track {
-  margin: 0 6px;
-  width: 2px;
-  background: #474747;
-  -webkit-transition: background 250ms linear;
-  transition: background 250ms linear;
-}
-
-.vertical-track:hover,
-.vertical-track.dragging {
-  background: #929292;
-}
-
-.vertical-track:hover .vertical-handle,
-.vertical-track.dragging .vertical-handle {
-  background: #6DD;
-}
-
-.vertical-handle {
-  left: -1px;
-  width: 4px;
-  border-radius: 7px;
-  background: #356671;
-  -webkit-transition: background 250ms linear;
-  transition: background 250ms linear;
-}
-
 
 /*==================================
 MAIN CONTENT
 ==================================*/
 .wrapper {
-  margin: 0 auto -172px 180px;
+  margin: 16px 0 0 196px;
   min-height: 100%;
 }
 
 #farm {
   float: left;
-  margin-top: 16px;
   width: 100%;
 }
 
 .loading {
-  margin-top: 5%;
   width: 100%;
+  z-index: 1;
+  background: rgba(102, 102, 102, 0.6);
+  position: fixed;
+  height: 100vh;
   text-align: center;
+  margin-left: -134px;
+  padding-top: 10%;
 }
 
 
 /* === Node Container Headers === */
 .group-name {
   float: left;
-  margin: 0 0 8px;
+  margin-top: 20px;
   padding: 8px;
-  width: 100%;
+  width: 100% !important;
   background-color: #717171;
   font-size: 22pt;
   font-weight: normal;
+}
+
+h2:first-of-type {
+  margin-top: 0px;
 }
 
 .panel-name {
@@ -285,6 +267,7 @@ MAIN CONTENT
   font-size: 9pt;
   cursor: default;
   font-weight: normal;
+  clear: both;
 }
 
 
@@ -311,22 +294,32 @@ MAIN CONTENT
   width: 228px;
 }
 
-.grid-item-big {
-  width: 960px;
+.step1 {
+  width: 228px;
 }
-@media (max-width: 1171px) {
-  .grid-item-big {
-    width: 716px;
-  }
-}
-@media (max-width: 927px) {
-  .grid-item-big {
+@media (min-width: 668px) {
+  .step1 {
     width: 472px;
   }
 }
-@media (max-width: 683px) {
-  .grid-item-big {
-    width: 228px;
+@media (min-width: 912px) {
+  .step1 {
+    width: 716px;
+  }
+}
+@media (min-width: 1156px) {
+  .step1 {
+    width: 960px;
+  }
+}
+@media (min-width: 1400px) {
+  .step1 {
+    width: 1204px;
+  }
+}
+@media (min-width: 1644px) {
+  .step1 {
+    width: 1448px;
   }
 }
 
@@ -364,24 +357,24 @@ p.rack {
 
 /* === Error === */
 .page-error {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #d50e0e;
-    margin-top: 12px;
-    cursor: help;
-    font-size: 34px;
-    text-align: center;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #d50e0e;
+  margin-top: 12px;
+  cursor: help;
+  font-size: 34px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .error-zone {
-    z-index: 100;
-    right: 0;
-    bottom: 0;
-    position: fixed;
-    width: 40px;
-    margin: 12px;
+  z-index: 100;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  width: 40px;
+  margin: 12px;
 }
 
 
@@ -390,21 +383,21 @@ NODE STATE COLOURS/IMAGES
 ==================================*/
 
 /* === General === */
-.unknown        {background-color: #999;}
-.free           {background-color: #0D0;}
-.inuse          {background-color: #6DD;}
-.full           {background-color: #09D;}
-.batchdown      {background-color: #500;}
-.offline        {background-color: #FC0;}
-.Test           {background-color: #999;}
-.Production     {background-color: #73d216;}
-.Ready          {background-color: #caeb16;}
-.Holding        {background-color: #2e3436;}
-.Deployment     {background-color: #edd400;}
-.ReadOnly       {background-color: #729fcf;}
-.Draining       {background-color: #204a87;}
-.Intervention   {background-color: #c17d11;}
-.Decomissioned  {background-color: #000000;}
+.unknown                    {background-color: #999;}
+.free, .started             {background-color: #0D0;}
+.inuse                      {background-color: #6DD;}
+.full, .relocating          {background-color: #09D;}
+.batchdown, .unassigned     {background-color: #500;}
+.offline, .initializing     {background-color: #FC0;}
+.test                       {background-color: #999;}
+.production                 {background-color: #73d216;}
+.ready                      {background-color: #caeb16;}
+.holding                    {background-color: #2e3436;}
+.deployment                 {background-color: #edd400;}
+.readonly                   {background-color: #729fcf;}
+.draining                   {background-color: #204a87;}
+.intervention               {background-color: #c17d11;}
+.decomissioned              {background-color: #000000;}
 
 
 /* === Cloud === */
@@ -419,6 +412,27 @@ NODE STATE COLOURS/IMAGES
 .yellow         {background-color: #FC0;}
 .green          {background-color: #0D0;}
 .replica        {opacity: 0.33;}
+
+
+/* === Note - Warning/Critical === */
+.note,
+.note.critical,
+.note.warning {
+  background-image: url("../images/icons/multi_note.gif");
+}
+
+.note {
+  background-position: center 0;
+  background-repeat: no-repeat;
+}
+
+.note.critical {
+  background-position: center -22px;
+}
+
+.note.warning {
+  background-position: center -11px;
+}
 
 
 /* === Warnings/Downtime/Dead/Critical === */
@@ -440,25 +454,4 @@ NODE STATE COLOURS/IMAGES
 
 .down {
   background-image: url("../images/icons/dead.png");
-}
-
-
-/* === Note - Warning/Critical === */
-.note,
-.note.critical,
-.note.warning {
-  background-image: url("../images/icons/multi_note.gif");
-}
-
-.note {
-  background-position: center 0;
-  background-repeat: no-repeat;
-}
-
-.note.critical {
-  background-position: center -22px;
-}
-
-.note.warning {
-  background-position: center -11px;
 }

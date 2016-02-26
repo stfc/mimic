@@ -23,7 +23,6 @@ module.exports = function(grunt) {
                 src: [
                     'assets/dist/js/bower.js',
                     'assets/js/key.js',
-                    'assets/js/monitor.js',
                     'assets/js/plugins.js',
                     'assets/js/tooltip.js',
                     'bower_components/masonry/dist/masonry.pkgd.js'
@@ -71,6 +70,10 @@ module.exports = function(grunt) {
         'bower_concat',
         'concat',
         'uglify',
+        'cssmin'
+    ]);
+    grunt.registerTask('buildmimiccss', [
+        'concat:css',
         'cssmin'
     ]);
     require('load-grunt-tasks')(grunt);
