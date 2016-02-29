@@ -1,5 +1,5 @@
 ![mimic](http://i.imgur.com/fCSbo0m.png)
-Mimic (1.3.0) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
+Mimic (1.4.0) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
 =====
 Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.
 It allows administrators to build custom overviews of physical and virtual infrastructures which provide a intuitive way to quickly drill down into detailed information from each data source.
@@ -94,9 +94,84 @@ Because of to how PHP's include paths work, all your mimic files and folders wil
 Views
 ---------
 
-Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. It can then be added to the menu section in `index.php`. The view files should only be used to get the data and arrange it into the correct structure - the code that renders the page is located in `/views/header.php`.
+Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. The view files should only be used to get the data and arrange it into the correct `JSON` structure (see below) - the code that renders the page is located in `index.php`.
 
-You can then customise it's link in the main menu by editing `config/menu-config.php`.
+```
+{
+  "GROUP":{
+    "PANEL":{
+      "CLUSTER":{
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        },
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        }
+      },
+      "CLUSTER":{
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        },
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        }
+      }
+    },
+    "PANEL":{
+      "CLUSTER":{
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        },
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        }
+      },
+      "CLUSTER":{
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        },
+        "NODE":{
+          "nagios": "data",
+          "extra": "data",
+          "status": {
+            "STATE":"SOURCE"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+You can add then customise it's menu link by editing `config/menu-config.php`.
 
 
 Node page
