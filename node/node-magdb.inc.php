@@ -109,7 +109,7 @@ class pMagdb
         }
     }
 
-    private function render_history_rows($history)
+    private function render_history_rows($history, $previous_row, $renderer)
     {
         global $HELPDESK_URL;
 
@@ -150,8 +150,12 @@ class pMagdb
         }
     }
 
-    private function render_overwatch_info($overwatch_info)
+    private function render_overwatch_info($overwatch_info, $renderer)
     {
+        global $HELPDESK_URL;
+        global $OVERWATCH_URL;
+        global $NODE;
+
         echo "<h3>Overwatch</h3>\n";
         echo "<dl>\n";
         foreach ($overwatch_info as $col => $val) {
@@ -202,7 +206,7 @@ class pMagdb
             $previous_row = False;
 
             //Display history
-            $this->render_history_rows();
+            $this->render_history_rows($history, $previous_row, $renderer);
             echo "</table>";
             echo "</div>\n";
         }
@@ -294,7 +298,7 @@ class pMagdb
 
         $overwatch_info = $this->get_db_info($SHORT);
         if ($overwatch_info !== null) {
-            $this->render_overwatch_info($overwatch_info);
+            $this->render_overwatch_info($overwatch_info, $renderer);
         }
     }
 }
