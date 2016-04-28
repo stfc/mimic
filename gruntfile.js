@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                     'assets/css/tooltip.css',
                     'bower_components/jquery.cookiebar/jquery.cookiebar.css'
                 ],
-                dest: 'assets/dist/css/style.css'
+                dest: 'assets/dist/css/style.css',
             }
         },
         uglify: {
@@ -58,10 +58,16 @@ module.exports = function(grunt) {
             }
         },
         cssmin: {
-            target: {
+            main: {
                 files: [{
                     src: 'assets/dist/css/style.css',
-                    dest: 'assets/dist/css/style.min.css'
+                    dest: 'assets/dist/css/style.min.css',
+                }]
+            },
+            info: {
+                files: [{
+                    src: 'assets/css/info.css',
+                    dest: 'assets/dist/css/info-style.min.css',
                 }]
             }
         }
