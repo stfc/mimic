@@ -1,6 +1,6 @@
-/*================================
+/* ================================
 GLOBAL SETTINGS
-==================================*/
+================================ */
 * {
   box-sizing: border-box;
 }
@@ -12,13 +12,18 @@ body {
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 a {
-  color: #6DD;
+  color: #6dd;
   text-decoration: none;
 }
 
@@ -44,30 +49,28 @@ ul {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.glyphicon-circle-arrow-right:before {
+.glyphicon-circle-arrow-right::before {
   content: "\e131";
 }
 
-.glyphicon-circle-arrow-left:before {
+.glyphicon-circle-arrow-left::before {
   content: "\e132";
 }
 
-.glyphicon-circle-arrow-up:before {
+.glyphicon-circle-arrow-up::before {
   content: "\e133";
 }
 
-.glyphicon-circle-arrow-down:before {
+.glyphicon-circle-arrow-down::before {
   content: "\e134";
 }
 
-
-/*==================================
+/* ==================================
 ASIDE, HEADER
-==================================*/
+================================== */
 aside {
   position: fixed;
   z-index: 2;
-  float: left;
   width: 180px;
   height: 100vh;
   background: #333;
@@ -78,9 +81,8 @@ aside {
 header {
   z-index: 20;
   position: absolute;
-  float: left;
   height: 90px;
-  border-bottom: 3px solid #3C6950;
+  border-bottom: 3px solid #3c6950;
   background: #333;
 }
 
@@ -89,20 +91,19 @@ header {
   text-align: center;
   text-shadow: 1px 1px 1px #444;
   font-size: 56px;
-  font-family: "Emilys Candy",cursive;
+  font-family: "Emilys Candy", cursive;
 }
 
 #inLocate {
   margin: 0 6px;
   padding: 6px 10px;
   width: 168px;
-  border: 3px solid #3C6950;
+  border: 3px solid #3c6950;
   border-radius: 17px;
   background: #ddd;
   color: #000;
   font-size: 13px;
 }
-
 
 /* === Navigation === */
 .scroll {
@@ -141,8 +142,8 @@ nav {
   margin: 0;
   padding: 10px 0;
   width: 100%;
-  border-top: 1px solid #3B3B3B;
-  border-bottom: 1px solid #2A2A2A;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #2a2a2a;
 }
 
 .menu-section:first-child {
@@ -161,7 +162,7 @@ nav {
   padding: 8px 0 8px 18px;
   width: 100%;
   background: #383838;
-  color: #EDEDED;
+  color: #ededed;
   list-style-type: none;
   cursor: pointer;
 }
@@ -177,16 +178,15 @@ nav {
 
 .arrow {
   float: left;
-  padding: 4px 8px 0px 0px;
+  padding: 4px 8px 0 0;
   color: #7a7a7a;
   font-size: 20px;
 }
 
-
 /* === Key === */
 .key {
   padding: 6px;
-  color: #EDEDED;
+  color: #ededed;
 }
 
 .key-item {
@@ -201,21 +201,19 @@ nav {
   margin-right: 4px;
 }
 
-
 /* === Footer === */
 footer {
   float: left;
   padding: 16px;
   width: 100%;
-  border-top: 1px solid #3B3B3B;
+  border-top: 1px solid #3b3b3b;
   text-align: center;
   font-size: 12px;
 }
 
-
-/*==================================
+/* ==================================
 MAIN CONTENT
-==================================*/
+================================== */
 .wrapper {
   margin: 16px 0 0 196px;
   min-height: 100%;
@@ -237,7 +235,6 @@ MAIN CONTENT
   padding-top: 10%;
 }
 
-
 /* === Node Container Headers === */
 .group-name {
   float: left;
@@ -250,7 +247,7 @@ MAIN CONTENT
 }
 
 h2:first-of-type {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .panel-name {
@@ -269,7 +266,6 @@ h2:first-of-type {
   font-weight: normal;
   clear: both;
 }
-
 
 /* === Node Containers === */
 .node-group {
@@ -297,32 +293,36 @@ h2:first-of-type {
 .step1 {
   width: 228px;
 }
+
 @media (min-width: 668px) {
   .step1 {
     width: 472px;
   }
 }
+
 @media (min-width: 912px) {
   .step1 {
     width: 716px;
   }
 }
+
 @media (min-width: 1156px) {
   .step1 {
     width: 960px;
   }
 }
+
 @media (min-width: 1400px) {
   .step1 {
     width: 1204px;
   }
 }
+
 @media (min-width: 1644px) {
   .step1 {
     width: 1448px;
   }
 }
-
 
 /* === Nodes === */
 .node {
@@ -338,9 +338,8 @@ h2:first-of-type {
 
 .node:hover {
   z-index: 10000;
-  outline: 2px solid #FFF;
+  outline: 2px solid #fff;
 }
-
 
 /* === ES only === */
 .rack {
@@ -353,7 +352,6 @@ p.rack {
   text-align: center;
   font-size: 6pt;
 }
-
 
 /* === Error === */
 .page-error {
@@ -368,6 +366,7 @@ p.rack {
   font-weight: bold;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
+
 .error-zone {
   z-index: 100;
   right: 0;
@@ -377,42 +376,108 @@ p.rack {
   margin: 12px;
 }
 
-
-/*==================================
+/* ==================================
 NODE STATE COLOURS/IMAGES
-==================================*/
+================================== */
 
 /* === General === */
-.unknown                    {background-color: #999;}
-.free, .started             {background-color: #0D0;}
-.inuse                      {background-color: #6DD;}
-.full, .relocating          {background-color: #09D;}
-.batchdown, .unassigned     {background-color: #500;}
-.offline, .initializing     {background-color: #FC0;}
-.test                       {background-color: #999;}
-.production                 {background-color: #73d216;}
-.ready                      {background-color: #caeb16;}
-.holding                    {background-color: #2e3436;}
-.deployment                 {background-color: #edd400;}
-.readonly                   {background-color: #729fcf;}
-.draining                   {background-color: #204a87;}
-.intervention               {background-color: #c17d11;}
-.decomissioned              {background-color: #000000;}
+.unknown {
+  background-color: #999;
+}
 
+.free,
+.started {
+  background-color: #0d0;
+}
 
-/* === Cloud === */
-.uninstantiated {background-color: #666;}
-.instantiated   {background-color: #6DD;}
+.inuse {
+  background-color: #6dd;
+}
 
+.full,
+.relocating {
+  background-color: #09d;
+}
 
-/* === Elastic Search Statuses === */
-.red            {outline: 1px solid #D00;}
-.yellow         {outline: 1px solid #FC0;}
-.red            {background-color: #D00;}
-.yellow         {background-color: #FC0;}
-.green          {background-color: #0D0;}
-.replica        {opacity: 0.33;}
+.batchdown,
+.unassigned {
+  background-color: #500;
+}
 
+.offline,
+.initializing {
+  background-color: #fc0;
+}
+
+.test {
+  background-color: #999;
+}
+
+.production {
+  background-color: #73d216;
+}
+
+.ready {
+  background-color: #caeb16;
+}
+
+.holding {
+  background-color: #2e3436;
+}
+
+.deployment {
+  background-color: #edd400;
+}
+
+.readonly {
+  background-color: #729fcf;
+}
+
+.draining {
+  background-color: #204a87;
+}
+
+.intervention {
+  background-color: #c17d11;
+}
+
+.decomissioned {
+  background-color: #000;
+}
+
+/* === cloud === */
+.uninstantiated {
+  background-color: #666;
+}
+
+.instantiated {
+  background-color: #6dd;
+}
+
+/* === elastic search statuses === */
+.red {
+  outline: 1px solid #d00;
+}
+
+.yellow {
+  outline: 1px solid #fc0;
+}
+
+.red {
+  background-color: #d00;
+}
+
+.yellow {
+  background-color: #fc0;
+}
+
+.green {
+  background-color: #0d0;
+}
+
+.replica {
+  opacity: 0.33;
+}
 
 /* === Note - Warning/Critical === */
 .note,
@@ -434,9 +499,9 @@ NODE STATE COLOURS/IMAGES
   background-position: center -11px;
 }
 
-
 /* === Warnings/Downtime/Dead/Critical === */
-.warning, .critical {
+.warning,
+.critical {
   background-image: url("../images/icons/multi_plain.gif");
 }
 

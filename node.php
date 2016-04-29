@@ -37,13 +37,13 @@ global $SHORT;
                 echo "<section>";
 
                 // HEADER START
-                echo "<div class='header' onclick=\"toggleRollup('#$plugin');\" title='Show/Hide'>";
+                echo "<div class='header'>";
 
                 $header = $plug -> header($NODE, $SHORT);
                 if (!is_array($header)) {
                     $header = Array($header);
                 }
-                echo "<h2>";
+                echo "<h2 onclick=\"toggleRollup('#$plugin');\" title='Show/Hide'>";
                 if (filter_input(INPUT_COOKIE, 'rollup_#'.$plugin.'', FILTER_SANITIZE_STRING) == "hidden") {
                     echo "<span class='glyphicon glyphicon-circle-arrow-right'></span> ";
                 } else {
@@ -85,8 +85,8 @@ global $SHORT;
 ?>
 <script type="text/javascript">
 // Shows and hides key
-$('.header').click(function () {
-    $(this).children('h2').children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
+$('.header h2').click(function () {
+    $(this).children('span').toggleClass('glyphicon-circle-arrow-right').toggleClass('glyphicon-circle-arrow-down');
 });
 $(document).ready(function(){
     $.cookieBar({
