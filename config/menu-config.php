@@ -47,10 +47,15 @@ $menu = array(
     ),
 
     'Cloud' => array(
-        'Overview' => array(
-            'name' => 'Overview',
-            'text' => 'Overview of cloud nodes',
-            'link' => 'cloud'
+        'OpenNebula' => array(
+            'name' => 'OpenNebula',
+            'text' => 'OpenNebula Cloud nodes',
+            'link' => 'cloud-opennebula'
+        ),
+        'OpenStack' => array(
+            'name' => 'OpenStack',
+            'text' => 'OpenStack Cloud nodes',
+            'link' => 'cloud-openstack'
         ),
     ),
 
