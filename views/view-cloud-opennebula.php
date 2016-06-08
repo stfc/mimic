@@ -53,41 +53,44 @@ if ($notes and mysql_num_rows($notes)) {
 // Generates main array
 $results = Array();
 foreach ($all_nodes as $name => $panels) {
-    $group = "infrastructure";
-    $panel = $panels["personality"];
-    $cluster = '';
+
+    if (strpos($panels["personality"], "openstack") === false) {
+        $group = "infrastructure";
+        $panel = $panels["personality"];
+        $cluster = '';
 
 
-    if (strpos($name, "vm") !== false) {
-        $group = "vm";
-    }
-
-    $results[$group][$panel][$cluster][$name] = Array();
-    if (array_key_exists($name, $all_nodes)) {
-        unset($all_nodes[$name]['personality']);
-        ksort($all_nodes[$name]);
-        $results[$group][$panel][$cluster][$name] = $all_nodes[$name];
-    }
-    if (array_key_exists($name, $all_notes)) {
-        $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-    }
-    if (nagios($name) !== Null) {
-        $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-    };
-
-    if ($panel == "opennebula-hypervisor" && array_key_exists($name, $hvstatus)) {
-        $results[$group][$panel][$cluster][$name]['status'] = $hvstatus[$name];
-    }
-
-    if ($group == "vm") {
-        $all_status = Array();
-
-        $state = 'instantiated';
-        if (!array_key_exists($all_nodes[$name]['ip'], $instantiated)) {
-            $state = 'uninstantiated';
+        if (strpos($name, "vm") !== false) {
+            $group = "vm";
         }
-        $all_status[$state] = 'OpenNebula';
-        $results[$group][$panel][$cluster][$name]['status'] = $all_status;
+
+        $results[$group][$panel][$cluster][$name] = Array();
+        if (array_key_exists($name, $all_nodes)) {
+            unset($all_nodes[$name]['personality']);
+            ksort($all_nodes[$name]);
+            $results[$group][$panel][$cluster][$name] = $all_nodes[$name];
+        }
+        if (array_key_exists($name, $all_notes)) {
+            $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
+        }
+        if (nagios($name) !== Null) {
+            $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
+        };
+
+        if ($panel == "opennebula-hypervisor" && array_key_exists($name, $hvstatus)) {
+            $results[$group][$panel][$cluster][$name]['status'] = $hvstatus[$name];
+        }
+
+        if ($group == "vm") {
+            $all_status = Array();
+
+            $state = 'instantiated';
+            if (!array_key_exists($all_nodes[$name]['ip'], $instantiated)) {
+                $state = 'uninstantiated';
+            }
+            $all_status[$state] = 'OpenNebula';
+            $results[$group][$panel][$cluster][$name]['status'] = $all_status;
+        }
     }
 }
 
