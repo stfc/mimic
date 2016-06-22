@@ -19,6 +19,7 @@ Tested on Scientific Linux release 6.4 (Carbon)
 
 On top of a web server, the following packages will be required:
 
+| Package                               | Description                                         |
 | ------------------------------------- | --------------------------------------------------- |
 | php                                   |                                                     |
 | php-mysql                             | MySQL module for php.                               |
