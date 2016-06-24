@@ -50,7 +50,7 @@ npm install
 npm install -g bower
 npm install -g grunt
 bower install
-grunt install
+grunt buildmimic
 ~~~~
 
 
