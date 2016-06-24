@@ -17,6 +17,8 @@ Dependences
 
 Tested on Scientific Linux release 6.4 (Carbon)
 
+On top of a web server, the following packages will be required:
+
 | Package                               | Description                                         |
 | ------------------------------------- | --------------------------------------------------- |
 | php                                   |                                                     |
@@ -30,15 +32,27 @@ Tested on Scientific Linux release 6.4 (Carbon)
 | python-ldap                           | LDAP interface module for Python.                   |
 | graphviz                              | Graph drawing tools.                                |
 
+For Red Hat distributions:  
+`yum install php php-mysql php-pgsql php-pear php-pear-Text-Diff php-horde-Horde-Text-Diff nc python-argparse python-ldap graphviz` 
+
 If you wish to build Mimic from this repository, you will also need [npm](https://www.npmjs.com/).
 
 Downloads
 -----------
 
 
-Build
+Building for development
 -----------
-With npm installed, navigate to mimic's root directory (the one with `package.json` in) and run `npm install` once that has completed you can run `bower install`. The final step is simply to run `grunt buildmimic`.
+First run `yum install npm` (for Red Hat). With npm installed, navigate to mimic's root directory (the one with `package.json` in) and run:
+
+~~~~
+npm install
+npm install -g bower
+npm install -g grunt
+bower install
+grunt buildmimic
+~~~~
+
 
 Configuration
 -----------

@@ -70,13 +70,28 @@ module.exports = function(grunt) {
                     dest: 'assets/dist/css/info-style.min.css',
                 }]
             }
+        },
+        copy: {
+            images: {
+                cwd: 'assets/images/',
+                src: '**/*',
+                dest: 'assets/dist/images/',
+                expand: true
+            },
+            fonts: {
+                cwd: 'assets/fonts/',
+                src: '**/*',
+                dest: 'assets/dist/fonts/',
+                expand: true
+            }
         }
     });
     grunt.registerTask('buildmimic', [
         'bower_concat',
         'concat',
         'uglify',
-        'cssmin'
+        'cssmin',
+        'copy'
     ]);
     grunt.registerTask('buildmimiccss', [
         'concat:css',
