@@ -1,6 +1,6 @@
 {
   "name": "mimic",
-  "version": "1.4.1",
+  "version": "1.4.5",
   "description": "Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.",
   "main": "index.php",
   "dependencies": {},
