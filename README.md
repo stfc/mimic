@@ -1,5 +1,5 @@
 ![mimic](http://i.imgur.com/fCSbo0m.png)
-Mimic (1.4.1) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
+Mimic (1.4.5) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
 =====
 Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.
 It allows administrators to build custom overviews of physical and virtual infrastructures which provide a intuitive way to quickly drill down into detailed information from each data source.
