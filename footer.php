@@ -8,8 +8,8 @@
 
     // Allows user to search
     function locateNode(name) {
-        $("span").css("outline", '');
-        $("span").css("zIndex", '');
+        $(".node").removeClass(' highlight');
+        $(".node").removeClass(' dark-node');
 
         if (name !== null && name.length > 0) {
             name = name.replace(",", " ");
@@ -18,8 +18,8 @@
             for (node_name in name) {
                 if (name[node_name] !== null) {
                     var node = $("span[id^='"+name[node_name]+"']");
-                    node.css("outline", "3px solid #FFFF00");
-                    node.css("zIndex", "1");
+                    $(".node").addClass(' dark-node');
+                    node.addClass(' highlight');
                 }
             }
         }

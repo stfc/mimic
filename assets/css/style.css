@@ -341,6 +341,17 @@ h2:first-of-type {
   outline: 2px solid #fff;
 }
 
+/* Node search */
+.dark-node {
+  opacity: 0.3;
+}
+
+.highlight {
+  outline: 2px solid #ff0;
+  z-index: 1;
+  opacity: 1;
+}
+
 /* === ES only === */
 .rack {
   float: left;
