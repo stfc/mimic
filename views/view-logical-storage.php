@@ -24,9 +24,9 @@ if ($all_nodes and pg_num_rows($all_nodes)){
 
 // Gathers notes
 $all_notes = Array();
-$notes = mysql_query("select name, note from notes");
-if ($notes and mysql_num_rows($notes)) {
-    while ($note = mysql_fetch_assoc($notes)) {
+$notes = $SQL->query("select name, note from notes");
+if ($notes and $notes->num_rows) {
+    while ($note = $notes->fetch_assoc()) {
         $all_notes[$note['name']] = $note['note'];
     }
 }

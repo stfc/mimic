@@ -27,7 +27,9 @@ class pMagdb
 
     private function get_db_info($machineName)
     {
-        $got = pg_query("select * from \"vCastor\" where \"machineName\" = '".mysql_real_escape_string($machineName)."'");
+        global $SQL;
+
+        $got = pg_query("select * from \"vCastor\" where \"machineName\" = '".$SQL->real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_assoc($got);
             return($row);
@@ -39,7 +41,9 @@ class pMagdb
 
     private function get_overwatch_history($machineName)
     {
-        $got = pg_query("select \"lastUpdateDate\",\"lastUpdatedBy\",\"currentStatus\",\"normalStatus\",\"currentTeam\",\"serviceType\",\"virtualOrganisation\",\"diskPool\",\"sizeTb\",\"isPuppetManaged\" as \"puppetManaged\",\"isQuattorManaged\" as \"quattorManaged\",\"miscComments\" from \"storageSystemArchives\" where \"machineName\" = '".mysql_real_escape_string($machineName)."' order by \"lastUpdateDate\" asc");
+        global $SQL;
+
+        $got = pg_query("select \"lastUpdateDate\",\"lastUpdatedBy\",\"currentStatus\",\"normalStatus\",\"currentTeam\",\"serviceType\",\"virtualOrganisation\",\"diskPool\",\"sizeTb\",\"isPuppetManaged\" as \"puppetManaged\",\"isQuattorManaged\" as \"quattorManaged\",\"miscComments\" from \"storageSystemArchives\" where \"machineName\" = '".$SQL->real_escape_string($machineName)."' order by \"lastUpdateDate\" asc");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_all($got);
             return($row);
@@ -51,7 +55,9 @@ class pMagdb
 
     private function get_magdb_info($machineName)
     {
-        $got = pg_query("select \"systemId\", \"ipAddress\" from \"vNetwork\" where \"fqdn\" = '".mysql_real_escape_string($machineName)."'");
+        global $SQL;
+
+        $got = pg_query("select \"systemId\", \"ipAddress\" from \"vNetwork\" where \"fqdn\" = '".$SQL->real_escape_string($machineName)."'");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_assoc($got);
             return($row);
@@ -63,7 +69,9 @@ class pMagdb
 
     private function get_hostnames($systemId)
     {
-        $got = pg_query("select fqdn from \"vNetwork\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
+        global $SQL;
+
+        $got = pg_query("select fqdn from \"vNetwork\" where \"systemId\" = '".$SQL->real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_all($got);
             return($row);
@@ -75,7 +83,9 @@ class pMagdb
 
     private function get_system($systemId)
     {
-        $got = pg_query("select \"roomName\",\"rackId\", \"systemRackPos\", \"categoryName\", \"vendorName\", \"serviceTag\", \"serviceTagURL\", \"lifestageName\" from \"vStatus\" where \"systemId\" = '".mysql_real_escape_string($systemId)."'");
+        global $SQL;
+
+        $got = pg_query("select \"roomName\",\"rackId\", \"systemRackPos\", \"categoryName\", \"vendorName\", \"serviceTag\", \"serviceTagURL\", \"lifestageName\" from \"vStatus\" where \"systemId\" = '".$SQL->real_escape_string($systemId)."'");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_assoc($got);
             return($row);
@@ -87,7 +97,9 @@ class pMagdb
 
     private function get_room_pdus($rackId)
     {
-        $got = pg_query('SELECT "name", "roomBuilding", "roomName", "upsPowered" FROM "vRackRoomPdus" WHERE "rackId"=\''.mysql_real_escape_string($rackId)."'");
+        global $SQL;
+
+        $got = pg_query('SELECT "name", "roomBuilding", "roomName", "upsPowered" FROM "vRackRoomPdus" WHERE "rackId"=\''.$SQL->real_escape_string($rackId)."'");
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_all($got);
             return($row);
@@ -99,7 +111,9 @@ class pMagdb
 
     private function get_interfaces($systemId)
     {
-        $got = pg_query('select "name", "macAddress", "ipAddresses", "description", "isBootInterface" from "vNetworkInterfaces" where "systemId" = \''.mysql_escape_string($systemId).'\'');
+        global $SQL;
+
+        $got = pg_query('select "name", "macAddress", "ipAddresses", "description", "isBootInterface" from "vNetworkInterfaces" where "systemId" = \''.$SQL->escape_string($systemId).'\'');
         if ($got and pg_num_rows($got)) {
             $row = pg_fetch_all($got);
             return($row);

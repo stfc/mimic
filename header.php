@@ -10,7 +10,7 @@ $SHORT = array (); # For names from nagios
 
 // Which page are we viewing?
 if (filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING))
-$page = mysql_escape_string($_REQUEST['page']);
+$page = $SQL->escape_string($_REQUEST['page']);
 else
 $page = 1;
 require("inc/config-call.inc.php");
