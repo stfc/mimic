@@ -10,10 +10,11 @@ class pBatchSystem
 
   function detail($node, $short, $jobId = null, $jobCount = null)
   {
+    global $SQL;
     // Look for state sources, and display them
-    $got = mysql_query("select source, state, info, unix_timestamp() - unix_timestamp(time) as 'update' from state where name = '$node'"); #, unix_timestamp() - unix_timestamp(time)
-    if ($got != null and mysql_num_rows($got)) {
-      while ($row = mysql_fetch_row($got)) {
+    $got = $SQL->query("select source, state, info, unix_timestamp() - unix_timestamp(time) as 'update' from state where name = '$node'"); #, unix_timestamp() - unix_timestamp(time)
+    if ($got != null and $got->num_rows) {
+      while ($row = $got->fetch_row()) {
         $source = $row[0];
         $state  = $row[1];
         $info   = $row[2];

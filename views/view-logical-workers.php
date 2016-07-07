@@ -16,18 +16,18 @@ if ($data and pg_num_rows($data)){
 
 // Gathers notes
 $all_notes = Array();
-$notes = mysql_query("select name, note from notes");
-if ($notes and mysql_num_rows($notes)) {
-    while ($note = mysql_fetch_assoc($notes)) {
+$notes = $SQL->query("select name, note from notes");
+if ($notes and $notes->num_rows) {
+    while ($note = $notes->fetch_assoc()) {
         $all_notes[$note['name']] = $note['note'];
     }
 }
 
 // Gathers states
 $all_status = Array();
-$status = mysql_query("select name, state, source from state");
-if ($status and mysql_num_rows($status)) {
-    while ($state = mysql_fetch_assoc($status)) {
+$status = $SQL->query("select name, state, source from state");
+if ($status and $status->num_rows) {
+    while ($state = $status->fetch_assoc()) {
         $all_status[$state['name']] = Array(
             $state['state'] => $state['source'],
         );

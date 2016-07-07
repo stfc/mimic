@@ -19,8 +19,8 @@ if ($NODE) {
         $redo = 1;
         if (preg_match("/^\s*$/", $NOTE)) {
             // delete note if empty
-            $done = mysql_query("delete from notes where name='".
-            mysql_escape_string($NODE)."'");
+            $done = $SQL->query("delete from notes where name='".
+            $SQL->real_escape_string($NODE)."'");
         } else {
             // insert/update note
             $NOTE = preg_replace(
@@ -28,21 +28,21 @@ if ($NODE) {
                 array (" ", "$1"),
                 $NOTE
             );
-            $done = mysql_query("update notes set note='".mysql_escape_string($NOTE)."', time=null where name='".mysql_escape_string($NODE)."'");
+            $done = $SQL->query("update notes set note='".$SQL->real_escape_string($NOTE)."', time=null where name='".$SQL->real_escape_string($NODE)."'");
 
-            if (mysql_affected_rows()==0) {
-                $done = mysql_query("insert into notes (name, note, time) values ('".mysql_escape_string($NODE)."', '".mysql_escape_string($NOTE)."', null)");
+            if ($SQL->affected_rows() == 0) {
+                $done = $SQL->query("insert into notes (name, note, time) values ('".$SQL->real_escape_string($NODE)."', '".$SQL->real_escape_string($NOTE)."', null)");
             }
         }
-        if (mysql_affected_rows()==1) {
+        if ($SQL->affected_rows() == 1) {
             $result["status"] = "ok";
-            $result["note"] = mysql_escape_string($NOTE);
+            $result["note"] = $SQL->real_escape_string($NOTE);
         }
     }
     else {
-        $got = mysql_query("select note, unix_timestamp() - unix_timestamp(time) from notes where name='".mysql_escape_string($NODE)."'");
-        if ($got and mysql_num_rows($got)) {
-            $row = mysql_fetch_row($got);
+        $got = $SQL->query("select note, unix_timestamp() - unix_timestamp(time) from notes where name='".$SQL->real_escape_string($NODE)."'");
+        if ($got and $got->num_rows) {
+            $row = $got->fetch_row();
             $result["note"] = htmlspecialchars($row[0]);
             $result["time"] = prettytime($row[1]);
         }

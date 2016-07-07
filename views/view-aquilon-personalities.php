@@ -14,9 +14,9 @@ uksort($all_nodes, "strnatcmp");
 
 // Gets notes for nodes
 $all_notes = Array();
-$notes = mysql_query("select name, note from notes");
-if ($notes and mysql_num_rows($notes)) {
-    while ($note = mysql_fetch_assoc($notes)) {
+$notes = $SQL->query("select name, note from notes");
+if ($notes and $notes->num_rows) {
+    while ($note = $notes->fetch_assoc()) {
         $all_notes[$note['name']] = $note['note'];
     }
 }
