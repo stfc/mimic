@@ -2,6 +2,11 @@
 require("header.php"); // Important includes
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
 
+// Configuration
+$config = Array(
+    "clickable" => true,
+);
+
 // Gathers clusters
 $all_clusters = Array();
 $all_nodes = pg_query("select \"fqdn\" as \"name\", \"castorInstance\", \"hardwareGroup\", \"diskPool\", \"dxtx\", \"currentStatus\" "
@@ -33,6 +38,7 @@ if ($notes and $notes->num_rows) {
 
 // Generates main array
 $results = Array();
+$results['config'] = $config;
 foreach ($all_clusters as $name => $panels) {
 
     $group = '';

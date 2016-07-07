@@ -1,8 +1,11 @@
 <?php
 require("header.php"); // Important includes
 
-// Config
+// Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
+$config = Array(
+    "clickable" => true,
+);
 
 // Gets node data and formats it
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch");
@@ -26,6 +29,7 @@ if ($notes and $notes->num_rows) {
 
 // Initialise all branches (even empty ones!)
 $results = Array();
+$results['config'] = $config;
 foreach ($branches as $branch) {
 
     $group = $branch['branch_type'];

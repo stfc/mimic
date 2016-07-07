@@ -4,6 +4,9 @@ require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
 
 // Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
+$config = Array(
+    "clickable" => true,
+);
 
 // Gathers clusters
 $all_clusters = Array();
@@ -48,6 +51,7 @@ foreach ($vms as $name => $values) {
 
 // Generates main array
 $results = Array();
+$results['config'] = $config;
 foreach ($all_clusters as $name => $panels) {
     if (($panels !== "vm-nubes") or (array_key_exists($name, $personality) === true)) {
 
@@ -69,4 +73,4 @@ foreach ($all_clusters as $name => $panels) {
 }
 
 // Returns built json
-echo json_encode($results);
+echo json_encode($results) ;
