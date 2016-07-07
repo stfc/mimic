@@ -11,6 +11,11 @@
 
 require("header.php"); // Important includes
 
+// Configuration
+$config = Array(
+    "clickable" => false,
+);
+
 // List of clusters to gather data from
 // really should be loaded from config or something more dynamic
 $es_clusters = Array(
@@ -18,7 +23,7 @@ $es_clusters = Array(
 );
 
 $view = Array(); // The whole view that we return to Mimic
-
+$view['config'] = $config;
 foreach ($es_clusters as $es_cluster_name => $es_cluster_url) {
     // Build a lookup table for node details
     // the key being the internal node id (e.g. Yi2lqwdDQ9C1OC0ouYbfyQ)
@@ -43,9 +48,9 @@ foreach ($es_clusters as $es_cluster_name => $es_cluster_url) {
     sort($es_index_names);
 
     $mimic_group = Array(); // Set of panels of clusters of nodes in this ES cluster (i.e. the whole cluster)
-    
+
     foreach ($es_index_names as $index_name) {
-        $index_data = $es_indices[$index_name];   
+        $index_data = $es_indices[$index_name];
         $shard_ids = array_keys($index_data['shards']);
         sort($shard_ids);
 
@@ -61,7 +66,7 @@ foreach ($es_clusters as $es_cluster_name => $es_cluster_url) {
                 $shard_data = $index_data['shards'][$shard_id][$replica_id];
 
                 $mimic_node = Array(); // Set of shard properties (status etc)
-    
+
                 foreach ($shard_data as $key => $value) {
                     $value = bool2str($value); // Convert any booleans to strings (because PHP)
                     if (strlen($value) > 0) { // Only include properties which have a value
@@ -71,7 +76,7 @@ foreach ($es_clusters as $es_cluster_name => $es_cluster_url) {
                         $mimic_node[$key] = $value;
                     }
                 }
-    
+
                 // Build the status dictionary that Mimic expects
                 $status = $shard_data['state'];
                 if (! $shard_data['primary']) {
@@ -79,7 +84,7 @@ foreach ($es_clusters as $es_cluster_name => $es_cluster_url) {
                 }
                 $mimic_node['status'] = Array();
                 $mimic_node['status'][$status] = $es_cluster_name; // We don't have a better "source" than the name of the cluster
-    
+
                 $mimic_cluster["Shard {$shard_id} (Replica $replica_id)"] = $mimic_node; // Add shard details to set of shards
             }
             $mimic_panel[$shard_id] = $mimic_cluster;

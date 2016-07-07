@@ -1,8 +1,11 @@
 <?php
 require("header.php"); // Important includes
 
-// Config
+// Configuration
 $ES_URL = $CONFIG['URL']['ES'] . $CONFIG['PORT']['ES_PORT'];
+$config = Array(
+    "clickable" => false,
+);
 
 $nodes = file_get_contents("$ES_URL/_cluster/state/nodes");
 if ($nodes === false) {
@@ -51,39 +54,43 @@ foreach ($nodes as $node_id => $node) {
         if (!array_key_exists($node_name, $results)) {
             $results[$node_name] = Array();
         }
-        foreach ($host_shards[$node_id] as $shard) {
-            if (isset($shard['state']) && $shard['state'] != 'RELOCATING') {
-                unset($shard['relocating_node']);
-            }
 
-            $index_name = $shard['index'];
-            $shard_info = Array();
+        if (array_key_exists($node_id, $host_shards)) {
 
-            $status = Array();
-            if ($shard['primary']) {
-                $shard_info['type'] = 'primary';
-                $status[$shard['state']] = $cluster['cluster_name'];
-
-            } else {
-                $shard_info['type'] = 'replica';
-                $status[$shard['state'].' replica'] = $cluster['cluster_name'];
-            }
-            unset($shard['state']);
-
-            foreach ($shard as $key => $value) {
-                // If this property looks like a node ID, look it up and replace it with the hostname of the node
-                if (isset($value) && strpos($key, 'node') !== false) {
-                    $value = $nodes[$value]['name'];
+            foreach ($host_shards[$node_id] as $shard) {
+                if (isset($shard['state']) && $shard['state'] != 'RELOCATING') {
+                    unset($shard['relocating_node']);
                 }
-                $value = bool2str($value);
-                $shard_info[$key] = $value;
+
+                $index_name = $shard['index'];
+                $shard_info = Array();
+
+                $status = Array();
+                if ($shard['primary']) {
+                    $shard_info['type'] = 'primary';
+                    $status[$shard['state']] = $cluster['cluster_name'];
+
+                } else {
+                    $shard_info['type'] = 'replica';
+                    $status[$shard['state'].' replica'] = $cluster['cluster_name'];
+                }
+                unset($shard['state']);
+
+                foreach ($shard as $key => $value) {
+                    // If this property looks like a node ID, look it up and replace it with the hostname of the node
+                    if (isset($value) && strpos($key, 'node') !== false) {
+                        $value = $nodes[$value]['name'];
+                    }
+                    $value = bool2str($value);
+                    $shard_info[$key] = $value;
+                }
+
+                $shard_id = $shard_info['shard'];
+                unset($shard_info['shard']);
+
+                $results[$node_name]['']["${index_name}_shard${shard_id}"] = $shard_info;
+                $results[$node_name]['']["${index_name}_shard${shard_id}"]['status'] = $status;
             }
-
-            $shard_id = $shard_info['shard'];
-            unset($shard_info['shard']);
-
-            $results[$node_name]['']["${index_name}_shard${shard_id}"] = $shard_info;
-            $results[$node_name]['']["${index_name}_shard${shard_id}"]['status'] = $status;
         }
     }
 }
@@ -93,5 +100,7 @@ ksort($results);
 $groups = Array(
     $cluster['cluster_name'] => $results,
 );
+$groups['config'] = $config;
+
 
 echo json_encode($groups);

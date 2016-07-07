@@ -3,6 +3,9 @@ require("header.php"); // Important includes
 
 // Configuration
 $AQUILON_URL = $CONFIG['URL']['AQUILON'];
+$config = Array(
+    "clickable" => true,
+);
 
 // Gets node data and formats it
 $jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch?filter=nubes");
@@ -52,6 +55,7 @@ if ($notes and mysql_num_rows($notes)) {
 
 // Generates main array
 $results = Array();
+$results['config'] = $config;
 foreach ($all_nodes as $name => $panels) {
     if (strpos($panels["branch_name"], "openstack") !== false || strpos($panels["personality"], "openstack") !== false) {
         $group = "infrastructure";
