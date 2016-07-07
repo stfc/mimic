@@ -77,7 +77,9 @@ foreach ($results as $group => $panel) {
                 unset($results[$group][$owner]);
             }
         } else {
-            $results[$group]["Aquilon"] = $results[$group][$owner];
+            foreach ($results[$group][$owner] as $key => $value) {
+                $results[$group]["Aquilon"][$key] = $value;
+            }
             unset($results[$group][$owner]);
         }
     }
