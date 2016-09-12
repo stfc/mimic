@@ -19,8 +19,10 @@ if ($NODE) {
         $redo = 1;
         if (preg_match("/^\s*$/", $NOTE)) {
             // delete note if empty
-            $done = $SQL->query("delete from notes where name='".
-            $SQL->real_escape_string($NODE)."'");
+            $done = $SQL->query(sprintf("delete from notes where name='%s'", $SQL->real_escape_string($NODE)));
+            if ($done) {
+                $result["status"] = "ok";
+            }
         } else {
             // insert/update note
             $NOTE = preg_replace(
@@ -28,15 +30,11 @@ if ($NODE) {
                 array (" ", "$1"),
                 $NOTE
             );
-            $done = $SQL->query("update notes set note='".$SQL->real_escape_string($NOTE)."', time=null where name='".$SQL->real_escape_string($NODE)."'");
-
-            if ($SQL->affected_rows() == 0) {
-                $done = $SQL->query("insert into notes (name, note, time) values ('".$SQL->real_escape_string($NODE)."', '".$SQL->real_escape_string($NOTE)."', null)");
+            $done = $SQL->query(sprintf("insert into notes (name, note, time) values ('%s', '%s', null) ON DUPLICATE KEY UPDATE note=VALUES(note)", $SQL->real_escape_string($NODE), $SQL->real_escape_string($NOTE)));
+            if ($done) {
+                $result["status"] = "ok";
+                $result["note"] = $SQL->real_escape_string($NOTE);
             }
-        }
-        if ($SQL->affected_rows() == 1) {
-            $result["status"] = "ok";
-            $result["note"] = $SQL->real_escape_string($NOTE);
         }
     }
     else {
