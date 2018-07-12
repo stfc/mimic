@@ -41,7 +41,7 @@ foreach ($all_nodes as $name => $panels) {
     if (sizeof($grn) == 3) {
         $panels["email"] = htmlentities($grn[2]);
     };
-    
+
     $panel = htmlentities($panels["personality"]);
     $cluster = '';
 
