@@ -109,15 +109,15 @@ if ($system) {
                     $lastUpdateDate = $lastUpdateDate[0];
                     if ($l["localPort"] != "") {
                         $graph_text .= sprintf('"%s" [$STYLE_LLDP];'."\n", $l["localPort"], $vendor);
-                        $graph_text .= sprintf('"%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l["localPort"], $l["localMac"]);
+                        $graph_text .= sprintf('"%s/%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l['remotePort'], $l["localPort"], $l["localMac"]);
                     }
                     else {
-                        $graph_text .= '"'.$l["remoteMac"].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
+                        $graph_text .= '"'.$l["remoteMac"].'/'.$l['remotePort'].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
                     }
-                    $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'" [color="#8f5902"];'."\n";
+                    $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'/'.$l['remotePort'].'" [color="#8f5902"];'."\n";
                     $graph_text .= '}'."\n";
                     $vendor = ouilookup($l["remoteMac"]);
-                    $graph_text .= sprintf('"%s" [label="%s\n%s\n%s" %s];'."\n", $l["remoteMac"], $l["remotePort"], $l["remoteMac"], $vendor, $STYLE_LLDP);
+                    $graph_text .= sprintf('"%s/%s" [label="%s\n%s\n%s" %s];'."\n", $l["remoteMac"], $l['remotePort'], $l["remotePort"], $l["remoteMac"], $vendor, $STYLE_LLDP);
                     $graph_text .= sprintf(
                         '"%s" [label="%s\nObserved %s" '.$STYLE_LLDP.' URL="/node.php?n=%s" target="_parent"];'."\n",
                         $l["remoteHost"], $l["remoteHost"], $lastUpdateDate, $l['remoteHost']
