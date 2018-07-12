@@ -397,11 +397,19 @@ NODE STATE COLOURS/IMAGES
 }
 
 .free,
-.started {
+.started,
+.idle {
   background-color: #0d0;
 }
 
-.inuse {
+.reserved {
+  background-color: #070;
+}
+
+.inuse,
+.allocated,
+.completing,
+.mixed {
   background-color: #6dd;
 }
 
@@ -416,7 +424,16 @@ NODE STATE COLOURS/IMAGES
 }
 
 .offline,
-.initializing {
+.initializing,
+.drained,
+.draining,
+.maint,
+.error,
+.fail,
+.failing,
+.power_down,
+.power_up,
+.reboot {
   background-color: #fc0;
 }
 
@@ -432,7 +449,8 @@ NODE STATE COLOURS/IMAGES
   background-color: #caeb16;
 }
 
-.holding {
+.holding,
+.future {
   background-color: #2e3436;
 }
 
