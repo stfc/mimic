@@ -31,7 +31,8 @@ class pAquilon {
         }
         if (sizeof($info_item) == 2) {
           $key = $info_item[0];
-          $val = $info_item[1];
+          $val = htmlentities($info_item[1]);
+          $val = preg_replace('/(.*) &lt;(.+@.+)&gt;/', '<a href="mailto:$2">$1</a>', $val);
           $val = str_replace("[", "<em>[", $val);
           $val = str_replace("]", "]</em>", $val);
           echo "<li><strong>$key</strong> &ndash; $val";
