@@ -2,7 +2,7 @@
 require("header.php"); // Important includes
 
 // Configuration
-$ES_URL = $CONFIG['URL']['ES'] . $CONFIG['PORT']['ES_PORT'];
+$ES_URL = $CONFIG['URL']['ES'] . ':' . $CONFIG['PORT']['ES_PORT'];
 $config = Array(
     "clickable" => false,
 );

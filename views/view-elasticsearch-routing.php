@@ -19,7 +19,7 @@ $config = Array(
 // List of clusters to gather data from
 // really should be loaded from config or something more dynamic
 $es_clusters = Array(
-    'sawmill' => $CONFIG['URL']['ES'] . $CONFIG['PORT']['ES_PORT'],
+    'testbed' => $CONFIG['URL']['ES'] . ':' . $CONFIG['PORT']['ES_PORT'],
 );
 
 $view = Array(); // The whole view that we return to Mimic
