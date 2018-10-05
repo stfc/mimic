@@ -47,10 +47,10 @@ foreach ($REPORTS as $type => $url) {
 
         if (array_key_exists($name, $all_notes)) {
             $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-        };
+        }
         if (nagios($name) !== Null) {
             $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-        };
+        }
     }
 }
 

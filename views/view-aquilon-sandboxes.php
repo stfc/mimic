@@ -43,13 +43,13 @@ foreach ($all_nodes as $name => $panels) {
     $results[$group][$panel][$cluster][$name] = Array();
     if (array_key_exists($name, $all_nodes)) {
         $results[$group][$panel][$cluster][$name] = $all_nodes[$name];
-    };
+    }
     if (array_key_exists($name, $all_notes)) {
         $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-    };
+    }
     if (nagios($name) !== Null) {
         $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-    };
+    }
 }
 
 foreach ($results as $group => $panel) {
