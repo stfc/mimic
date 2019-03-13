@@ -48,19 +48,19 @@ foreach ($all_clusters as $name => $panels) {
     $results[$group][$panel][$cluster][$name] = Array();
     if (array_key_exists($name, $all_notes)) {
         $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-    };
+    }
     if (nagios($name) !== Null) {
         $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-    };
+    }
     if (array_key_exists($name, $all_clusters)) {
         $results[$group][$panel][$cluster][$name]['dxtx'] = $all_clusters[$name]['dxtx'];
-    };
+    }
     if (array_key_exists($name, $all_clusters)) {
         $results[$group][$panel][$cluster][$name]['generation'] = $all_clusters[$name]['generation'];
-    };
+    }
     if (array_key_exists($name, $status)) {
         $results[$group][$panel][$cluster][$name]['status'] = $status[$name];
-    };
+    }
 }
 
 // Returns built json

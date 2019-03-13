@@ -75,7 +75,7 @@ foreach ($all_nodes as $name => $panels) {
         }
         if (nagios($name) !== Null) {
             $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-        };
+        }
 
         if ($panel == "opennebula-hypervisor" && array_key_exists($name, $hvstatus)) {
             $results[$group][$panel][$cluster][$name]['status'] = $hvstatus[$name];
