@@ -30,60 +30,32 @@ class pBatchSystem
         echo "        <dt>Source</dt><dd>".htmlspecialchars($source)."</dd>\n";
         echo "        <dt>State</dt><dd>".$state."</dd>\n";
 
-        if (($source_type == 'PBS' or $source_type == 'HTCondor') and $info) {
-          list($jtit, $jobs, $ctit, $slots, $ptit, $prop) = explode(" ",$info);
+        list($jtit, $jobs, $ctit, $slots, $ptit, $prop) = explode(" ",$info);
 
-          echo "      <dt>Job Slots</dt><dd>$slots</dd>\n";
-          echo "        <dt>Jobs</dt>\n";
-          echo "        <dd>";
+        echo "      <dt>Job Slots</dt><dd>$slots</dd>\n";
+        echo "        <dt>Jobs</dt>\n";
+        echo "        <dd>";
 
-          $job_number = 0;
+        $job_number = 0;
 
-          if ($jobs != '[none]'){
-            if ($source_type == 'HTCondor') {
-              echo "$jobs";
-              $job_number = (int)$jobs;
-            } else {
-              $jobs = explode (',', $jobs);
-              $job_number = sizeof($jobs);
-
-              echo "\n          <ul class=\"state-jobs\">\n";
-
-              $sjobs = ''; //< String list of jobs for this node
-
-              foreach ($jobs as $job) {
-                $sjobs .= $job . '_'; //< Add job to "all" list
-
-                echo "            <li><a class=\"job\" onclick=\"jobInfo('scheduler=$scheduler&amp;n=$node&amp;jobid=$job&amp;level=full');\">$job</a></li>\n";
-              }
-
-              $sjobs = substr($sjobs, 0, -1); //< Trim trailing _
-
-              echo "            <li><a onclick=\"jobInfo('scheduler=$scheduler&amp;n=$node&amp;jobid=$sjobs&amp;level=summary');\">Summary of All Jobs</a></li>\n";
-              echo "          </ul>\n         ";
-            }
-          }
-          echo "</dd>\n";
-          $dead = "";
-          if ($state == "offline" or $state == "down") {
-            $dead = "dead";
-          }
-          for($i = 0; $i < $job_number; $i++) {
-            $state_visual = $state_visual . '<div class="cpu '.$dead.'inuse"></div>';
-          }
-          for($i = 0; $i < ($slots - $job_number); $i++) {
-            $state_visual = $state_visual . '<div class="cpu '.$dead.'free"></div>';
-          }
-          echo "         <dt>Visual State</dt><dd>$state_visual</dd>\n";
-
-          echo    "      <dt>Properties</dt><dd>".$prop."</dd>\n";
+        if ($jobs != '[none]') {
+          echo "$jobs";
+          $job_number = (int)$jobs;
         }
-        elseif ($source_type == 'LSF') {
-          echo "        <dt>Jobs</dt><dd>LSF job IDs not yet implemented</dd>\n";
+        echo "</dd>\n";
+        $dead = "";
+        if ($state == "offline" or $state == "down") {
+          $dead = "dead";
         }
-        else {
-          echo "        <dt>Jobs</dt><dd>Not implemented</dd>\n";
+        for($i = 0; $i < $job_number; $i++) {
+          $state_visual = $state_visual . '<div class="cpu '.$dead.'inuse"></div>';
         }
+        for($i = 0; $i < ($slots - $job_number); $i++) {
+          $state_visual = $state_visual . '<div class="cpu '.$dead.'free"></div>';
+        }
+        echo "         <dt>Visual State</dt><dd>$state_visual</dd>\n";
+
+        echo    "      <dt>Properties</dt><dd>".$prop."</dd>\n";
 
         echo    "    </dl>\n";
         echo    "    <p><span class=\"time\">&#8634;".prettytime($update)."</span></p>\n";

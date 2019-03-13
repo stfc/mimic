@@ -62,15 +62,32 @@ foreach ($all_clusters as $name => $panels) {
         $results[$group][$panel][$cluster][$name] = Array();
         if (array_key_exists($name, $all_notes)) {
             $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
-        };
+        }
         if (nagios($name) !== Null) {
             $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
-        };
+        }
         if (array_key_exists($name, $all_status)) {
             $results[$group][$panel][$cluster][$name]['status'] = $all_status[$name];
-        };
+            unset($all_status[$name]);
+        }
     }
 }
 
+// Render all remaining hosts from the batch state table
+// this catches any hosts from cloud-bursting or other dynamic sources
+foreach ($all_status as $hostname => $status) {
+    if ($hostname !== '') {
+        $source = '';
+        if (sizeof($status) > 0) {
+            $source = array_values($status);
+            $source = $source[0];
+        }
+        $results['']['dynamic'][$source][$hostname] = Array(
+            'status' => $status,
+        );
+    };
+};
+
+
 // Returns built json
-echo json_encode($results) ;
+echo json_encode($results);
