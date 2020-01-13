@@ -56,7 +56,6 @@ class pNetbox
 	// So be careful we only get one response back	
     private function get_netbox_info($machineName)
     {
-        global $SQL;
 
 		$query=$this->netbox_search("/dcim/devices/",array("name"=>$machineName));
 		if ($query == null) {
