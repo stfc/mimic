@@ -1,15 +1,5 @@
 <?php
 
-require_once('Horde/String.php');
-require_once('Horde/Text/Diff.php');
-require_once('Horde/Text/Diff/Engine/Native.php');
-require_once('Horde/Text/Diff/Op/Base.php');
-require_once('Horde/Text/Diff/Op/Add.php');
-require_once('Horde/Text/Diff/Op/Copy.php');
-require_once('Horde/Text/Diff/Op/Change.php');
-require_once('Horde/Text/Diff/Renderer.php');
-require_once('Horde/Text/Diff/Renderer/Inline.php');
-
 include("inc/config-call.inc.php");
 
 $NETBOX_API_URL = $CONFIG['URL']['NETBOX'] . "api";
@@ -68,7 +58,7 @@ class pNetbox
     {
         global $SQL;
 
-		$query=$this->netbox_search("/dcim/devices/",array("name"=>$SQL->real_escape_string($machineName)));
+		$query=$this->netbox_search("/dcim/devices/",array("name"=>$machineName));
 		if ($query == null) {
 			return null;
 		} else if (count($query) > 1) {
@@ -111,10 +101,10 @@ class pNetbox
 						}
 					}
 					if ($found_supply == false) {
-						printf("<dt>Magic! (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);	
+						printf("<dt>PDU providing power but no supply (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);	
 					}
 				} else {
-					printf("<dt>Magic! (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
+					printf("<dt>PDU with no supply and not supplying power (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
 				}		
             }
             echo "</dl>\n";
@@ -126,8 +116,6 @@ class pNetbox
     function detail($NODE, $SHORT)
     {
         global $NETBOX_URL;
-
-        $renderer = new Horde_Text_Diff_Renderer_Inline();
 
         $netbox_info = $this->get_netbox_info($NODE);
 				
@@ -153,7 +141,6 @@ class pNetbox
 			}
 		
             echo "<h3>System</h3>\n";
-
             echo "<dl>\n";
             echo "<dt>NetboxId</dt><dd class=\"netbox-id\"><a href=\"" . $NETBOX_URL."dcim/devices/". $netbox_info['id'] . "\" title=\"View device ".$netbox_info['id']." in Netbox\">". $netbox_info['id']."</a></dd>\n";
             echo "<dt>IpAddress</dt><dd class=\"netbox-ipaddress\">" . $netbox_info['primary_ip']['address'] . "</dd>\n";
