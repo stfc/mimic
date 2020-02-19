@@ -12,73 +12,73 @@ class pNetbox
         return("Netbox");
     }
 
-	private function netbox_query($PATH,$ARGS)
-	{
-		global $NETBOX_API_URL;
+    private function netbox_query($PATH,$ARGS)
+    {
+        global $NETBOX_API_URL;
 		
-		$url = curl_init($NETBOX_API_URL . $PATH . $ARGS);
-		curl_setopt($url, CURLOPT_CONNECTTIMEOUT,5);
-		curl_setopt($url, CURLOPT_RETURNTRANSFER,true);
-		curl_setopt($url, CURLOPT_CAPATH,"/etc/grid-security/certificates");
-		$out = curl_exec($url);
-		if (curl_error($url)) {
-			echo curl_error($url);
-			echo "curl error";
-			return null;
-		}
-		curl_close($url);
+        $url = curl_init($NETBOX_API_URL . $PATH . $ARGS);
+        curl_setopt($url, CURLOPT_CONNECTTIMEOUT,5);
+        curl_setopt($url, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($url, CURLOPT_CAPATH,"/etc/grid-security/certificates");
+        $out = curl_exec($url);
+        if (curl_error($url)) {
+            echo curl_error($url);
+            echo "curl error";
+            return null;
+        }
+        curl_close($url);
 		
-		$json_out = json_decode($out,true);
+        $json_out = json_decode($out,true);
 		
-		// Do not have a count value or a netbox id - something is wrong
-		if (!isset($json_out['count']) && !(isset($json_out['id']))) { 
-			return null;
-		}
+        // Do not have a count value or a netbox id - something is wrong
+        if (!isset($json_out['count']) && !(isset($json_out['id']))) { 
+            return null;
+        }
 		
-		// We have an id so just return the json object as it was a direct request
-		if (isset($json_out['id'])) {
-			return $json_out;
-		}
+        // We have an id so just return the json object as it was a direct request
+        if (isset($json_out['id'])) {
+            return $json_out;
+        }
 		
-		if (isset($json_out['count'])) {
-			if ($json_out['count'] == 0) {
-				// Search returned no values so return null
-				return null;
-			} else {
-				// Search returned multiple values so return the array
-				return $json_out['results'];
-			}
-		}
-	}
+        if (isset($json_out['count'])) {
+            if ($json_out['count'] == 0) {
+                // Search returned no values so return null
+                return null;
+            } else {
+                // Search returned multiple values so return the array
+                return $json_out['results'];
+            }
+        }
+    }
 	
-	// Get Netbox info for a single machine
-	// To the Netbox API this is technically a search
-	// So be careful we only get one response back	
+    // Get Netbox info for a single machine
+    // To the Netbox API this is technically a search
+    // So be careful we only get one response back	
     private function get_netbox_info($machineName)
     {
 
-		$query=$this->netbox_search("/dcim/devices/",array("name"=>$machineName));
-		if ($query == null) {
-			return null;
-		} else if (count($query) > 1) {
-			echo "Got multiple results from Netbox!";
-			return null;
-		} else {
-			return $query[0];
-		}	
+        $query=$this->netbox_search("/dcim/devices/",array("name"=>$machineName));
+        if ($query == null) {
+            return null;
+        } else if (count($query) > 1) {
+            echo "Got multiple results from Netbox!";
+            return null;
+        } else {
+            return $query[0];
+        }	
     }
     
-	// Get Netbox info using netbox id
-	private function get_netbox_info_by_id($id) {
-		// Trailing / required to avoid redirecting
-		return $this->netbox_query("/dcim/devices/", $id . "/");
-	}
+    // Get Netbox info using netbox id
+    private function get_netbox_info_by_id($id) {
+        // Trailing / required to avoid redirecting
+        return $this->netbox_query("/dcim/devices/", $id . "/");
+    }
 		
-	// Run a generic Netbox query against an API path,
-	// Takes an array of search terms	
-	private function netbox_search($path,$params) {
-		return $this->netbox_query($path, '?' .  http_build_query($params));
-	}
+    // Run a generic Netbox query against an API path,
+    // Takes an array of search terms	
+    private function netbox_search($path,$params) {
+        return $this->netbox_query($path, '?' .  http_build_query($params));
+    }
 			
     private function render_pdu_list($rack_pdus)
     {
@@ -87,24 +87,24 @@ class pNetbox
         if ($rack_pdus != null) {
             echo "<dl>\n";
             foreach ($rack_pdus as $rack_pdu) {
-				$conns=$this->netbox_search("/dcim/power-connections/", array("device"=>$rack_pdu['name']));
-				if ($conns != null) {
-					// For situation where downstream power ports are configured, but upstream is not
-					$found_supply=false;
-					foreach ($conns as $conn) {
-						// Device is the device receiving power, power_outlet device is the device supplying power
-						if ($conn['device']['id'] == $rack_pdu['id']) {
-							$found_supply=true;
-							$room_pdu=$this->get_netbox_info_by_id($conn['power_outlet']['device']['id']);
-		                	printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $room_pdu['name'], $rack_pdu['name'], $room_pdu['site']['name']);
-						}
-					}
-					if ($found_supply == false) {
-						printf("<dt>PDU providing power but no supply (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);	
-					}
-				} else {
-					printf("<dt>PDU with no supply and not supplying power (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
-				}		
+                $conns=$this->netbox_search("/dcim/power-connections/", array("device"=>$rack_pdu['name']));
+                if ($conns != null) {
+                    // For situation where downstream power ports are configured, but upstream is not
+                    $found_supply=false;
+                    foreach ($conns as $conn) {
+                        // Device is the device receiving power, power_outlet device is the device supplying power
+                        if ($conn['device']['id'] == $rack_pdu['id']) {
+                            $found_supply=true;
+                            $room_pdu=$this->get_netbox_info_by_id($conn['power_outlet']['device']['id']);
+                            printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $room_pdu['name'], $rack_pdu['name'], $room_pdu['site']['name']);
+                        }
+                    }
+                    if ($found_supply == false) {
+                        printf("<dt>PDU providing power but no supply (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);	
+                    }
+                } else {
+                    printf("<dt>PDU with no supply and not supplying power (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
+                }		
             }
             echo "</dl>\n";
         } else {
@@ -120,24 +120,24 @@ class pNetbox
 				
         if ($netbox_info !== null) {
 			
-			// Determine Rack Position
-			// If not set in device, check the parent device if it exists
+            // Determine Rack Position
+            // If not set in device, check the parent device if it exists
 			
-			if ($netbox_info['position'] != null) {
-				$rackpos = $netbox_info['position'];
-			} else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
+            if ($netbox_info['position'] != null) {
+                $rackpos = $netbox_info['position'];
+            } else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
 				
-				$netbox_parent = $this->get_netbox_info_by_id($netbox_info['parent_device']['id']);
+                $netbox_parent = $this->get_netbox_info_by_id($netbox_info['parent_device']['id']);
 				
-				if ($netbox_parent['position'] != null) {
-					$rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display_name'] . ")";
-				} else {
-					$rackpos="No position in parent";
-				}
+                if ($netbox_parent['position'] != null) {
+                    $rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display_name'] . ")";
+                } else {
+                    $rackpos="No position in parent";
+                }
 				
-			} else {
-				$rackpos="No position";
-			}
+            } else {
+                $rackpos="No position";
+            }
 		
             echo "<h3>System</h3>\n";
             echo "<dl>\n";
@@ -149,14 +149,14 @@ class pNetbox
             echo "<dt>deviceType</dt><dd class=\"netbox-categoryName\">" . $netbox_info['device_type']['model']."</dd>\n";
             echo "<dt>vendorName</dt><dd class=\"netbox-vendorName\">" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
 
-			if ($netbox_info['serial'] != null) {
-	            echo "<dt>Serial</dt><dd class=\"netbox-serial\">" . $netbox_info['serial'] . "</dd>\n";	
-			}
-			echo "<dt>Status</dt><dd class=\"netbox-status\">" . $netbox_info['status']['label'] . "</dd>\n";
+            if ($netbox_info['serial'] != null) {
+                echo "<dt>Serial</dt><dd class=\"netbox-serial\">" . $netbox_info['serial'] . "</dd>\n";	
+            }
+            echo "<dt>Status</dt><dd class=\"netbox-status\">" . $netbox_info['status']['label'] . "</dd>\n";
 			
             echo "</dl>\n";
 
-			$rack_pdus = $this->netbox_search("/dcim/devices/", array("rack_id"=>$netbox_info['rack']['id'],"role"=>"pdu"));
+            $rack_pdus = $this->netbox_search("/dcim/devices/", array("rack_id"=>$netbox_info['rack']['id'],"role"=>"pdu"));
             $this->render_pdu_list($rack_pdus);	
 			
         } else {
