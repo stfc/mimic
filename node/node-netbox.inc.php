@@ -4,6 +4,7 @@ include("inc/config-call.inc.php");
 
 $NETBOX_API_URL = $CONFIG['URL']['NETBOX'] . "api";
 $NETBOX_URL = $CONFIG['URL']['NETBOX'];
+$NETBOX_TOKEN = $CONFIG['NETBOX']['TOKEN'];
 
 class pNetbox
 {
@@ -14,12 +15,13 @@ class pNetbox
 
     private function netbox_query($PATH,$ARGS)
     {
-        global $NETBOX_API_URL;
-		
+        global $NETBOX_API_URL, $NETBOX_TOKEN;
+
         $url = curl_init($NETBOX_API_URL . $PATH . $ARGS);
         curl_setopt($url, CURLOPT_CONNECTTIMEOUT,5);
         curl_setopt($url, CURLOPT_RETURNTRANSFER,true);
         curl_setopt($url, CURLOPT_CAPATH,"/etc/grid-security/certificates");
+        curl_setopt($url, CURLOPT_HTTPHEADER, array('Authorization: Token '.$NETBOX_TOKEN));
         $out = curl_exec($url);
         if (curl_error($url)) {
             echo curl_error($url);
@@ -29,9 +31,9 @@ class pNetbox
         curl_close($url);
 		
         $json_out = json_decode($out,true);
-		
+
         // Do not have a count value or a netbox id - something is wrong
-        if (!isset($json_out['count']) && !(isset($json_out['id']))) { 
+        if (!isset($json_out['count']) && !(isset($json_out['id']))) {
             return null;
         }
 		
