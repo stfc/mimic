@@ -4,6 +4,7 @@ include("inc/config-call.inc.php");
 
 $NETBOX_API_URL = $CONFIG['URL']['NETBOX'] . "api";
 $NETBOX_URL = $CONFIG['URL']['NETBOX'];
+$NETBOX_TOKEN = $CONFIG['NETBOX']['TOKEN'];
 
 class pNetbox
 {
@@ -14,12 +15,13 @@ class pNetbox
 
     private function netbox_query($PATH,$ARGS)
     {
-        global $NETBOX_API_URL;
-		
+        global $NETBOX_API_URL, $NETBOX_TOKEN;
+
         $url = curl_init($NETBOX_API_URL . $PATH . $ARGS);
         curl_setopt($url, CURLOPT_CONNECTTIMEOUT,5);
         curl_setopt($url, CURLOPT_RETURNTRANSFER,true);
         curl_setopt($url, CURLOPT_CAPATH,"/etc/grid-security/certificates");
+        curl_setopt($url, CURLOPT_HTTPHEADER, array('Authorization: Token '.$NETBOX_TOKEN));
         $out = curl_exec($url);
         if (curl_error($url)) {
             echo curl_error($url);
@@ -29,9 +31,9 @@ class pNetbox
         curl_close($url);
 		
         $json_out = json_decode($out,true);
-		
+
         // Do not have a count value or a netbox id - something is wrong
-        if (!isset($json_out['count']) && !(isset($json_out['id']))) { 
+        if (!isset($json_out['count']) && !(isset($json_out['id']))) {
             return null;
         }
 		
@@ -73,6 +75,16 @@ class pNetbox
         // Trailing / required to avoid redirecting
         return $this->netbox_query("/dcim/devices/", $id . "/");
     }
+
+    private function get_netbox_powerfeed_info_by_id($id) {
+        // Trailing / required to avoid redirecting
+        return $this->netbox_query("/dcim/power-feeds/", $id . "/");
+    }
+
+    private function get_netbox_powerpanel_info_by_id($id) {
+        // Trailing / required to avoid redirecting
+        return $this->netbox_query("/dcim/power-panels/", $id . "/");
+    }
 		
     // Run a generic Netbox query against an API path,
     // Takes an array of search terms	
@@ -87,17 +99,18 @@ class pNetbox
         if ($rack_pdus != null) {
             echo "<dl>\n";
             foreach ($rack_pdus as $rack_pdu) {
-                $conns=$this->netbox_search("/dcim/power-connections/", array("device"=>$rack_pdu['name']));
+                $conns=$this->netbox_search("/dcim/power-ports/", array("device"=>$rack_pdu['name']));		
                 if ($conns != null) {
                     // For situation where downstream power ports are configured, but upstream is not
                     $found_supply=false;
                     foreach ($conns as $conn) {
-                        // Device is the device receiving power, power_outlet device is the device supplying power
-                        if ($conn['device']['id'] == $rack_pdu['id']) {
+                        // If the connected endpoint is dcim.powerfeed then its the power supply
+                        if ($conn['connected_endpoint_type'] == "dcim.powerfeed") {
                             $found_supply=true;
-                            $room_pdu=$this->get_netbox_info_by_id($conn['power_outlet']['device']['id']);
-                            printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $room_pdu['name'], $rack_pdu['name'], $room_pdu['site']['name']);
-                        }
+                            $power_feed=$this->get_netbox_powerfeed_info_by_id($conn['connected_endpoint']['id']);
+                            $room_pdu=$this->get_netbox_powerpanel_info_by_id($power_feed['power_panel']['id']);
+                            printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $conn['connected_endpoint']['name'], $rack_pdu['name'], $room_pdu['site']['name']);
+                        } 
                     }
                     if ($found_supply == false) {
                         printf("<dt>PDU providing power but no supply (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);	
