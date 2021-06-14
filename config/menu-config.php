@@ -31,6 +31,11 @@ $menu = array(
             'text' => 'Logical overview of storage nodes',
             'link' => 'logical-storage',
         ),
+        'CEPH' => array(
+            'name' => 'CEPH',
+            'text' => 'Logical overview of CEPH clusters and related nodes',
+            'link' => 'logical-ceph',
+        ),
     ),
 
     'Aquilon' => array(
