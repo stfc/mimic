@@ -6,11 +6,11 @@ class nagiosLiveStatus {
 
     static function get($table, $filter_col = "", $filter_val = "") {
         global $CONFIG;
-        $nagios1 = $CONFIG['URL']['NAGIOS1'];
-        $nagger = $CONFIG['URL']['NAGGER'];
         $LIVESTATUS_HOSTS = Array(
-            "$nagios1",
-            "$nagger",
+            $CONFIG['SERVER']['NAGIOS1'],
+            $CONFIG['SERVER']['NAGIOS2'],
+            $CONFIG['SERVER']['ICINGA1'],
+            $CONFIG['SERVER']['ICINGA2'],
         );
         $LIVESTATUS_TABLES = Array(
             "hosts",
@@ -46,8 +46,17 @@ class nagiosLiveStatus {
             $results = Array();
 
             foreach ($LIVESTATUS_HOSTS as $host) {
+                if (strpos($host, 'icinga') !== -1) {
+                    $get .= "\n";
+                }
+                $port = 9899;
+                if (strpos($host, ':') !== -1) {
+                    $host = explode(':', $host, 2);
+                    $port = $host[1];
+                    $host = $host[0];
+                }
                 $data = "";
-                $cmd = "echo -e \"$get\" | nc $host 9899";
+                $cmd = "echo -e \"$get\" | nc -w 5 $host $port";
                 exec($cmd, $data);
 
                 if (count($data) > 0) {
