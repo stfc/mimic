@@ -45,7 +45,7 @@ if len(argv) == 2 or len(argv) == 3:
     if not history:
         query = query + " AND ( Status = 'new' OR Status = 'open' )"
     query = quote(query)
-    search = Request(uri + "/REST/1.0/search/ticket/" + '?query=' + query)
+    search = Request(uri + "/REST/1.0/search/ticket/" + '?query=' + query, headers={"Referer": uri})
 
     try:
         response = urlopen(login)
@@ -56,7 +56,7 @@ if len(argv) == 2 or len(argv) == 3:
             tickets = parse_ticket_lines(tickets[2:])
 
             for id, subject in tickets.iteritems():
-                details = urlopen(Request(uri + "/REST/1.0/ticket/" + id + "/show")).readlines()[2:-1]
+                details = urlopen(Request(uri + "/REST/1.0/ticket/" + id + "/show", headers={"Referer": uri})).readlines()[2:-1]
                 details = parse_ticket_lines(details)
                 tickets[id] = (tickets[id], details["Queue"], details["Created"], details["Status"])
 
