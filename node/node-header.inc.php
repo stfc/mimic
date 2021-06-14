@@ -19,14 +19,16 @@
     $name_parts = preg_split('/[0-9]+/', $NODE);
 
     //output next-door nodes
-    $prev_machine = $name_parts[0].sprintf("%0${number_digits}s", $number - 1).$name_parts[1];
-    $next_machine = $name_parts[0].sprintf("%0${number_digits}s", $number + 1).$name_parts[1];
+    if (count($name_parts) >= 2) {
+        $prev_machine = $name_parts[0].sprintf("%0${number_digits}s", $number - 1).$name_parts[1];
+        $next_machine = $name_parts[0].sprintf("%0${number_digits}s", $number + 1).$name_parts[1];
 
-    if ($number_digits > 0) {
-        if ($number > 0) {
-            echo '<a class="tab" href="node.php?n='.$prev_machine.'" title="'.$prev_machine.'"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>';
+        if ($number_digits > 0) {
+            if ($number > 0) {
+                echo '<a class="tab" href="node.php?n='.$prev_machine.'" title="'.$prev_machine.'"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>';
+            }
+            echo '<a class="tab" href="node.php?n='.$next_machine.'" title="'.$next_machine.'"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>';
         }
-        echo '<a class="tab" href="node.php?n='.$next_machine.'" title="'.$next_machine.'"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>';
     }
     ?>
 
