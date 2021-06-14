@@ -54,6 +54,11 @@ $menu = array(
             'text' => 'Nodes with aquilon personalities',
             'link' => 'aquilon-personalities'
         ),
+        'Clusters' => array(
+            'name' => 'Clusters',
+            'text' => 'Clustered hosts',
+            'link' => 'aquilon-clusters'
+        ),
     ),
 
     'Cloud' => array(
