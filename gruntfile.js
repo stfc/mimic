@@ -1,20 +1,5 @@
 module.exports = function(grunt) {
     grunt.initConfig({
-        bower_concat: {
-            all: {
-                dest: 'assets/dist/js/bower.js',
-                exclude: [
-                    'jquery-ui',
-                    'masonry'
-                ],
-                mainFiles: {
-                    'outlayer': [
-                        'bower_components/outlayer/item.js',
-                        'bower_components/outlayer/outlayer.js'
-                    ]
-                }
-            }
-        },
         concat: {
             main: {
                 options: {
@@ -87,7 +72,6 @@ module.exports = function(grunt) {
         }
     });
     grunt.registerTask('buildmimic', [
-        'bower_concat',
         'concat',
         'uglify',
         'cssmin',
