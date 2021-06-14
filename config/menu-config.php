@@ -36,6 +36,11 @@ $menu = array(
             'text' => 'Logical overview of CEPH clusters and related nodes',
             'link' => 'logical-ceph',
         ),
+        'SCARF' => array(
+            'name' => 'SCARF',
+            'text' => 'Overview of SCARF nodes',
+            'link' => 'logical-scarf',
+        ),
     ),
 
     'Aquilon' => array(
