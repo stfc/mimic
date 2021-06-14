@@ -59,6 +59,11 @@ $menu = array(
             'text' => 'Clustered hosts',
             'link' => 'aquilon-clusters'
         ),
+        'GRNs' => array(
+            'name' => 'GRNs',
+            'text' => 'Hosts grouped by owning group and personality',
+            'link' => 'aquilon-grn'
+        ),
     ),
 
     'Cloud' => array(
