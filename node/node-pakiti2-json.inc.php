@@ -8,7 +8,7 @@ class pPakiti2
     function header($NODE, $SHORT)
     {
         global $PAKITI_SERVER;
-        return(Array("Pakiti 2", "<a class='tab-dark' href='https://$PAKITI_SERVER/pakiti/host.php?h=$NODE'>Details</a>"));
+        return(Array("Pakiti 2", "<a class='tab-dark' href='https://$PAKITI_SERVER/pakiti/host.php?view=cve&h=$NODE'>Details</a>"));
     }
 
     function detail($NODE, $SHORT)
