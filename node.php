@@ -39,7 +39,12 @@ global $SHORT;
                 // HEADER START
                 echo "<div class='header'>";
 
+                $plug_start_time = microtime(true);
+                echo "\n<!-- ▽▽▽▽ Node plugin {$plugin}->header() start @ $plug_start_time -->\n";
                 $header = $plug -> header($NODE, $SHORT);
+                $plug_end_time = microtime(true);
+                echo "\n<!-- △△△△ Node plugin {$plugin}->header() end @ $plug_end_time, took ".sprintf("%.2f", $plug_end_time-$plug_start_time)."ms -->\n";
+
                 if (!is_array($header)) {
                     $header = Array($header);
                 }
@@ -64,7 +69,11 @@ global $SHORT;
                 }
                 echo ">";
 
+                $plug_start_time = microtime(true);
+                echo "\n<!-- ▼▼▼▼ Node plugin {$plugin}->detail() start @ $plug_start_time -->\n";
                 $plug -> detail($NODE, $SHORT);
+                $plug_end_time = microtime(true);
+                echo "\n<!-- ▲▲▲▲ Node plugin {$plugin}->detail() end @ $plug_end_time, took ".sprintf("%.2f", $plug_end_time-$plug_start_time)."ms -->\n";
                 echo "</div>";
                 echo "</section>";
             } else {
