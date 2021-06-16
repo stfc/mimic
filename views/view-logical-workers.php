@@ -3,7 +3,6 @@ require("header.php"); // Important includes
 require("inc/db-magdb-open.inc.php"); // Postgres Data Sources
 
 // Configuration
-$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 $config = Array(
     "clickable" => true,
 );
@@ -39,8 +38,8 @@ if ($status and $status->num_rows) {
 
 // Gathers VM node if a worker
 $personality = Array();
-$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch_nubes");
-$vms = json_decode($jsondata, true);
+
+$vms = get_aquilon_report("host_personality_branch_nubes");
 foreach ($vms as $name => $values) {
     foreach ($values as $key => $value) {
         if (strpos($value, "workernode") !== false) {
