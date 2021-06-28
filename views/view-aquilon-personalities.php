@@ -2,18 +2,12 @@
 require("header.php"); // Important includes
 
 // Configuration
-$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 $config = Array(
     "clickable" => true,
 );
 
-// Gets node data and formats it
-$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch");
-if ($jsondata === false) {
-    error("No data returned from", "aquilon");
-}
-$all_nodes = json_decode($jsondata, true);
-uksort($all_nodes, "strnatcmp");
+// branch and personality for nodes
+$all_nodes = get_aquilon_report($CONFIG, 'host_personality_branch');
 
 // Gets notes for nodes
 $all_notes = Array();

@@ -27,3 +27,20 @@ function nagios($node_name) {
     }
     unset($ntup);
 }
+
+function get_aquilon_report($config, $report) {
+    $url = $config['URL']['AQUILON']."/cgi-bin/report/$report";
+    $user = filter_input(INPUT_GET, 'user', FILTER_SANITIZE_STRING);
+
+    if ($user) {
+        $url .= "?owner=$user";
+    };
+    $jsondata = file_get_contents($url);
+    if ($jsondata === false) {
+        error("No data returned from", "aquilon");
+    }
+    $result = json_decode($jsondata, true);
+    uksort($result, "strnatcmp");
+
+    return $result;
+}

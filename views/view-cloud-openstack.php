@@ -2,18 +2,12 @@
 require("header.php"); // Important includes
 
 // Configuration
-$AQUILON_URL = $CONFIG['URL']['AQUILON'];
 $config = Array(
     "clickable" => true,
 );
 
 // Gets node data and formats it
-$jsondata = file_get_contents("$AQUILON_URL/cgi-bin/report/host_personality_branch?filter=nubes");
-if ($jsondata === false) {
-    error("No data returned from", "aquilon");
-}
-$all_nodes = json_decode($jsondata, true);
-uksort($all_nodes, "strnatcmp");
+$all_nodes = get_aquilon_report($CONFIG, 'host_personality_branch?filter=nubes');
 
 // Gets list of instantiated vms
 $vmoutput = shell_exec('/usr/bin/python ../xmlrpc/vmpoolinfo.py');
