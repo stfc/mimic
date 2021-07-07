@@ -249,8 +249,6 @@ class pMagdb
 
     private function render_networking($magdb_info)
     {
-        global $NODE;
-        global $HELPDESK_URL;
         echo "<h3>Networking</h3>\n";
         echo "<object ";
         //Add work-around for webkit's broken SVG embedding.
@@ -258,9 +256,12 @@ class pMagdb
             echo 'style="width: 100%;" ';
         }
         echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$magdb_info["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+    }
 
+    private function render_rt_ticket_links($NODE, $systemId)
+    {
+        global $HELPDESK_URL;
         $node = htmlspecialchars($NODE);
-        $systemId = $magdb_info["systemId"];
 
         echo "      <p>\n";
         echo "        New\n";
@@ -324,6 +325,7 @@ class pMagdb
                 $this->render_pdu_list($room_pdus);
 
                 $this->render_networking($magdb_info);
+                $this->render_rt_ticket_links($NODE, $magdb_info["systemId"]);
             } else {
                 echo "<p class=\"warning\">Stub Record - No system associated with IP.</p>\n";
             }
