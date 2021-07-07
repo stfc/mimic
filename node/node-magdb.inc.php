@@ -249,6 +249,8 @@ class pMagdb
 
     private function render_networking($magdb_info)
     {
+        global $NODE;
+        global $HELPDESK_URL;
         echo "<h3>Networking</h3>\n";
         echo "<object ";
         //Add work-around for webkit's broken SVG embedding.
@@ -256,6 +258,25 @@ class pMagdb
             echo 'style="width: 100%;" ';
         }
         echo "type=\"image/svg+xml\" data=\"/components/magdb-draw-interfaces.php?system={$magdb_info["systemId"]}\"></object><!--alt=\"Graph of networking information\" title=\"Blue interfaces are bootable. Grey records are sourced from DNS.\" -->\n";
+
+        $node = htmlspecialchars($NODE);
+        $systemId = $magdb_info["systemId"];
+
+        echo "      <p>\n";
+        echo "        New\n";
+        echo "        <a href=\"$HELPDESK_URL/Ticket/Create.html?Queue=Fabric&amp;Subject=$node\">Fabric</a>,\n";
+        echo "        <a href=\"$HELPDESK_URL/Ticket/Create.html?Queue=Fabric-Hardware&amp;Subject=$node\">Hardware</a>,\n";
+        $body = urlencode(
+            "As service owner of $node I am requesting that it be decommissioned as per the procedure documented at:\n" .
+            "https://wiki.e-science.cclrc.ac.uk/web1/bin/view/EScienceInternal/GeneralProcedureForDecommissioningServers\n" .
+            "\n" .
+            "The hardware should be retired and disposed of.\n" .
+            "The hardware should be put into holding for redeployment.\n" .
+            "(Delete as appropriate)."
+        );
+        echo "        <a href=\"$HELPDESK_URL/Ticket/Create.html?Queue=Support&amp;Subject=$node%20%28System%20$systemId%29%20Server%20Decommissioning&amp;Content=$body\">Decommissioning</a>\n";
+        echo "        Ticket\n";
+        echo "      </p>\n";
     }
 
     function detail($NODE, $SHORT)
