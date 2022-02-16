@@ -31,6 +31,16 @@ $menu = array(
             'text' => 'Logical overview of storage nodes',
             'link' => 'logical-storage',
         ),
+        'CEPH' => array(
+            'name' => 'CEPH',
+            'text' => 'Logical overview of CEPH clusters and related nodes',
+            'link' => 'logical-ceph',
+        ),
+        'SCARF' => array(
+            'name' => 'SCARF',
+            'text' => 'Overview of SCARF nodes',
+            'link' => 'logical-scarf',
+        ),
     ),
 
     'Aquilon' => array(
@@ -44,14 +54,19 @@ $menu = array(
             'text' => 'Nodes with aquilon personalities',
             'link' => 'aquilon-personalities'
         ),
+        'Clusters' => array(
+            'name' => 'Clusters',
+            'text' => 'Clustered hosts',
+            'link' => 'aquilon-clusters'
+        ),
+        'GRNs' => array(
+            'name' => 'GRNs',
+            'text' => 'Hosts grouped by owning group and personality',
+            'link' => 'aquilon-grn'
+        ),
     ),
 
     'Cloud' => array(
-        'OpenNebula' => array(
-            'name' => 'OpenNebula',
-            'text' => 'OpenNebula Cloud nodes',
-            'link' => 'cloud-opennebula'
-        ),
         'OpenStack' => array(
             'name' => 'OpenStack',
             'text' => 'OpenStack Cloud nodes',
