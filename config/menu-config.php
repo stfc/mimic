@@ -54,6 +54,11 @@ $menu = array(
             'text' => 'Nodes with aquilon personalities',
             'link' => 'aquilon-personalities'
         ),
+        'Services' => array(
+            'name' => 'Services',
+            'text' => 'Servers and clients of aquilon services',
+            'link' => 'aquilon-services'
+        ),
         'Clusters' => array(
             'name' => 'Clusters',
             'text' => 'Clustered hosts',

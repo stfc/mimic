@@ -8,7 +8,8 @@ $config = Array(
 );
 
 $REPORTS = Array(
-    "" => "$AQUILON_URL/cgi-bin/report/report_cluster_hosts",
+    "Servers" => "$AQUILON_URL/cgi-bin/report/report_service_servers",
+    "Clients" => "$AQUILON_URL/cgi-bin/report/report_service_clients",
 );
 
 // Generates main array
@@ -33,9 +34,9 @@ foreach ($REPORTS as $type => $url) {
     uksort($all_nodes, "strnatcmp");
 
     foreach ($all_nodes as $name => $node) {
-        $group = $node["cluster_archetype"];
-        $panel = $node["cluster_personality"];
-        $cluster = $node["cluster_name"];
+        $group = $type;
+        $panel = $node["service_name"];
+        $cluster = $node["service_instance"];
 
         // Use name from record if provided
         if (array_key_exists("fqdn", $node)) {
