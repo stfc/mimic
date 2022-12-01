@@ -9,9 +9,14 @@
 $menu = array(
     'Generational' => array(
         'Workers' => array(
-            'name' => 'Workers',
+            'name' => 'Workers (Discrete)',
             'text' => 'Logical overview of worker nodes',
             'link' => 'logical-workers',
+        ),
+        'Workers-Shade' => array(
+            'name' => 'Workers (Shaded)',
+            'text' => 'Logical overview of worker nodes',
+            'link' => 'logical-workers-shade',
         ),
         'Storage' => array(
             'name' => 'Storage',
