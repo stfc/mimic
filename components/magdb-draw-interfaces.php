@@ -168,10 +168,6 @@ $descriptorspec = array(
 
 $cmd = ' /usr/bin/dot -Tsvg';
 
-if ($count_ip > 4) {
-    $cmd = "unflatten -l 5 -f | $cmd";
-}
-
 $process = proc_open($cmd, $descriptorspec, $pipes, '/tmp');
 
 if (is_resource($process)) {
