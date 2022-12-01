@@ -107,13 +107,7 @@ if ($system) {
                     $graph_text .= '  color="none"'."\n";
                     $lastUpdateDate = explode(" ", $l["lastUpdateDate"]);
                     $lastUpdateDate = $lastUpdateDate[0];
-                    if ($l["localPort"] != "") {
-                        $graph_text .= sprintf('"%s" [$STYLE_LLDP];'."\n", $l["localPort"], $vendor);
-                        $graph_text .= sprintf('"%s/%s" -> "%s" -> "%s" [color="#8f5902"];'."\n", $l["remoteMac"], $l['remotePort'], $l["localPort"], $l["localMac"]);
-                    }
-                    else {
-                        $graph_text .= '"'.$l["remoteMac"].'/'.$l['remotePort'].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
-                    }
+                    $graph_text .= '"'.$l["remoteMac"].'/'.$l['remotePort'].'" -> "'.$l["localMac"].'" [color="#8f5902"];'."\n";
                     $graph_text .= '"'.$l["remoteHost"].'" -> "'.$l["remoteMac"].'/'.$l['remotePort'].'" [color="#8f5902"];'."\n";
                     $graph_text .= '}'."\n";
                     $vendor = ouilookup($l["remoteMac"]);
