@@ -22,7 +22,7 @@ class pMagdb
 {
     function header($NODE, $SHORT)
     {
-        return("magDB");
+        return("magDB (Deprecated — Read Only)");
     }
 
     private function get_db_info($machineName)
@@ -288,6 +288,13 @@ class pMagdb
 
         $renderer = new Horde_Text_Diff_Renderer_Inline();
 
+        echo "<div style=\"";
+        echo "opacity: 0.5;";
+        echo "outline: 4px solid #d3d7cf;";
+        echo "background-image: linear-gradient(135deg, #eeeeee 25%, #d3d7cf 25%, #d3d7cf 50%, #eeeeee 50%, #eeeeee 75%, #d3d7cf 75%, #d3d7cf 100%);";
+        echo "background-size: 64.00px 64.00px;";
+        echo "\">\n";
+
         $magdb_info = $this->get_magdb_info($NODE);
         if ($magdb_info !== null) {
             echo "<h3>System</h3>\n";
@@ -337,6 +344,8 @@ class pMagdb
         if ($overwatch_info !== null) {
             $this->render_overwatch_info($overwatch_info, $renderer);
         }
+
+        echo "</div>\n";
     }
 }
 
