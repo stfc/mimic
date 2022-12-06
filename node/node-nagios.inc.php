@@ -1,7 +1,6 @@
 <?php
 
 #Config
-$NAGIOS_URL = $CONFIG['URL']['NAGIOS'];
 $ICINGA2_URL = $CONFIG['URL']['ICINGA2'];
 $HELPDESK_URL = $CONFIG['URL']['HELPDESK'];
 
@@ -10,11 +9,7 @@ class pNagios
 {
     function header($node, $short)
     {
-        global $DB_NAGIOS_NAME;
-        global $NAGIOS_SERVER;
-        global $NAGIOS_URL;
         global $ICINGA2_URL;
-        global $NAGIOS_V;
 
         # Nagios Livestatus
         require_once("inc/ds-nagioslivestatus.inc.php");
@@ -28,16 +23,12 @@ class pNagios
             $objectname = $node;
         }
 
-        $items = Array("Nagios/Icinga");
+        $items = Array("Icinga");
 
         foreach ($n_state as $server => $state) {
-            if (strpos($server, 'icinga') !== -1) {
-                $items[] = "<a class=\"tab-dark\" href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/host/show?host=".htmlspecialchars($objectname)."\">Status Details</a>";
-                $items[] = "<a class=\"tab-dark\" href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/host/schedule-downtime?host=".htmlspecialchars($objectname)."\">Schedule Downtime</a>";
-            } else {
-                $items[] = "<a class=\"tab-dark\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/status.cgi?host=".htmlspecialchars($objectname)."\">Status Details</a>";
-                $items[] = "<a class=\"tab-dark\" href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/cmd.cgi?cmd_typ=55&amp;host=".htmlspecialchars($objectname)."\">Schedule Downtime</a>";
-            }
+            $items[] = "<span class=\"text-muted\">($server)</span>";
+            $items[] = "<a class=\"tab-dark\" href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/host/show?host=".htmlspecialchars($objectname)."\">Status Details</a>";
+            $items[] = "<a class=\"tab-dark\" href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/host/schedule-downtime?host=".htmlspecialchars($objectname)."\">Schedule Downtime</a>";
         }
 
         return($items);
@@ -45,11 +36,7 @@ class pNagios
 
     function detail($node, $short)
     {
-        global $DB_NAGIOS_NAME;
-        global $NAGIOS_SERVER;
-        global $NAGIOS_URL;
         global $ICINGA2_URL;
-        global $NAGIOS_V;
         global $HELPDESK_URL;
 
         # Nagios Livestatus
@@ -91,11 +78,7 @@ class pNagios
                             echo " class=\"ack\"";
                         }
                         $text=$s["plugin_output"];
-                        if (strpos($server, 'icinga') !== -1) {
-                            echo "><a href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/service/show?host=$objectname&amp;service=".rawurlencode($name)."\">$name</a></td>";
-                        } else {
-                            echo "><a href=\"".sprintf($NAGIOS_URL, $server)."/cgi-bin/extinfo.cgi?type=2&amp;host=$objectname&amp;service=".rawurlencode($name)."\">$name</a></td>";
-                        }
+                        echo "><a href=\"".sprintf($ICINGA2_URL, $server)."/monitoring/service/show?host=$objectname&amp;service=$name\">$name</a></td>";
                         echo "<td>$text";
                         //Create new ticket link-btn
                         echo "&nbsp;<a title=\"Create new ticket\" href=\"$HELPDESK_URL/Ticket/Create.html?Queue=Fabric&amp;Subject=";
@@ -159,11 +142,7 @@ class pNagios
                     echo '<td>'.$dt_user.'</td>';
                     echo '<td class="fixed">'.$dt_reason."</td>";
                     echo '<td>';
-                    if (strpos($server, 'icinga') !== -1) {
-                        echo '&hellip;';
-                    } else {
-                        echo '<a class="delete" href="'.sprintf($NAGIOS_URL, $server).'/cgi-bin/cmd.cgi?cmd_typ=78&amp;down_id='.$dt_id.'" />';
-                    }
+                    echo '&hellip;';
                     echo '</td>';
                     echo "</tr>\n";
                 }
