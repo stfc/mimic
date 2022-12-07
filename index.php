@@ -130,8 +130,8 @@ function gotData(data) {
                                 node_status += ' note';
                             }
 
-                            if (node_data['nagios']) {
-                                node_status += node_data['nagios'];
+                            if (node_data['mklivestatus']) {
+                                node_status += node_data['mklivestatus'];
                             }
 
                             if (node_data['fill'] !== undefined) {

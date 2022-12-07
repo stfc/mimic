@@ -6,7 +6,7 @@ header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
 <?php
 # Some variables to get us started...
 $NODES = array (); # For names from csf_monitor
-$SHORT = array (); # For names from nagios
+$SHORT = array (); # For names from MK Livestatus
 
 // Which page are we viewing?
 if (filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING))

@@ -65,8 +65,8 @@ foreach ($all_clusters as $name => $panels) {
         if (array_key_exists($name, $all_notes)) {
             $results[$group][$panel][$cluster][$name]['note'] = $all_notes[$name];
         };
-        if (nagios($name) !== Null) {
-            $results[$group][$panel][$cluster][$name]['nagios'] = nagios($name);
+        if (mklivestatus_oneline($name) !== Null) {
+            $results[$group][$panel][$cluster][$name]['mklivestatus'] = mklivestatus_oneline($name);
         };
         if (array_key_exists($name, $all_status)) {
             $results[$group][$panel][$cluster][$name]['status'] = $all_status[$name];
