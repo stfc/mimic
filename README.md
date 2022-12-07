@@ -1,5 +1,5 @@
 ![mimic](http://i.imgur.com/fCSbo0m.png)
-Mimic (1.5.0) [![Code Climate](https://codeclimate.com/github/stfc/mimic/badges/gpa.svg)](https://codeclimate.com/github/stfc/mimic)
+Mimic
 =====
 Mimic is a framework for building visual aggregations of data from many different monitoring systems as highly visual web application.
 It allows administrators to build custom overviews of physical and virtual infrastructures which provide a intuitive way to quickly drill down into detailed information from each data source.
@@ -15,7 +15,7 @@ License
 Dependences
 -----------
 
-Tested on Scientific Linux release 6.4 (Carbon)
+Tested on Scientific Linux release 7.9 (Nitrogen)
 
 On top of a web server, the following packages will be required:
 
@@ -45,13 +45,13 @@ Building for development
 -----------
 First run `yum install npm` (for Red Hat). With npm installed, navigate to mimic's root directory (the one with `package.json` in) and run:
 
-~~~~
+```sh
 npm install
 npm install -g bower
 npm install -g grunt
 bower install
 grunt buildmimic
-~~~~
+```
 
 
 Configuration
@@ -63,7 +63,7 @@ This file also includes the list of 'plugins' at the top to show on the node/hos
 
 Here is an example of the basic structure you should follow.
 
-```
+```ini
 [NODE_PLUGINS]
 0 = nagios
 1 = batchsystem
@@ -110,7 +110,7 @@ Views
 
 Each page or 'view' displays specific content. If you wish to create a new view, you need to name it `view-NAME.php` and place it in `/views`. The view files should only be used to get the data and arrange it into the correct `JSON` structure (see below) - the code that renders the page is located in `index.php`.
 
-```
+```json
 {
   "GROUP":{
     "PANEL":{
