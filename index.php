@@ -107,6 +107,7 @@ function gotData(data) {
                             node_info = '<h4>' + node_name + '</h4>';
 
                             node_status = 'unknown';
+                            node_text = '';
 
                             for (info in node_data) {
                                 info_body = '';
@@ -137,8 +138,15 @@ function gotData(data) {
                                 node_status += ' fill_'+node_data['fill'];
                             }
 
+                            if (node_data['jobs'] !== undefined) {
+                                node_status += ' jobs_'+node_data['jobs'];
+                                if (node_status.toLowerCase().includes('offline')) {
+                                    node_text = node_data['jobs'];
+                                }
+                            }
+
                             // Node
-                            finished_node += '<span id="' + node_name + '" class="node ' + node_status.toLowerCase() + '" title="' + node_info + '"></span>';
+                            finished_node += '<span id="' + node_name + '" class="node ' + node_status.toLowerCase() + '" title="' + node_info + '">' + node_text + '</span>';
                         }
                     }
                     else {
