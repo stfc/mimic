@@ -133,6 +133,10 @@ function gotData(data) {
                                 node_status += node_data['nagios'];
                             }
 
+                            if (node_data['fill'] !== undefined) {
+                                node_status += ' fill_'+node_data['fill'];
+                            }
+
                             // Node
                             finished_node += '<span id="' + node_name + '" class="node ' + node_status.toLowerCase() + '" title="' + node_info + '"></span>';
                         }
