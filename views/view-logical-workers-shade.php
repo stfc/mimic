@@ -41,7 +41,7 @@ if ($status and $status->num_rows) {
             $state['state'] => $state['source'],
         );
         list($jtit, $jobs, $ctit, $slots, $ptit, $prop) = explode(" ", $state['info']);
-        $all_fill[$state['name']]['fill'] = intval((floatval($jobs) / floatval($slots)) * 10) * 10;
+        $all_fill[$state['name']]['fill_percent'] = intval((floatval($jobs) / floatval($slots)) * 10) * 10;
         $all_fill[$state['name']]['jobs'] = intval($jobs);
     }
 }

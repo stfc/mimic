@@ -134,8 +134,8 @@ function gotData(data) {
                                 node_status += node_data['nagios'];
                             }
 
-                            if (node_data['fill'] !== undefined) {
-                                node_status += ' fill_'+node_data['fill'];
+                            if (node_data['fill_percent'] !== undefined) {
+                                node_status += ' fill_'+node_data['fill_percent'];
                             }
 
                             if (node_data['jobs'] !== undefined) {
