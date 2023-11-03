@@ -1,7 +1,7 @@
 <?php
 require("inc/config-call.inc.php");
 require("inc/functions.inc.php");
-require("inc/main-nagios.inc.php"); // Nagios library
+require("inc/ds-mklivestatus.inc.php");
 require("inc/db-open.inc.php"); // MySQL Data sources
 header('Content-Type: application/json');
 
@@ -15,17 +15,62 @@ function bool2str($value) {
     return($value);
 }
 
-function nagios($node_name) {
-    $short = explode(".", $node_name);
-    $short = $short[0];
-    $nodeStatus = '';
-    $ntup = nagios_state($short, $node_name, $nodeStatus);
-    if (!empty($ntup[1])) {
-        $nodeStatus = $ntup[0];
-        $test['nagios'] = $ntup[1];
-        return ' '.$nodeStatus; // Must have whitespace prepended
+# MK Livestatus
+
+$mklivestatus_data = mkLiveStatus::get_hosts();
+
+function mklivestatus_state($short, $node, $nodeStatus) {
+    global $mklivestatus_data;
+    $mklivestatusInfo = '';
+    // Process mklivestatus state info
+    if (is_array($mklivestatus_data)) {
+        foreach ($mklivestatus_data as $server => $mklivestatus_hosts) {
+            $mklivestatus_nodedata = null;
+            if (array_key_exists($short, $mklivestatus_hosts)) {
+                $mklivestatus_nodedata = $mklivestatus_hosts[$short];
+            }
+            elseif (array_key_exists($node, $mklivestatus_hosts)) {
+                $mklivestatus_nodedata = $mklivestatus_hosts[$node];
+            }
+            if (sizeof($mklivestatus_nodedata) > 0) {
+                if ($mklivestatus_nodedata["scheduled_downtime_depth"] > 0) {
+                    $nodeStatus = "downtime";
+                    $mklivestatusInfo .= "($nodeStatus - $server)";
+                }
+                elseif ($mklivestatus_nodedata["state"] == 1) {
+                    $nodeStatus = "down";
+                    $mklivestatusInfo .= " ($nodeStatus - $server)";
+                }
+                else {
+                    // Check for alarms if system is not down, or in downtime
+                    if ($mklivestatus_nodedata["num_services_crit"] > 0) {
+                        $nodeStatus .= "critical";
+                        $mklivestatusInfo .= "(critical - $server)";
+                    }
+                    elseif ($mklivestatus_nodedata["num_services_warn"] > 0) {
+                        $nodeStatus .= "warning";
+                        $mklivestatusInfo .= "(warning - $server)";
+                    }
+                }
+            }
+        }
+        return(Array($nodeStatus,$mklivestatusInfo));
     }
-    unset($ntup);
+    return(Null);
+}
+
+function mklivestatus_oneline($node_name, $shorten=true) {
+    $short = $node_name;
+    if ($shorten) {
+        $short = explode(".", $node_name);
+        $short = $short[0];
+    }
+    $nodeStatus = "";
+    $ntup = mklivestatus_state($short, $node_name, $nodeStatus);
+    if (count($ntup) > 1 && !empty($ntup[1])) {
+        $nodeStatus = $ntup[0];
+    }
+    return ' '.$nodeStatus; // Must have whitespace prepended
 }
 
 function get_aquilon_report($config, $report) {

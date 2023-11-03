@@ -65,7 +65,7 @@ Here is an example of the basic structure you should follow.
 
 ```ini
 [NODE_PLUGINS]
-0 = nagios
+0 = mklivestatus
 1 = batchsystem
 2 = notes
 3 = requesttracker
@@ -79,15 +79,13 @@ AQUILON     = URL
 ES          = URL
 HARDTRACK   = URL
 HELPDESK    = URL
-NAGIOS      = URL
+ICINGA      = URL
 NUBES_RL    = URL
 NUBES_STFC  = URL
 OBSERVIUM   = URL
 OVERWATCH   = URL
 PAKITI      = URL
 STFC        = URL
-NAGIOS1     = URL
-NAGGER      = URL
 
 [PORT]
 ES_PORT = :PORT
@@ -116,14 +114,14 @@ Each page or 'view' displays specific content. If you wish to create a new view,
     "PANEL":{
       "CLUSTER":{
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
           }
         },
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
@@ -132,14 +130,14 @@ Each page or 'view' displays specific content. If you wish to create a new view,
       },
       "CLUSTER":{
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
           }
         },
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
@@ -150,14 +148,14 @@ Each page or 'view' displays specific content. If you wish to create a new view,
     "PANEL":{
       "CLUSTER":{
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
           }
         },
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
@@ -166,14 +164,14 @@ Each page or 'view' displays specific content. If you wish to create a new view,
       },
       "CLUSTER":{
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"
           }
         },
         "NODE":{
-          "nagios": "data",
+          "mklivestatus": "data",
           "extra": "data",
           "status": {
             "STATE":"SOURCE"

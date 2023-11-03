@@ -2,13 +2,11 @@
 
 require("inc/config-call.inc.php");
 
-class nagiosLiveStatus {
+class liveStatus {
 
     static function get($table, $filter_col = "", $filter_val = "") {
         global $CONFIG;
         $LIVESTATUS_HOSTS = Array(
-            $CONFIG['SERVER']['NAGIOS1'],
-            $CONFIG['SERVER']['NAGIOS2'],
             $CONFIG['SERVER']['ICINGA1'],
             $CONFIG['SERVER']['ICINGA2'],
         );
@@ -66,9 +64,13 @@ class nagiosLiveStatus {
 
                     if ((count($cols) > 0) and (count($data) > 0)) {
                         foreach ($data as $n => $d) {
+                            $results[$host][$n] = Array();
                             $row = explode("`", $d);
                             foreach ($cols as $k => $v) {
-                                $results[$host][$n][$k] = $row[$v];
+                                $results[$host][$n][$k] = '';
+                                if (isset($row[$v])) {
+                                    $results[$host][$n][$k] = $row[$v];
+                                }
                             }
                         }
                     }
@@ -78,7 +80,7 @@ class nagiosLiveStatus {
                 return($results);
             }
             else {
-                error("No data returned from", "nagios livestatus");
+                error("No data returned from", "mklivestatus");
                 return(array());
             }
         }
