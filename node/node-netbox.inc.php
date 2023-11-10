@@ -54,6 +54,18 @@ class pNetbox
 
         if ($netbox_info !== null) {
 
+            if (array_key_exists('error', $netbox_info)) {
+                $error_message = $netbox_info['error'];
+                unset($netbox_info['error']);
+                echo "<dl>\n";
+                foreach ($netbox_info as $k => $v) {
+                    echo "<dt>$k</dt><dd>$v</dd>\n";
+                }
+                echo "</dl>\n";
+                echo "<p class=\"error\">{$error_message}</p>\n";
+                return;
+            }
+
             // Determine Rack Position
             // If not set in device, check the parent device if it exists
 
