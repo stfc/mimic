@@ -47,12 +47,30 @@ class pBatchSystem
         if ($state == "offline" or $state == "down") {
           $dead = "dead";
         }
+        $divisor = 32;
+        $j = 0;
         for($i = 0; $i < $job_number; $i++) {
+          if ($j % $divisor == 0) {
+            $state_visual = $state_visual . '<div class="visual-slots">';
+          }
           $state_visual = $state_visual . '<div class="cpu '.$dead.'inuse"></div>';
+          if ($j % $divisor == $divisor - 1) {
+            $state_visual = $state_visual . '</div>';
+          }
+          $j++;
         }
         for($i = 0; $i < ($slots - $job_number); $i++) {
+          if ($j % $divisor == 0) {
+            $state_visual = $state_visual . '<div class="visual-slots">';
+          }
           $state_visual = $state_visual . '<div class="cpu '.$dead.'free"></div>';
+          if ($j % $divisor == $divisor - 1) {
+            $state_visual = $state_visual . '</div>';
+          }
+          $j++;
         }
+        unset($j);
+        unset($divisor);
         echo "         <dt>Visual State</dt><dd>$state_visual</dd>\n";
 
         echo    "      <dt>Properties</dt><dd>".$prop."</dd>\n";
