@@ -95,20 +95,21 @@ class pNetbox
             // Determine Rack Position
             // If not set in device, check the parent device if it exists
 
-            if ($netbox_info['position'] != null) {
-                $rackpos = $netbox_info['position'];
-            } else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
+            $rackpos=false;
+            if (array_key_exists('position', $netbox_info)) {
+                if ($netbox_info['position'] != null) {
+                    $rackpos = $netbox_info['position'];
+                } else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
+                    $netbox_parent = $this->netbox->get_info_by_id($netbox_info['parent_device']['id']);
 
-                $netbox_parent = $this->netbox->get_info_by_id($netbox_info['parent_device']['id']);
-
-                if ($netbox_parent['position'] != null) {
-                    $rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display'] . ")";
+                    if ($netbox_parent['position'] != null) {
+                        $rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display'] . ")";
+                    } else {
+                        $rackpos="No position in parent";
+                    }
                 } else {
-                    $rackpos="No position in parent";
+                    $rackpos="No position";
                 }
-
-            } else {
-                $rackpos="No position";
             }
 
             echo "<h3>System</h3>\n";
@@ -118,7 +119,9 @@ class pNetbox
             echo "<dt>IpAddress</dt><dd class=\"netbox-ipaddress\">" . $netbox_info['primary_ip']['address'] . "</dd>\n";
             echo "<dt>roomName</dt><dd class=\"netbox-roomname\">" . $netbox_info['site']['name'] . "</dd>\n";
             echo "<dt>rackId</dt><dd class=\"netbox-rackid\"><a href=\"" . $NETBOX_URL . "dcim/racks/" . $netbox_info['rack']['id'] . "\" title=\"View rack ".$netbox_info['rack']['display']." in Netbox\">" . $netbox_info['rack']['display'] . "</a></dd>\n";
-            echo "<dt>systemRackPos</dt><dd class=\"netbox-RackPos\">$rackpos</dd>\n";
+            if ($rackpos) {
+                echo "<dt>Rack Position</dt><dd class=\"netbox-RackPos\">$rackpos</dd>\n";
+            }
             echo "<dt>deviceType</dt><dd class=\"netbox-categoryName\">" . $netbox_info['device_type']['model']."</dd>\n";
 
             if ($netbox_info['serial'] != null) {
