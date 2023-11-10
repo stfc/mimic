@@ -113,7 +113,8 @@ class pNetbox
 
             echo "<h3>System</h3>\n";
             echo "<dl>\n";
-            echo "<dt>NetboxId</dt><dd class=\"netbox-id\"><a href=\"" . $NETBOX_URL."dcim/devices/". $netbox_info['id'] . "\" title=\"View device ".$netbox_info['id']." in Netbox\">". $netbox_info['id']."</a></dd>\n";
+            echo "<dt>Netbox ID</dt>";
+            echo "<dd><a href=\"" . str_replace('/api/', '/', $netbox_info['url']) . "\" title=\"View device ".$netbox_info['id']." in Netbox\">". $netbox_info['id']."</a></dd>\n";
             echo "<dt>IpAddress</dt><dd class=\"netbox-ipaddress\">" . $netbox_info['primary_ip']['address'] . "</dd>\n";
             echo "<dt>roomName</dt><dd class=\"netbox-roomname\">" . $netbox_info['site']['name'] . "</dd>\n";
             echo "<dt>rackId</dt><dd class=\"netbox-rackid\"><a href=\"" . $NETBOX_URL . "dcim/racks/" . $netbox_info['rack']['id'] . "\" title=\"View rack ".$netbox_info['rack']['display']." in Netbox\">" . $netbox_info['rack']['display'] . "</a></dd>\n";
