@@ -130,6 +130,14 @@ class pNetbox
                 echo "<dt>vendorName</dt><dd>" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
             }
 
+            echo "<dt>Custom Fields</dt><dd><dl>\n";
+            foreach($netbox_info['custom_fields'] as $field_name => $field_value) {
+                if ($field_value) {
+                    echo "<dt>$field_name</dt><dd>$field_value</dd>\n";
+                }
+            }
+            echo "</dl></dd>\n";
+
             echo "</dl>\n";
 
             if (array_key_exists('rack', $netbox_info) && is_array($netbox_info['rack'])) {
