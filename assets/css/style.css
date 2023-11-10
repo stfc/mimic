@@ -334,6 +334,9 @@ h2:first-of-type {
   border: 1px solid #000;
   background-position: center center;
   cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 9px;
+  text-align: center;
 }
 
 .node:hover {
@@ -391,6 +394,28 @@ p.rack {
 NODE STATE COLOURS/IMAGES
 ================================== */
 
+.fill_0.offline  { background-color: #998a4d; }
+.fill_10.offline { background-color: #a2914a; }
+.fill_20.offline { background-color: #ac9746; }
+.fill_30.offline { background-color: #b59e42; }
+.fill_40.offline { background-color: #bfa53e; }
+.fill_50.offline { background-color: #c9ab39; }
+.fill_60.offline { background-color: #d4b233; }
+.fill_70.offline { background-color: #deb82c; }
+.fill_80.offline { background-color: #e9bf23; }
+.fill_90.offline { background-color: #f4c617; }
+
+.fill_0.inuse  { background-color: #00dd35; }
+.fill_10.inuse { background-color: #00dd1d; }
+.fill_20.inuse { background-color: #00dd3a; }
+.fill_30.inuse { background-color: #00dd57; }
+.fill_40.inuse { background-color: #00dd74; }
+.fill_50.inuse { background-color: #00dd91; }
+.fill_60.inuse { background-color: #00ddad; }
+.fill_70.inuse { background-color: #00ddca; }
+.fill_80.inuse { background-color: #00d3dd; }
+.fill_90.inuse { background-color: #00b6dd; }
+
 /* === General === */
 .unknown {
   background-color: #999;
@@ -399,7 +424,7 @@ NODE STATE COLOURS/IMAGES
 .free,
 .started,
 .idle {
-  background-color: #0d0;
+  background-color: #0e0;
 }
 
 .reserved {
