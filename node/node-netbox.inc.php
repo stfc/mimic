@@ -28,11 +28,13 @@ class pNetbox
                     $found_supply=false;
                     foreach ($conns as $conn) {
                         // If the connected endpoint is dcim.powerfeed then its the power supply
-                        if ($conn['connected_endpoint_type'] == "dcim.powerfeed") {
+                        if ($conn['connected_endpoints_type'] == "dcim.powerfeed") {
                             $found_supply=true;
-                            $power_feed=$this->netbox->get_powerfeed_info_by_id($conn['connected_endpoint']['id']);
-                            $room_pdu=$this->netbox->get_powerpanel_info_by_id($power_feed['power_panel']['id']);
-                            printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $conn['connected_endpoint']['name'], $rack_pdu['name'], $room_pdu['site']['name']);
+                            foreach ($conn['connected_endpoints'] as $endpoint) {
+                                $power_feed=$this->netbox->get_powerfeed_info_by_id($endpoint['id']);
+                                $room_pdu=$this->netbox->get_powerpanel_info_by_id($power_feed['power_panel']['id']);
+                                printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $endpoint['name'], $rack_pdu['name'], $room_pdu['site']['name']);
+                            }
                         }
                     }
                     if ($found_supply == false) {
