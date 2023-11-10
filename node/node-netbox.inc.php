@@ -19,10 +19,19 @@ class pNetbox
     {
         echo "<h3>Rack Power</h3>\n";
 
+        $icon_table = Array(
+            'powered'   => '<span title="Powered">&#x026A1;</span>',
+            'connected' => '<span title="Feed Defined">&#x1F50C;</span>',
+            'ups'       => '<span title="UPS Backed">&#x1f50B;</span>',
+            'null'      => '&mdash;',
+        );
+
         if ($rack_pdus != null) {
             echo "<dl>\n";
             foreach ($rack_pdus as $rack_pdu) {
+                $rack_pdu_link = sprintf("<a href=\"%s\">%s</a>", str_replace('/api/', '/', $rack_pdu['url']), $rack_pdu['name']);
                 $conns=$this->netbox->search("/dcim/power-ports/", array("device"=>$rack_pdu['name']));
+                $supply_text="Unknown";
                 if ($conns != null) {
                     // For situation where downstream power ports are configured, but upstream is not
                     $found_supply=false;
@@ -33,15 +42,30 @@ class pNetbox
                             foreach ($conn['connected_endpoints'] as $endpoint) {
                                 $power_feed=$this->netbox->get_powerfeed_info_by_id($endpoint['id']);
                                 $room_pdu=$this->netbox->get_powerpanel_info_by_id($power_feed['power_panel']['id']);
-                                printf("<dt>%s (%s)</dt><dd>%s</dd>\n", $endpoint['name'], $rack_pdu['name'], $room_pdu['site']['name']);
+
+                                $supply_text=sprintf("<a href=\"%s\">%s</a> (%s)", str_replace('/api/', '/', $endpoint['url']), $endpoint['name'], $room_pdu['site']['name']);
+
+                                $icons = $icon_table['powered'];
+                                if ($room_pdu['custom_fields']['ups_backed']) {
+                                    $icons .= $icon_table['ups'];
+                                } else {
+                                    $icons .= $icon_table['null'];
+                                }
+                                $icons .= $icon_table['connected'];
+
+                                printf("<dt>%s</dt><dd>&#x02500;%s&rarr; %s</dd>\n", $supply_text, $icons, $rack_pdu_link);
                             }
                         }
                     }
                     if ($found_supply == false) {
-                        printf("<dt>PDU providing power but no supply (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
+                        // Power to rack, but no supply defined
+                        $icons = $icon_table['powered'] . $icon_table['null'] . $icon_table['null'];
+                        printf("<dt>%s</dt><dd>&#x02500;%s&rarr; %s</dd>\n", $supply_text, $icons, $rack_pdu_link);
                     }
                 } else {
-                    printf("<dt>PDU with no supply and not supplying power (%s)</dt><dd>Unknown</dd>\n", $rack_pdu['name']);
+                    // No power to rack and no supply defined
+                    $icons = $icon_table['null'] . $icon_table['null'] . $icon_table['null'];
+                    printf("<dt>%s</dt><dd>&#x02500;%s&rarr; %s</dd>\n", $supply_text, $icons, $rack_pdu_link);
                 }
             }
             echo "</dl>\n";
