@@ -35,7 +35,9 @@ class pAquilon {
           $val = preg_replace('/(.*) &lt;(.+@.+)&gt;/', '<a href="mailto:$2">$1</a>', $val);
           $val = str_replace("[", "<em>[", $val);
           $val = str_replace("]", "]</em>", $val);
-          echo "<li><strong>$key</strong> &ndash; $val";
+          if ($key != '  Host Feature') {
+            echo "<li><strong>$key</strong> &ndash; $val";
+          }
         }
         $p_in = $info_data;
       }
