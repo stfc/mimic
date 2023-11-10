@@ -119,12 +119,15 @@ class pNetbox
             echo "<dt>rackId</dt><dd class=\"netbox-rackid\"><a href=\"" . $NETBOX_URL . "dcim/racks/" . $netbox_info['rack']['id'] . "\" title=\"View rack ".$netbox_info['rack']['display']." in Netbox\">" . $netbox_info['rack']['display'] . "</a></dd>\n";
             echo "<dt>systemRackPos</dt><dd class=\"netbox-RackPos\">$rackpos</dd>\n";
             echo "<dt>deviceType</dt><dd class=\"netbox-categoryName\">" . $netbox_info['device_type']['model']."</dd>\n";
-            echo "<dt>vendorName</dt><dd class=\"netbox-vendorName\">" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
 
             if ($netbox_info['serial'] != null) {
                 echo "<dt>Serial</dt><dd class=\"netbox-serial\">" . $netbox_info['serial'] . "</dd>\n";
             }
             echo "<dt>Status</dt><dd class=\"netbox-status\">" . $netbox_info['status']['label'] . "</dd>\n";
+
+            if (array_key_exists('device_type', $netbox_info)) {
+                echo "<dt>vendorName</dt><dd>" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
+            }
 
             echo "</dl>\n";
 
