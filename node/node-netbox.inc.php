@@ -92,8 +92,10 @@ class pNetbox
 
             echo "</dl>\n";
 
-            $rack_pdus = $this->netbox->search("/dcim/devices/", array("rack_id"=>$netbox_info['rack']['id'],"role"=>"pdu"));
-            $this->render_pdu_list($rack_pdus);
+            if (array_key_exists('rack', $netbox_info) && is_array($netbox_info['rack'])) {
+                $rack_pdus = $this->netbox->search("/dcim/devices/", array("rack_id"=>$netbox_info['rack']['id'],"role"=>"pdu"));
+                $this->render_pdu_list($rack_pdus);
+            }
         } else {
             echo "<p class=\"warning\">Host not in Netbox.</p>\n";
         }
