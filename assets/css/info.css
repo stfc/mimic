@@ -447,6 +447,15 @@ div#pakiti2-json span.standard {
   color: #4e9a06;
 }
 
+div.visual-slots {
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, .333) 1px, transparent 1px);
+  background-size: 56px 3px;
+  background-repeat: repeat-x;
+  background-position-y: bottom;
+  padding-right: 1px;
+  width: fit-content;
+}
+
 /* PBS Nodetypes */
 div.deadfree,
 div.deadinuse,
