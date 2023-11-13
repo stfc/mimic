@@ -125,7 +125,8 @@ class pNetbox
             $fields_to_display = Array(
                 'rack' => 'Rack',
                 'site' => 'Room',
-                'primary_ip' => 'Primary IP',
+                'primary_ip4' => 'Primary IPv4',
+                'primary_ip6' => 'Primary IPv6',
                 'device_type' => 'Device Type',
                 'serial' => 'Serial',
                 'status' => 'Status',
