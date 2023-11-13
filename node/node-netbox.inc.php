@@ -129,7 +129,17 @@ class pNetbox
                 'primary_ip6' => 'Primary IPv6',
                 'device_type' => 'Device Type',
                 'serial' => 'Serial',
+                'tenant' => 'Tenant',
+                'cluster' => 'Virtual Cluster',
+                'device_role' => 'Role',
+                'role' => 'Role',
                 'status' => 'Status',
+                'platform' => 'Platform',
+                'vcpus' => 'Virtual CPUs',
+                'memory' => 'Memory (MB)',
+                'disk' => 'Disk (GB)',
+                'comments' => 'Comments',
+                'tags' => 'Tags',
             );
 
             foreach($fields_to_display as $field_name => $field_label) {
