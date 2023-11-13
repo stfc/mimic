@@ -157,9 +157,13 @@ class pNetbox
                         } else if (is_array($field_value)) {
                             $s = Array();
                             foreach($field_value as $k => $v) {
-                                $s[] = "<li>{$v['display']}</li>";
+                                $style="padding: .35em .65em; border-radius: .375rem; ";
+                                if (array_key_exists('color', $v)) {
+                                   $style.=" background-color: #{$v['color']};";
+                                };
+                                $s[] = "<li style=\"$style\">{$v['display']}</li>";
                             }
-                            $field_value = "<ul>" . implode("\n", $s) . "</ul>";
+                            $field_value = "<ul style=\"list-style: none;\">" . implode("\n", $s) . "</ul>";
                         }
                     }
                     if ($link) {
