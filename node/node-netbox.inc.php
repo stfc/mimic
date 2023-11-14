@@ -95,36 +95,95 @@ class pNetbox
             // Determine Rack Position
             // If not set in device, check the parent device if it exists
 
-            if ($netbox_info['position'] != null) {
-                $rackpos = $netbox_info['position'];
-            } else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
+            $rackpos=false;
+            if (array_key_exists('position', $netbox_info)) {
+                if ($netbox_info['position'] != null) {
+                    $rackpos = $netbox_info['position'];
+                } else if ($netbox_info['position'] == null && $netbox_info['parent_device'] != null) {
+                    $netbox_parent = $this->netbox->get_info_by_id($netbox_info['parent_device']['id']);
 
-                $netbox_parent = $this->netbox->get_info_by_id($netbox_info['parent_device']['id']);
-
-                if ($netbox_parent['position'] != null) {
-                    $rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display'] . ")";
+                    if ($netbox_parent['position'] != null) {
+                        $rackpos=$netbox_parent['position'] . " (Child of ". $netbox_info['parent_device']['display'] . ")";
+                    } else {
+                        $rackpos="No position in parent";
+                    }
                 } else {
-                    $rackpos="No position in parent";
+                    $rackpos="No position";
                 }
-
-            } else {
-                $rackpos="No position";
             }
 
             echo "<h3>System</h3>\n";
             echo "<dl>\n";
-            echo "<dt>NetboxId</dt><dd class=\"netbox-id\"><a href=\"" . $NETBOX_URL."dcim/devices/". $netbox_info['id'] . "\" title=\"View device ".$netbox_info['id']." in Netbox\">". $netbox_info['id']."</a></dd>\n";
-            echo "<dt>IpAddress</dt><dd class=\"netbox-ipaddress\">" . $netbox_info['primary_ip']['address'] . "</dd>\n";
-            echo "<dt>roomName</dt><dd class=\"netbox-roomname\">" . $netbox_info['site']['name'] . "</dd>\n";
-            echo "<dt>rackId</dt><dd class=\"netbox-rackid\"><a href=\"" . $NETBOX_URL . "dcim/racks/" . $netbox_info['rack']['id'] . "\" title=\"View rack ".$netbox_info['rack']['display']." in Netbox\">" . $netbox_info['rack']['display'] . "</a></dd>\n";
-            echo "<dt>systemRackPos</dt><dd class=\"netbox-RackPos\">$rackpos</dd>\n";
-            echo "<dt>deviceType</dt><dd class=\"netbox-categoryName\">" . $netbox_info['device_type']['model']."</dd>\n";
-            echo "<dt>vendorName</dt><dd class=\"netbox-vendorName\">" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
+            echo "<dt>Netbox ID</dt>";
+            echo "<dd><a href=\"" . str_replace('/api/', '/', $netbox_info['url']) . "\" title=\"View device ".$netbox_info['id']." in Netbox\">". $netbox_info['id']."</a></dd>\n";
 
-            if ($netbox_info['serial'] != null) {
-                echo "<dt>Serial</dt><dd class=\"netbox-serial\">" . $netbox_info['serial'] . "</dd>\n";
+            if ($rackpos) {
+                echo "<dt>Rack Position</dt><dd class=\"netbox-RackPos\">$rackpos</dd>\n";
             }
-            echo "<dt>Status</dt><dd class=\"netbox-status\">" . $netbox_info['status']['label'] . "</dd>\n";
+
+            // Map of Field name => Label when rendered
+            $fields_to_display = Array(
+                'rack' => 'Rack',
+                'site' => 'Room',
+                'primary_ip4' => 'Primary IPv4',
+                'primary_ip6' => 'Primary IPv6',
+                'device_type' => 'Device Type',
+                'serial' => 'Serial',
+                'tenant' => 'Tenant',
+                'cluster' => 'Virtual Cluster',
+                'device_role' => 'Role',
+                'role' => 'Role',
+                'status' => 'Status',
+                'platform' => 'Platform',
+                'vcpus' => 'Virtual CPUs',
+                'memory' => 'Memory (MB)',
+                'disk' => 'Disk (GB)',
+                'comments' => 'Comments',
+                'tags' => 'Tags',
+            );
+
+            foreach($fields_to_display as $field_name => $field_label) {
+                if (array_key_exists($field_name, $netbox_info) && $netbox_info[$field_name] != null) {
+                    $field_value = $netbox_info[$field_name];
+                    $link = False;
+                    if (is_array($field_value)) {
+                        if (array_key_exists('url', $field_value)) {
+                            $link = str_replace('/api/', '/', $field_value['url']);
+                        }
+                        if (array_key_exists('display', $field_value)) {
+                            $field_value = $field_value['display'];
+                        } else if (array_key_exists('label', $field_value)) {
+                            $field_value = $field_value['label'];
+                        } else if (is_array($field_value)) {
+                            $s = Array();
+                            foreach($field_value as $k => $v) {
+                                $style="padding: .35em .65em; border-radius: .375rem; ";
+                                if (array_key_exists('color', $v)) {
+                                   $style.=" background-color: #{$v['color']};";
+                                };
+                                $s[] = "<li style=\"$style\">{$v['display']}</li>";
+                            }
+                            $field_value = "<ul style=\"list-style: none;\">" . implode("\n", $s) . "</ul>";
+                        }
+                    }
+                    if ($link) {
+                        $field_value = "<a href=\"$link\">$field_value</a>\n";
+                    }
+                    echo "<dt>$field_label</dt><dd>$field_value</dd>\n";
+                }
+            }
+
+            if (array_key_exists('device_type', $netbox_info)) {
+                echo "<dt>vendorName</dt><dd>" . $netbox_info['device_type']['manufacturer']['name'] . "</dd>\n";
+            }
+
+            echo "<dt>Custom Fields</dt><dd><dl>\n";
+            foreach($netbox_info['custom_fields'] as $field_name => $field_value) {
+                if ($field_value) {
+                    echo "<dt>$field_name</dt><dd>$field_value</dd>\n";
+                }
+            }
+            echo "</dl></dd>\n";
 
             echo "</dl>\n";
 
