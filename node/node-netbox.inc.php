@@ -74,6 +74,17 @@ class pNetbox
         }
     }
 
+    private function render_networking($device_id, $virtual=false)
+    {
+        echo "<h3>Networking</h3>\n";
+        echo "<object ";
+        //Add work-around for webkit's broken SVG embedding.
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "webkit")) {
+            echo 'style="width: 100%;" ';
+        }
+        echo "type=\"image/svg+xml\" data=\"/components/netbox-draw-interfaces.php?netbox_id={$device_id}&is_vm={$virtual}\"></object>\n";
+    }
+
     function detail($NODE, $SHORT)
     {
         $netbox_info = $this->netbox->get_info($NODE);
@@ -91,6 +102,8 @@ class pNetbox
                 echo "<p class=\"error\">{$error_message}</p>\n";
                 return;
             }
+
+            $is_vm = (strpos($netbox_info['url'], 'virtualization/virtual-machines') !== false);
 
             // Determine Rack Position
             // If not set in device, check the parent device if it exists
@@ -191,6 +204,9 @@ class pNetbox
                 $rack_pdus = $this->netbox->search("/dcim/devices/", array("rack_id"=>$netbox_info['rack']['id'],"role"=>"pdu"));
                 $this->render_pdu_list($rack_pdus);
             }
+
+            $this->render_networking($netbox_info['id'], $is_vm);
+
         } else {
             echo "<p class=\"warning\">Host not in Netbox.</p>\n";
         }
